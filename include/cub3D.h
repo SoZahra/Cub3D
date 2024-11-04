@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 15:14:56 by fzayani           #+#    #+#             */
-/*   Updated: 2024/11/01 18:46:16 by fzayani          ###   ########.fr       */
+/*   Updated: 2024/11/04 11:59:02 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,19 @@
 # include <X11/keysym.h>
 
 
+typedef struct s_player
+{
+	int			x;
+	int			y;
+	int			cc;
+	int			count;
+}				t_player;
+
 //structure donnees de la map
 typedef struct s_data
 {
 	// t_img		*img;
-	// t_player	player;
+	t_player	player;
 	void		*mlx;
 	void		*win;
 	char		**map;
@@ -34,7 +42,6 @@ typedef struct s_data
 	int			map_width;
 	int			map_height;
 	void		*texture;
-	int			exit_f;
 }				t_data;
 
 ///parsing/parsing.c

@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 15:11:22 by fzayani           #+#    #+#             */
-/*   Updated: 2024/11/01 18:45:50 by fzayani          ###   ########.fr       */
+/*   Updated: 2024/11/04 15:36:29 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ void	count_map_elements(t_data *data, int *exit_count, int *start_count,
 		j = 0;
 		while (j < data->map_width)
 		{
-			if (data->map[i][j] == 'E')
+			if (data->map[i][j] == 'N')
 				(*exit_count)++;
-			else if (data->map[i][j] == 'P')
+			else if (data->map[i][j] == 'S')
 				(*start_count)++;
 			else if (data->map[i][j] == 'C')
 				(*collectible_count)++;
