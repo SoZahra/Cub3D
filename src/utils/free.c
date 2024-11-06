@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 18:10:16 by fzayani           #+#    #+#             */
-/*   Updated: 2024/11/01 18:10:27 by fzayani          ###   ########.fr       */
+/*   Updated: 2024/11/05 18:50:59 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,3 +39,19 @@ void	free_map(t_data *data)
 		free(data->copie_map);
 	}
 }
+void	ft_free_split(char **array)
+{
+	int i;
+
+	if (!array)
+		return;
+
+	i = 0;
+	while (array[i])
+	{
+		free(array[i]);
+		i++;
+	}
+	free(array);
+}
+

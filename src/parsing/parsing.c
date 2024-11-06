@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 15:11:22 by fzayani           #+#    #+#             */
-/*   Updated: 2024/11/04 15:36:29 by fzayani          ###   ########.fr       */
+/*   Updated: 2024/11/05 18:21:27 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,42 +22,30 @@ void	check_invalid_characters(t_data *data, char element)
 	}
 }
 
-void	count_map_elements(t_data *data, int *exit_count, int *start_count,
-		int *collectible_count)
+int	check_map_elements(t_data *data)
 {
 	int	i;
 	int	j;
+	int	player_count;
 
-	i = ((j = 0));
-	while (i < data->map_height)
+	player_count = ((i = j = 0));
+	while(i++ < data->map_height)
 	{
-		j = 0;
-		while (j < data->map_width)
+		while(j++ < data->map_width)
 		{
-			if (data->map[i][j] == 'N')
-				(*exit_count)++;
-			else if (data->map[i][j] == 'S')
-				(*start_count)++;
-			else if (data->map[i][j] == 'C')
-				(*collectible_count)++;
-			check_invalid_characters(data, data->map[i][j]);
-			j++;
+			if(data->map[i][j] == 'N' || data->map[i][j] == 'S' ||
+				data->map[i][j] == 'E' || data->map[i][j] == 'W')
+			{
+				player_count++;
+				data->player.player_x = j;
+				data->player.player_y = i;
+				data->player.player_dir = data->map[i][j];
+			}
+			else if(data->map[i][j] != '0' && data->map[i][j] != '1')
+				return(printf("Error : Invalid character '%c' in map.\n", data->map[i][j]), 0);
 		}
-		i++;
 	}
-}
-
-int	check_map_elements(t_data *data)
-{
-	int	exit_count;
-	int	start_count;
-	int	collectible_count;
-
-	exit_count = ((start_count = collectible_count = 0));
-	count_map_elements(data, &exit_count, &start_count, &collectible_count);
-	// check_map_line_length(data);
-	if (exit_count != 1 || start_count != 1 || collectible_count < 1)
-		return (ft_printf("Error: Map need 1 exit, 1 collectible,\
-				and 1 start position.\n"), 0);
-	return (1);
+	if(player_count != 1)
+		return (printf("Error : Map contain exactly one sarting position(N, S, E, or W).\n"), 0);
+	return(1);
 }
