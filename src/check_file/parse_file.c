@@ -6,22 +6,33 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:11:44 by fzayani           #+#    #+#             */
-/*   Updated: 2024/11/06 18:36:44 by fzayani          ###   ########.fr       */
+/*   Updated: 2024/11/06 19:16:54 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3D.h"
 
-int ft_str_is_whitespace(const char *str)
-{
-    while (*str)
-    {
-        if (!(*str == ' ' || *str == '\t')) // Vérifie si le caractère est différent d'un espace ou d'un tab
-            return 0;
+// int ft_str_is_whitespace(const char *str)
+// {
+//     while (*str)
+//     {
+//         if (!(*str == ' ' || *str == '\t')) // Vérifie si le caractère est différent d'un espace ou d'un tab
+//             return 0;
+//         str++;
+//     }
+//     return 1;
+// }
+
+int ft_str_is_whitespace(const char *str) {
+    while (*str) {
+        if (*str != ' ' && *str != '\t') {
+            return 0;  // Retourne 0 si un caractère autre que espace/tabulation est trouvé
+        }
         str++;
     }
-    return 1;
+    return 1;  // Retourne 1 si la chaîne contient uniquement des espaces/tabulations
 }
+
 
 char *ft_strtrim2(const char *str)
 {
@@ -36,6 +47,22 @@ char *ft_strtrim2(const char *str)
     ft_memcpy(trimmed, str, len);
     trimmed[len] = '\0';
     return (trimmed);
+}
+int contains_invalid_characters(const char *line) {
+    while (*line) {
+        if (*line == '\n') {
+            line++; // Ignore le saut de ligne à la fin de la ligne
+            continue;
+        }
+        if (*line != '1' && *line != '0' && *line != 'N' && *line != 'S' && *line != 'W' && *line != 'E'
+			&& *line != ' ' && *line != '\t')
+			{
+            printf("Invalid character '%c' found in line: '%s'\n", *line, line);  // Débogage
+            return 1;  // Retourne 1 si un caractère invalide est trouvé
+        }
+        line++;
+    }
+    return 0;  // Aucun caractère invalide trouvé
 }
 
 
@@ -58,29 +85,43 @@ int	parse_color(const char *str)
 		// Retourne la couleur en un int (format RGB : 0x00RRGGBB)
 }
 
-int	validate_map(t_data *data, char **lines, int map_start)
-{
-	int	i;
+int find_map_end(char **lines) {
+    int i = 0;
 
-	(void)data;
-	int player_count = 0; // Pour compter les positions de départ
-	i = map_start;
-	while (lines[i])
-	{
-		if (ft_strchr("01NSWE", lines[i][0]))
-		{
-			// Vérifie si la ligne contient un point de départ
-			if (lines[i][0] == 'N' || lines[i][0] == 'S' || lines[i][0] == 'E'
-				|| lines[i][0] == 'W')
-				player_count++;
-		}
-		i++;
-	}
-	if (player_count != 1) // S'il n'y a pas exactement une position de départ
-		return (error_exit("Error: Map must contain exactly one starting position (N, \
-S, E, or W)."), 0);
-	return (1); // Tout va bien
+    while (lines[i]) {
+        // Si la ligne est vide ou ne contient que des espaces/tabulations, la carte est terminée
+        if (ft_str_is_whitespace(lines[i])) {
+            printf("Map ends at line %d: '%s'\n", i, lines[i]); // Débogage
+            return i; // La carte se termine ici
+        }
+
+        i++;
+    }
+
+    return i; // Si on n'a pas trouvé de fin explicite, on retourne la dernière ligne
 }
+
+int validate_after_map(t_data *data, char **lines, int map_end)
+{
+	(void)data;
+    int i = map_end;
+
+    while (lines[i]) {
+        printf("Checking line %d after map: '%s'\n", i, lines[i]);
+
+        // Vérification des caractères invalides
+        if (contains_invalid_characters(lines[i])) {
+            printf("Error: Invalid characters on line %d: '%s'\n", i, lines[i]);
+            return -1;  // Si un caractère invalide est trouvé, retourner -1
+        }
+
+        i++;
+    }
+
+    return 0;  // Si aucune erreur n'est trouvée
+}
+
+
 void	init_texture_colors_flags(t_data *data)
 {
 	data->no_loaded = 0;
@@ -273,13 +314,24 @@ int	compare_loaded(t_data *data, char *line) // Si une texture/couleur est charg
 	return (0);
 }
 
-int parse_texture_colors(t_data *data, char **lines, const char *filename)
-{
+void print_data_info(t_data *data) {
+    printf("NO texture: %s\n", data->no_texture);
+    printf("SO texture: %s\n", data->so_texture);
+    printf("WE texture: %s\n", data->we_texture);
+    printf("EA texture: %s\n", data->ea_texture);
+    printf("F color: %d\n", data->f_color);
+    printf("C color: %d\n", data->c_color);
+    // Ajoute d'autres membres de data si nécessaire
+}
+
+int parse_texture_colors(t_data *data, char **lines, const char *filename) {
     int i = 0;
     int map_start = -1;
+    int map_end = -1;
 
     // Initialiser les drapeaux pour vérifier la présence des textures et couleurs
     init_texture_colors_flags(data);
+
     // Vérifier si les textures et couleurs sont déjà chargées
     if (!(data->no_loaded && data->so_loaded && data->we_loaded &&
           data->ea_loaded && data->f_loaded && data->c_loaded))
@@ -291,67 +343,69 @@ int parse_texture_colors(t_data *data, char **lines, const char *filename)
             return -1;
         }
     }
-    while (lines[i])// Lire chaque ligne jusqu'à ce que les six éléments soient chargés
-    {
+
+    while (lines[i]) {  // Lire chaque ligne jusqu'à ce que les six éléments soient chargés
         // Ignorer les lignes vides
-        if (lines[i][0] == '\0' || ft_str_is_whitespace(lines[i]))
-        {
+        if (lines[i][0] == '\0' || ft_str_is_whitespace(lines[i])) {
             i++;
             continue;
         }
+
         // Vérifier si la ligne correspond à une texture ou une couleur
-        // if (parse_texture_line(data, lines[i]))
-        //     compare_loaded(data, lines[i]);
-        else
-        {
-            // Vérifie si la ligne contient des espaces ou des tabulations
-            if (lines[i][0] == '\t' || lines[i][0] == ' ')
+        if (lines[i][0] == '\t' || lines[i][0] == ' ') {
+            // Si les six éléments sont chargés, on peut assumer que le reste est la carte
+            if (data->no_loaded && data->so_loaded && data->we_loaded &&
+                data->ea_loaded && data->f_loaded && data->c_loaded)
             {
-                // Si les six éléments sont chargés, on peut assumer que le reste est la carte
-                if (data->no_loaded && data->so_loaded && data->we_loaded &&
-                    data->ea_loaded && data->f_loaded && data->c_loaded)
-                {
-                    printf("All texture and color elements loaded before map.\n");
-                    map_start = i; // La carte commence ici
-                    printf("Map starts at line %d: '%s'\n", i, lines[i]);
-                    break;
-                }
-                else
-                {
-                    printf("One or more elements not loaded at line %d.\n", i);
-                    printf("no_loaded: %d, so_loaded: %d, we_loaded: %d, ea_loaded: %d, f_loaded: %d, c_loaded: %d\n",
-                        data->no_loaded, data->so_loaded, data->we_loaded, data->ea_loaded, data->f_loaded, data->c_loaded);
-                    return error_exit("Error: Invalid data before map"), -1;
-                }
+                printf("All texture and color elements loaded before map.\n");
+                map_start = i; // La carte commence ici
+                printf("Map starts at line %d: '%s'\n", i, lines[i]);
+
+                // Trouver la fin de la carte
+                map_end = find_map_end(&lines[i]);
+                printf("Map ends at line %d\n", map_end);
+
+                break;
+            }
+            else {
+                printf("One or more elements not loaded at line %d.\n", i);
+                return error_exit("Error: Invalid data before map"), -1;
             }
         }
         i++;
     }
-
     // Vérification finale des textures et couleurs
-    // if (verify_texture_and_colors(data) == -1)
-    //     return -1;
-
-    // Si aucune carte n'a été trouvée après les éléments, erreur
     if (map_start == -1)
         return error_exit("Error: No map found"), -1;
-
+    // Validation après la carte (pour vérifier qu'il n'y a pas de caractères indésirables)
+    if (validate_after_map(data, lines, map_end) == -1) {
+        return -1;
+    }
     printf("Map starts at line: %d\n", map_start); // Débogage pour visualiser le début de la carte
     return map_start; // Retourne l'index de la première ligne de la carte
 }
 
 
 
-// int parse_texture_colors(t_data *data, char **lines)
+// int parse_texture_colors(t_data *data, char **lines, const char *filename)
 // {
 //     int i = 0;
 //     int map_start = -1;
 
 //     // Initialiser les drapeaux pour vérifier la présence des textures et couleurs
 //     init_texture_colors_flags(data);
-
-//     // Lire chaque ligne jusqu'à ce que les six éléments soient chargés
-//     while (lines[i])
+//     // Vérifier si les textures et couleurs sont déjà chargées
+//     if (!(data->no_loaded && data->so_loaded && data->we_loaded &&
+//           data->ea_loaded && data->f_loaded && data->c_loaded))
+//     {
+//         // Appeler parse_cub avec le chemin du fichier pour charger les textures et couleurs
+//         if (!parse_cub(data, filename))
+//         {
+//             printf("Parsing failed\n");
+//             return -1;
+//         }
+//     }
+//     while (lines[i])// Lire chaque ligne jusqu'à ce que les six éléments soient chargés
 //     {
 //         // Ignorer les lignes vides
 //         if (lines[i][0] == '\0' || ft_str_is_whitespace(lines[i]))
@@ -359,10 +413,9 @@ int parse_texture_colors(t_data *data, char **lines, const char *filename)
 //             i++;
 //             continue;
 //         }
-
 //         // Vérifier si la ligne correspond à une texture ou une couleur
-//         if (parse_texture_line(data, lines[i]))
-//             compare_loaded(data, lines[i]);
+//         // if (parse_texture_line(data, lines[i]))
+//         //     compare_loaded(data, lines[i]);
 //         else
 //         {
 //             // Vérifie si la ligne contient des espaces ou des tabulations
@@ -388,9 +441,11 @@ int parse_texture_colors(t_data *data, char **lines, const char *filename)
 //         }
 //         i++;
 //     }
+
 //     // Vérification finale des textures et couleurs
-//     if (verify_texture_and_colors(data) == -1)
-//         return -1;
+//     // if (verify_texture_and_colors(data) == -1)
+//     //     return -1;
+
 //     // Si aucune carte n'a été trouvée après les éléments, erreur
 //     if (map_start == -1)
 //         return error_exit("Error: No map found"), -1;
