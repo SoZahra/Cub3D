@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:11:44 by fzayani           #+#    #+#             */
-/*   Updated: 2024/11/07 14:29:58 by fzayani          ###   ########.fr       */
+/*   Updated: 2024/11/07 17:30:22 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,13 +95,15 @@ int	parse_color(const char *str)
 		// Retourne la couleur en un int (format RGB : 0x00RRGGBB)
 }
 
-int find_map_end(char **lines) {
+int find_map_end(char **lines)
+{
     int i = 0;
 
     while (lines[i])
     {
         // Si la ligne est vide ou ne contient que des espaces/tabulations, la carte est terminée
-        if (ft_str_is_whitespace(lines[i])) {
+        if (ft_str_is_whitespace(lines[i]))
+		{
             printf("Map ends at line %d: '%s'\n", i, lines[i]); // Débogage
             return i; // La carte se termine ici
         }
@@ -339,7 +341,7 @@ void print_data_info(t_data *data) {
 int parse_texture_colors(t_data *data, char **lines, const char *filename) {
     int i = 0;
     int map_start = -1;
-    int map_end = -1;
+    // int map_end = -1;
 
     // Initialiser les drapeaux pour vérifier la présence des textures et couleurs
     init_texture_colors_flags(data);
@@ -356,7 +358,7 @@ int parse_texture_colors(t_data *data, char **lines, const char *filename) {
     while (lines[i])
 	{  // Lire chaque ligne jusqu'à ce que les six éléments soient chargés
         // Ignorer les lignes vides
-        if (lines[i][0] == '\0' || ft_str_is_whitespace(lines[i]))
+        if (lines[i][0] == '\0')
 		{
             i++;
             continue;
@@ -370,8 +372,8 @@ int parse_texture_colors(t_data *data, char **lines, const char *filename) {
                 printf("All texture and color elements loaded before map.\n");
                 map_start = i; // La carte commence ici
                 printf("Map starts at line %d: '%s'\n", i, lines[i]);
-                map_end = find_map_end(&lines[i]);// Trouver la fin de la carte
-                printf("Map ends at line %d\n", map_end);
+                // map_end = find_map_end(&lines[i]);// Trouver la fin de la carte
+                // printf("dafafdfdMap ends at line %d\n", map_end);
                 break;
             }
             else
@@ -386,7 +388,7 @@ int parse_texture_colors(t_data *data, char **lines, const char *filename) {
     if (map_start == -1)
         return error_exit("Error: No map found"), -1;
     // Validation après la carte (pour vérifier qu'il n'y a pas de caractères indésirables)
-    if (validate_after_map(data, lines, map_end) == -1)
+    if (validate_after_map(data, lines, map_start) == -1)
         return -1;
     printf("Map starts at line: %d\n", map_start); // Débogage pour visualiser le début de la carte
     return map_start; // Retourne l'index de la première ligne de la carte
