@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:11:44 by fzayani           #+#    #+#             */
-/*   Updated: 2024/11/06 19:16:54 by fzayani          ###   ########.fr       */
+/*   Updated: 2024/11/07 14:29:58 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,12 @@
 //     return 1;
 // }
 
-int ft_str_is_whitespace(const char *str) {
-    while (*str) {
-        if (*str != ' ' && *str != '\t') {
+int ft_str_is_whitespace(const char *str)
+{
+    while (*str)
+	{
+        if (*str != ' ' && *str != '\t')
             return 0;  // Retourne 0 si un caractère autre que espace/tabulation est trouvé
-        }
         str++;
     }
     return 1;  // Retourne 1 si la chaîne contient uniquement des espaces/tabulations
@@ -48,7 +49,18 @@ char *ft_strtrim2(const char *str)
     trimmed[len] = '\0';
     return (trimmed);
 }
-int contains_invalid_characters(const char *line) {
+int contains_spaces_in_map(const char *line)
+{
+	if (line[0] == '\n')
+    {
+        line++; // Ignore le saut de ligne à la fin de la ligne
+		return 1;
+	}
+    return 0;  // Aucun caractère invalide trouvé
+}
+
+int contains_invalid_characters(const char *line)
+{
     while (*line) {
         if (*line == '\n') {
             line++; // Ignore le saut de ligne à la fin de la ligne
@@ -65,7 +77,6 @@ int contains_invalid_characters(const char *line) {
     return 0;  // Aucun caractère invalide trouvé
 }
 
-
 int	parse_color(const char *str)
 {
 	char	**components;
@@ -79,8 +90,7 @@ int	parse_color(const char *str)
 	b = ft_atoi(components[2]);
 	ft_free_split(components);
 	if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255)
-		return (-1);
-			// erreur: une des valeurs est hors des limites RGB
+		return (-1);// erreur: une des valeurs est hors des limites RGB
 	return ((r << 16) | (g << 8) | b);
 		// Retourne la couleur en un int (format RGB : 0x00RRGGBB)
 }
@@ -88,16 +98,15 @@ int	parse_color(const char *str)
 int find_map_end(char **lines) {
     int i = 0;
 
-    while (lines[i]) {
+    while (lines[i])
+    {
         // Si la ligne est vide ou ne contient que des espaces/tabulations, la carte est terminée
         if (ft_str_is_whitespace(lines[i])) {
             printf("Map ends at line %d: '%s'\n", i, lines[i]); // Débogage
             return i; // La carte se termine ici
         }
-
         i++;
     }
-
     return i; // Si on n'a pas trouvé de fin explicite, on retourne la dernière ligne
 }
 
@@ -106,18 +115,21 @@ int validate_after_map(t_data *data, char **lines, int map_end)
 	(void)data;
     int i = map_end;
 
-    while (lines[i]) {
+    while (lines[i])
+    {
         printf("Checking line %d after map: '%s'\n", i, lines[i]);
-
-        // Vérification des caractères invalides
-        if (contains_invalid_characters(lines[i])) {
-            printf("Error: Invalid characters on line %d: '%s'\n", i, lines[i]);
-            return -1;  // Si un caractère invalide est trouvé, retourner -1
+        if (contains_spaces_in_map(lines[i]))// Vérification des caractères invalides
+		{
+            printf("Error: Contains space on line %d: '%s'\n", i, lines[i]);
+            return -1;
         }
-
+		if(contains_invalid_characters(lines[i]))
+		{
+			printf("Error: Invalid characters on line %d: '%s'\n", i, lines[i]);
+            return -1;
+		}
         i++;
     }
-
     return 0;  // Si aucune erreur n'est trouvée
 }
 
@@ -331,28 +343,26 @@ int parse_texture_colors(t_data *data, char **lines, const char *filename) {
 
     // Initialiser les drapeaux pour vérifier la présence des textures et couleurs
     init_texture_colors_flags(data);
-
     // Vérifier si les textures et couleurs sont déjà chargées
     if (!(data->no_loaded && data->so_loaded && data->we_loaded &&
           data->ea_loaded && data->f_loaded && data->c_loaded))
     {
-        // Appeler parse_cub avec le chemin du fichier pour charger les textures et couleurs
         if (!parse_cub(data, filename))
         {
             printf("Parsing failed\n");
             return -1;
         }
     }
-
-    while (lines[i]) {  // Lire chaque ligne jusqu'à ce que les six éléments soient chargés
+    while (lines[i])
+	{  // Lire chaque ligne jusqu'à ce que les six éléments soient chargés
         // Ignorer les lignes vides
-        if (lines[i][0] == '\0' || ft_str_is_whitespace(lines[i])) {
+        if (lines[i][0] == '\0' || ft_str_is_whitespace(lines[i]))
+		{
             i++;
             continue;
         }
-
-        // Vérifier si la ligne correspond à une texture ou une couleur
-        if (lines[i][0] == '\t' || lines[i][0] == ' ') {
+        if (lines[i][0] == '\t' || lines[i][0] == ' ')// Vérifier si la ligne correspond à une texture ou une couleur
+		{
             // Si les six éléments sont chargés, on peut assumer que le reste est la carte
             if (data->no_loaded && data->so_loaded && data->we_loaded &&
                 data->ea_loaded && data->f_loaded && data->c_loaded)
@@ -360,14 +370,12 @@ int parse_texture_colors(t_data *data, char **lines, const char *filename) {
                 printf("All texture and color elements loaded before map.\n");
                 map_start = i; // La carte commence ici
                 printf("Map starts at line %d: '%s'\n", i, lines[i]);
-
-                // Trouver la fin de la carte
-                map_end = find_map_end(&lines[i]);
+                map_end = find_map_end(&lines[i]);// Trouver la fin de la carte
                 printf("Map ends at line %d\n", map_end);
-
                 break;
             }
-            else {
+            else
+			{
                 printf("One or more elements not loaded at line %d.\n", i);
                 return error_exit("Error: Invalid data before map"), -1;
             }
@@ -378,14 +386,11 @@ int parse_texture_colors(t_data *data, char **lines, const char *filename) {
     if (map_start == -1)
         return error_exit("Error: No map found"), -1;
     // Validation après la carte (pour vérifier qu'il n'y a pas de caractères indésirables)
-    if (validate_after_map(data, lines, map_end) == -1) {
+    if (validate_after_map(data, lines, map_end) == -1)
         return -1;
-    }
     printf("Map starts at line: %d\n", map_start); // Débogage pour visualiser le début de la carte
     return map_start; // Retourne l'index de la première ligne de la carte
 }
-
-
 
 // int parse_texture_colors(t_data *data, char **lines, const char *filename)
 // {
