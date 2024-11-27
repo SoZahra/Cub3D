@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 15:13:28 by fzayani           #+#    #+#             */
-/*   Updated: 2024/11/06 18:29:05 by fzayani          ###   ########.fr       */
+/*   Updated: 2024/11/08 15:27:08 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,40 +37,33 @@ char **read_file(const char *filename) {
     return lines;
 }
 
-
-int main(int ac, char **av) {
+int main(int ac, char **av)
+{
     t_data data;
     char **lines;
 
-    if (ac != 2) {
+    if (ac != 2)
+    {
         printf("Usage: %s <cub_file>\n", av[0]);
         return 1;
     }
-
-    if (!check_arguments(ac, av)) {
+    if (!check_arguments(ac, av))
         return 1;
-    }
-
     init_data(&data); // Initialiser la structure de données
-
     // Lire le fichier et obtenir les lignes dans `lines`
     lines = read_file(av[1]);
     if (!lines) {
         printf("Failed to read the file\n");
         return 1;
     }
-
     // Appeler parse_texture_colors avec les lignes lues et le nom du fichier
     if (parse_texture_colors(&data, lines, av[1]) == -1) {
         printf("Parsing failed\n");
         return 1;
     }
-
     printf("Parsing completed successfully!\n");
-
     // Libérer les lignes après usage (si nécessaire)
     // free_lines(lines);
-
     return 0;
 }
 

@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 15:14:56 by fzayani           #+#    #+#             */
-/*   Updated: 2024/11/06 18:26:07 by fzayani          ###   ########.fr       */
+/*   Updated: 2024/11/08 16:20:17 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,10 +107,16 @@ int	parse_texture_line(t_data *data, char *line);
 int	compare_loaded(t_data *data, char *line);
 void init_data(t_data *data);
 int parse_cub(t_data *data, const char *filename);
+int check_for_duplicates(t_data *data, const char *line);
 
 //check_file/utils_file.c
 
 int	ft_arraylen(char **array);
 int is_empty_line(const char *line);
+
+////check_file/check_valid_data_6elements.c
+
+int is_valid_texture_path(const char *path);
+int is_valid_color_format(const char *str);
 
 #endif
