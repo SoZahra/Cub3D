@@ -6,33 +6,40 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 15:13:28 by fzayani           #+#    #+#             */
-/*   Updated: 2024/11/08 15:27:08 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/01 17:35:39 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3D.h"
 
-char **read_file(const char *filename) {
-    FILE *file = fopen(filename, "r");
-    if (!file) {
-        return NULL;  // Erreur d'ouverture de fichier
-    }
 
-    // Allouer un tableau de MAX_LINES pointeurs vers des chaînes de caractères
-    char **lines = malloc(sizeof(char *) * MAX_LINES);
-    if (!lines) {
-        fclose(file);
-        return NULL;  // Échec de l'allocation
-    }
-
-    char buffer[1024];  // Tampon pour lire les lignes
+void print_parsed_map(char **map)
+{
     int i = 0;
+    printf("\n--- Map ---\n");
+    while (map && map[i])
+        printf("%s", map[i++]);
+    printf("\n----------\n");
+}
 
-    while (fgets(buffer, sizeof(buffer), file) && i < MAX_LINES) {
-        lines[i] = strdup(buffer);  // Dupliquer chaque ligne lue
+char **read_file(const char *filename) 
+{
+    FILE *file = fopen(filename, "r");
+    if (!file) 
+        return NULL;
+    char **lines = malloc(sizeof(char *) * MAX_LINES);
+    if (!lines) 
+	{
+        fclose(file);
+        return NULL;
+    }
+    char buffer[1024];
+    int i = 0;
+    while (fgets(buffer, sizeof(buffer), file) && i < MAX_LINES) 
+	{
+        lines[i] = strdup(buffer); 
         i++;
     }
-
     fclose(file);
     return lines;
 }
@@ -47,39 +54,24 @@ int main(int ac, char **av)
         printf("Usage: %s <cub_file>\n", av[0]);
         return 1;
     }
-    if (!check_arguments(ac, av))
+	if (!check_arguments(ac, av))
         return 1;
-    init_data(&data); // Initialiser la structure de données
-    // Lire le fichier et obtenir les lignes dans `lines`
+	data = (t_data){0};
+    init_data(&data);
     lines = read_file(av[1]);
-    if (!lines) {
-        printf("Failed to read the file\n");
-        return 1;
-    }
-    // Appeler parse_texture_colors avec les lignes lues et le nom du fichier
-    if (parse_texture_colors(&data, lines, av[1]) == -1) {
-        printf("Parsing failed\n");
-        return 1;
-    }
+	if (!lines) 
+        return ( printf("Failed to read the file\n"), 1);
+	if (parse_texture_colors(&data, lines, av[1]) == -1) 
+        return (printf("Parsing failed\n"), 1);
+	print_parsed_map(data.map);
     printf("Parsing completed successfully!\n");
-    // Libérer les lignes après usage (si nécessaire)
+	printf("\n--- Textures & Colors ---\n");
+	printf("NO: [%s]\n", data.no_texture);
+	printf("SO: [%s]\n", data.so_texture);
+	printf("WE: [%s]\n", data.we_texture);
+	printf("EA: [%s]\n", data.ea_texture);
+	printf("F: %d\n", data.f_color);
+	printf("C: %d\n", data.c_color);
     // free_lines(lines);
     return 0;
 }
-
-
-// int	main(int ac, char **av)
-// {
-// 	t_data data;
-
-// 	if (!check_arguments(ac, av))
-// 		return (1);
-// 	ft_memset(&data, 0, sizeof(t_data)); // Initialiser toute la structure à zéro
-// 	if(!parse_cub(&data, av[1]))
-// 	{
-// 		printf("Parsing failed\n");
-// 		return (1);
-// 	}
-// 	printf("Parsing completed successfully!\n");
-// 	return (0);
-// }

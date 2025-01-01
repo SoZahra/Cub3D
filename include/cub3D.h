@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 15:14:56 by fzayani           #+#    #+#             */
-/*   Updated: 2024/11/08 16:20:17 by fzayani          ###   ########.fr       */
+/*   Updated: 2024/12/31 17:23:47 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,10 +100,8 @@ int parse_cub(t_data *data, const char *filename);
 int	parse_color(const char *line);
 int parse_map(t_data *data, char **lines);
 int validate_map(t_data *data, char **lines, int map_start);
-
 void	init_texture_colors_flags(t_data *data);
 int	verify_texture_and_colors(t_data *data);
-int	parse_texture_line(t_data *data, char *line);
 int	compare_loaded(t_data *data, char *line);
 void init_data(t_data *data);
 int parse_cub(t_data *data, const char *filename);

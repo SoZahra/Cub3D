@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 10:24:47 by fzayani           #+#    #+#             */
-/*   Updated: 2024/10/23 14:25:29 by fzayani          ###   ########.fr       */
+/*   Updated: 2024/12/31 13:45:08 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void				ft_striteri(char *s, void (*f)(unsigned int, char *));
 
 char				*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 
-int					ft_strncmp(char *s1, char *s2, unsigned int n);
+int					ft_strncmp(const char *s1, const char *s2, unsigned int n);
 
 int					ft_memcmp(const void *s1, const void *s2, size_t n);
 

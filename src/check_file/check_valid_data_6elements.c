@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 15:29:52 by fzayani           #+#    #+#             */
-/*   Updated: 2024/11/08 18:00:10 by fzayani          ###   ########.fr       */
+/*   Updated: 2024/12/31 19:02:42 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,18 @@
 
 int is_valid_texture_path(const char *path)
 {
-	while(*path)
-	{
-		if(!ft_isalnum(*path) && *path != '/' && *path != '.' && *path != '_')
-			return (0);
-		path++;
-	}
-	return (1);
+    char *temp = ft_strdup(path);
+    size_t len = ft_strlen(temp);
+
+    if (len > 0 && temp[len-1] == '\n')
+        temp[len-1] = '\0';
+    if (ft_strchr(temp, ' '))
+    {
+        free(temp);
+        return 0;
+    }
+    free(temp);
+    return 1;
 }
 
 int is_valid_color_format(const char *str)
