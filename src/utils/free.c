@@ -6,38 +6,33 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 18:10:16 by fzayani           #+#    #+#             */
-/*   Updated: 2024/11/05 18:50:59 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/02 15:11:03 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3D.h"
 
-void	free_map(t_data *data)
+void free_map(t_data *data)
 {
-	int	i;
+    int i;
 
-	i = 0;
-	if (data->map)
-	{
-		while (i < data->map_height)
-		{
-			if (data->map[i])
-				free(data->map[i]);
-			i++;
-		}
-		free(data->map);
-	}
-	i = 0;
-	if (data->copie_map)
-	{
-		while (i < data->map_height)
-		{
-			if (data->copie_map[i])
-				free(data->copie_map[i]);
-			i++;
-		}
-		free(data->copie_map);
-	}
+    if (data->map)
+    {
+        i = 0;
+        while (data->map[i])
+            free(data->map[i++]);
+        free(data->map);
+        data->map = NULL;
+    }
+
+    if (data->copie_map)
+    {
+        i = 0;
+        while (data->copie_map[i])
+            free(data->copie_map[i++]);
+        free(data->copie_map);
+        data->copie_map = NULL;
+    }
 }
 void	ft_free_split(char **array)
 {
@@ -53,5 +48,21 @@ void	ft_free_split(char **array)
 		i++;
 	}
 	free(array);
+}
+
+void free_lines(char **lines)
+{
+    int i;
+
+    if (!lines)
+        return;
+
+    i = 0;
+    while (lines[i])
+    {
+        free(lines[i]);
+        i++;
+    }
+    free(lines);
 }
 

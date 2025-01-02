@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 15:14:56 by fzayani           #+#    #+#             */
-/*   Updated: 2024/12/31 17:23:47 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/02 15:31:01 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,10 +82,17 @@ int	check_arguments(int ac, char **av);
 int	check_map_walls(t_data *data);
 void	check_map(t_data *data);
 
+///map/floodfill.c
+
+int store_map(t_data *data, char **lines, int start_line);
+void flood_fill(t_data *data, int x, int y, int *valid);
+int check_map_valid(t_data *data);
+
 ///utils/free.c
 
 void	free_map(t_data *data);
 void	ft_free_split(char **array);
+void free_lines(char **lines);
 
 //utils/errors.c
 

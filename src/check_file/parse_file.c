@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:11:44 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/01 18:53:34 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/02 15:46:17 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int parse_color(const char *str)
     return ((r << 16) | (g << 8) | b);
 }
 
-void	init_texture_colors_flags(t_data *data)
+void	init_texture_colors_ags(t_data *data)
 {
 	data->no_loaded = 0;
     data->so_loaded = 0;
@@ -128,10 +128,64 @@ int check_texture_format(const char *path)
     return result;
 }
 
+int is_valid_identifier(char *line)
+{
+    return (ft_strncmp(line, "NO ", 3) == 0 ||
+            ft_strncmp(line, "SO ", 3) == 0 ||
+            ft_strncmp(line, "EA ", 3) == 0 ||
+            ft_strncmp(line, "WE ", 3) == 0 ||
+            ft_strncmp(line, "F ", 2) == 0 ||
+            ft_strncmp(line, "C ", 2) == 0);
+}
+
+int is_valid_map_line(char *line)
+{
+    int has_map_char = 0;
+
+    printf("DEBUG: Checking map line: [%s]\n", line);
+    while (*line == ' ' || *line == '\t')
+        line++;
+    while (*line)
+    {
+        if (*line == '1' || *line == '0' || 
+            *line == 'N' || *line == 'S' || 
+            *line == 'E' || *line == 'W' || 
+            *line == ' ')
+        {
+            if (*line != ' ')
+                has_map_char = 1;
+        }
+        else
+        {
+            printf("DEBUG: Invalid character found: '%c'\n", *line);
+            return 0;
+        }
+        line++;
+    }
+    return has_map_char;
+}
+
 int parse_texture_line(t_data *data, char *line)
 {
     char *cleaned = clean_line(line);
+	printf("DEBUG: Parsing line: [%s]\n", line);
+    printf("DEBUG: After cleaning: [%s]\n", cleaned);
+	
+	if (!cleaned || cleaned[0] == '\0')
+        return (free(cleaned), 1);
 
+	if (data->no_loaded && data->so_loaded && data->we_loaded && 
+        data->ea_loaded && data->f_loaded && data->c_loaded)
+    {
+        if (!is_valid_map_line(cleaned))
+		{
+			printf("DEBUG: Invalid map line detected at: [%s]\n", line);	
+            return (free(cleaned), error_exit("Error: Invalid map line"), 0);
+		}
+        return (free(cleaned), 1);
+    }
+	if (!is_valid_identifier(cleaned))
+        return (free(cleaned), error_exit("Error: Invalid line found between elements"), 0);
     if (ft_strncmp(cleaned, "NO ", 3) == 0)
     {
 		if (data->no_loaded)
@@ -196,22 +250,51 @@ int parse_texture_line(t_data *data, char *line)
 
 int parse_texture_colors(t_data *data, char **lines, const char *filename)
 {
-	(void)filename;
+    (void)filename;
     int i = 0;
+    int map_start = -1;
+
     printf("DEBUG: Starting texture parsing\n");
+    
+    // Premier passage: charger les textures et couleurs
     while (lines[i]) 
     {
         printf("DEBUG: Processing line %d\n", i);
         if (!parse_texture_line(data, lines[i])) 
-        {
-            printf("ERROR: Failed at line %d\n", i);
             return -1;
-        }
         i++;
     }
-    printf("DEBUG: Textures loaded - NO:%d SO:%d WE:%d EA:%d F:%d C:%d\n",
-           data->no_loaded, data->so_loaded, data->we_loaded,
-           data->ea_loaded, data->f_loaded, data->c_loaded);
+
+    // Vérifier que tous les éléments sont chargés
+    if (!data->no_loaded || !data->so_loaded || !data->we_loaded ||
+        !data->ea_loaded || !data->f_loaded || !data->c_loaded)
+        return (error_exit("Error: Missing required elements"), -1);
+
+    // Deuxième passage: trouver le début de la map
+    i = 0;
+    while (lines[i])
+    {
+        char *cleaned = clean_line(lines[i]);
+        if (cleaned && *cleaned && (*cleaned == '1' || *cleaned == ' '))
+        {
+            map_start = i;
+            free(cleaned);
+            break;
+        }
+        free(cleaned);
+        i++;
+    }
+
+    printf("DEBUG: Map starts at line %d\n", map_start);
+
+    // Stocker la map
+    if (!store_map(data, lines, map_start))
+        return (error_exit("Error: Failed to store map"), -1);
+
+    // Vérifier la validité de la map
+    if (!check_map_valid(data))
+        return -1;
+
     return 1;
 }
 

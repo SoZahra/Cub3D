@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 15:13:28 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/01 17:35:39 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/02 15:45:21 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,8 @@ int main(int ac, char **av)
     t_data data;
     char **lines;
 
-    if (ac != 2)
-    {
-        printf("Usage: %s <cub_file>\n", av[0]);
-        return 1;
-    }
+	if (ac != 2)
+        return (printf("Usage: %s <cub_file>\n", av[0]), 1);
 	if (!check_arguments(ac, av))
         return 1;
 	data = (t_data){0};
@@ -62,16 +59,25 @@ int main(int ac, char **av)
 	if (!lines) 
         return ( printf("Failed to read the file\n"), 1);
 	if (parse_texture_colors(&data, lines, av[1]) == -1) 
-        return (printf("Parsing failed\n"), 1);
-	print_parsed_map(data.map);
+        return (free_lines(lines), printf("Parsing failed\n"), 1);
+	//print_parsed_map(data.map);
     printf("Parsing completed successfully!\n");
-	printf("\n--- Textures & Colors ---\n");
-	printf("NO: [%s]\n", data.no_texture);
-	printf("SO: [%s]\n", data.so_texture);
-	printf("WE: [%s]\n", data.we_texture);
-	printf("EA: [%s]\n", data.ea_texture);
-	printf("F: %d\n", data.f_color);
-	printf("C: %d\n", data.c_color);
-    // free_lines(lines);
+	//printf("\n--- Textures & Colors ---\n");
+	//printf("NO: [%s]\n", data.no_texture);
+	//printf("SO: [%s]\n", data.so_texture);
+	//printf("WE: [%s]\n", data.we_texture);
+	//printf("EA: [%s]\n", data.ea_texture);
+	//printf("F: %d\n", data.f_color);
+	//printf("C: %d\n", data.c_color);
+	
+	printf("\n--- Original Map ---\n");
+    for (int i = 0; i < data.map_height; i++)
+        printf("[%s]\n", data.map[i]);
+
+    printf("\n--- Flood Fill Result ---\n");
+	for (int i = 0; i < data.map_height; i++)
+        printf("%s", data.copie_map[i]);
+    //free_lines(lines);
+	free_map(&data);
     return 0;
 }
