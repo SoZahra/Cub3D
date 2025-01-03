@@ -37,7 +37,7 @@ char **read_file(const char *filename)
     int i = 0;
     while (fgets(buffer, sizeof(buffer), file) && i < MAX_LINES) 
 	{
-        lines[i] = strdup(buffer); 
+        lines[i] = ft_strdup(buffer); 
         i++;
     }
     fclose(file);
@@ -62,14 +62,6 @@ int main(int ac, char **av)
         return (free_lines(lines), printf("Parsing failed\n"), 1);
 	//print_parsed_map(data.map);
     printf("Parsing completed successfully!\n");
-	//printf("\n--- Textures & Colors ---\n");
-	//printf("NO: [%s]\n", data.no_texture);
-	//printf("SO: [%s]\n", data.so_texture);
-	//printf("WE: [%s]\n", data.we_texture);
-	//printf("EA: [%s]\n", data.ea_texture);
-	//printf("F: %d\n", data.f_color);
-	//printf("C: %d\n", data.c_color);
-	
 	printf("\n--- Original Map ---\n");
     for (int i = 0; i < data.map_height; i++)
         printf("[%s]\n", data.map[i]);

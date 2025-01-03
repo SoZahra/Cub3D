@@ -22,6 +22,7 @@
 # include "../mlx/mlx.h"
 # include <X11/X.h>
 # include <X11/keysym.h>
+#include <limits.h>
 
 #define MAX_LINES 1000
 
@@ -87,6 +88,8 @@ void	check_map(t_data *data);
 int store_map(t_data *data, char **lines, int start_line);
 void flood_fill(t_data *data, int x, int y, int *valid);
 int check_map_valid(t_data *data);
+int find_map_start(char **lines);
+int is_valid_map_line(char *line);
 
 ///utils/free.c
 
@@ -118,6 +121,7 @@ int check_for_duplicates(t_data *data, const char *line);
 
 int	ft_arraylen(char **array);
 int is_empty_line(const char *line);
+char *ft_strtrim2(const char *str);
 
 ////check_file/check_valid_data_6elements.c
 

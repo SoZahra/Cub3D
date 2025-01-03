@@ -49,6 +49,28 @@ void find_player_position(t_data *data, int *player_x, int *player_y)
     }
 }
 
+void convert_spaces_to_walls(t_data *data)
+{
+    char tmp[data->map_height][data->map_width + 1];
+
+    for (int y = 0; y < data->map_height; y++)
+        for (int x = 0; x < data->map_width; x++)
+            tmp[y][x] = data->map[y][x];
+    for (int y = 0; y < data->map_height; y++)
+        for (int x = 0; x < data->map_width; x++)
+            if (data->map[y][x] == ' ')
+                data->copie_map[y][x] = '1';
+}
+
+void restore_spaces(t_data *data)
+{
+    for (int y = 0; y < data->map_height; y++)
+        for (int x = 0; x < data->map_width; x++)
+            if (data->map[y][x] == '0' && data->copie_map[y][x] != 'V')
+                return;
+    return;
+}
+
 int get_map_dimensions(char **lines, int start_line, int *height, int *width)
 {
     int i;
@@ -72,22 +94,83 @@ int get_map_dimensions(char **lines, int start_line, int *height, int *width)
 int find_map_start(char **lines)
 {
     int i;
-	char *line;
+    int found_elements;
 
-	i = 0;
+    i = 0;
+    found_elements = 0;
+
+    // Parcourir toutes les lignes
     while (lines[i])
     {
-        line = lines[i];
-        while (*line && (*line == ' ' || *line == '\t'))
-            line++;
-        if (*line == '1' || *line == '0')
+        char *trimmed = ft_strtrim2(lines[i]);
+        if (!trimmed)
+            return (-1);
+
+        // Ignorer les lignes vides
+        if (trimmed[0] == '\0' || trimmed[0] == '\n')
         {
-            printf("DEBUG: Found map start at line %d\n", i);
-            return i;
+            free(trimmed);
+            i++;
+            continue;
         }
+
+        // Compter les éléments trouvés (NO, SO, WE, EA, F, C)
+        if (ft_strncmp(trimmed, "NO ", 3) == 0 || ft_strncmp(trimmed, "SO ", 3) == 0 ||
+            ft_strncmp(trimmed, "WE ", 3) == 0 || ft_strncmp(trimmed, "EA ", 3) == 0 ||
+            ft_strncmp(trimmed, "F ", 2) == 0 || ft_strncmp(trimmed, "C ", 2) == 0)
+        {
+            found_elements++;
+        }
+        // Si on trouve un '1' ou un '0' après avoir trouvé tous les éléments
+        else if (found_elements == 6 && (trimmed[0] == '1' || trimmed[0] == ' '))
+        {
+            // Vérifier que la ligne contient bien des caractères valides de map
+            int j = 0;
+            int valid_line = 0;
+            while (trimmed[j])
+            {
+                if (trimmed[j] != ' ' && trimmed[j] != '1' && trimmed[j] != '0' &&
+                    trimmed[j] != 'N' && trimmed[j] != 'S' && trimmed[j] != 'E' &&
+                    trimmed[j] != 'W' && trimmed[j] != '\n')
+                {
+                    free(trimmed);
+                    return (-1);
+                }
+                if (trimmed[j] == '1')
+                    valid_line = 1;
+                j++;
+            }
+            if (valid_line)
+            {
+                free(trimmed);
+                printf("DEBUG: Map starts at line %d with content: [%s]\n", i, lines[i]);
+                return (i);
+            }
+        }
+        free(trimmed);
         i++;
     }
-    return -1;
+    return (-1);
+}
+
+// Fonction utilitaire pour vérifier si une ligne est une ligne de map valide
+int is_valid_map_line(char *line)
+{
+    int found_valid_char = 0;
+    
+    while (*line)
+    {
+        if (*line != ' ' && *line != '1' && *line != '0' &&
+            *line != 'N' && *line != 'S' && *line != 'E' &&
+            *line != 'W' && *line != '\n')
+            return (0);
+        if (*line == '1' || *line == '0' ||
+            *line == 'N' || *line == 'S' ||
+            *line == 'E' || *line == 'W')
+            found_valid_char = 1;
+        line++;
+    }
+    return (found_valid_char);
 }
 
 int check_all_zeros_are_visited(t_data *data)
@@ -115,18 +198,17 @@ int check_all_zeros_are_visited(t_data *data)
 int store_map(t_data *data, char **lines, int start_line)
 {
     int height, width;
-    int i = 0;
+    int i;
     
     // Compte les lignes de la map
-    while (lines[start_line + i])  // Enlever la condition sur [0]
+    i = 0;
+    while (lines[start_line + i])
     {
         printf("DEBUG: Checking line %d: [%s]\n", i, lines[start_line + i]);
         i++;
     }
     height = i;
     printf("DEBUG: Total map height: %d\n", height);
-
-    // Trouve la largeur maximale
     width = 0;
     i = 0;
     while (i < height)
@@ -138,12 +220,42 @@ int store_map(t_data *data, char **lines, int start_line)
         i++;
     }
     printf("DEBUG: Map width: %d\n", width);
+    data->map = malloc(sizeof(char *) * (height + 1));
+    data->copie_map = malloc(sizeof(char *) * (height + 1));
+    if (!data->map || !data->copie_map)
+        return (0);
+
+    for (i = 0; i < height; i++)
+    {
+        data->map[i] = malloc(sizeof(char) * (width + 1));
+        data->copie_map[i] = malloc(sizeof(char) * (width + 1));
+        if (!data->map[i] || !data->copie_map[i])
+            return (0);
+
+        // Copier la ligne et la padder avec des espaces
+        int j;
+        for (j = 0; j < width; j++)
+        {
+            if (j < (int)ft_strlen(lines[start_line + i]) && lines[start_line + i][j] != '\n')
+            {
+                data->map[i][j] = lines[start_line + i][j];
+                data->copie_map[i][j] = lines[start_line + i][j];
+            }
+            else
+            {
+                data->map[i][j] = ' ';
+                data->copie_map[i][j] = ' ';
+            }
+        }
+        data->map[i][width] = '\0';
+        data->copie_map[i][width] = '\0';
+    }
 
     data->map[height] = NULL;
     data->copie_map[height] = NULL;
     data->map_height = height;
     data->map_width = width;
-    return 1;
+    return (1);
 }
 
 int is_valid_char(char c)
@@ -153,50 +265,65 @@ int is_valid_char(char c)
 
 void flood_fill(t_data *data, int x, int y, int *valid)
 {
-    // Si hors limites ou déjà visité ou mur
     if (x < 0 || x >= data->map_width || y < 0 || y >= data->map_height || 
         data->copie_map[y][x] == '1' || data->copie_map[y][x] == 'V')
         return;
 
-    // Si caractère invalide
-    if (!is_valid_char(data->copie_map[y][x]))
-    {
-        printf("DEBUG: Invalid character '%c' at x:%d, y:%d\n", data->copie_map[y][x], x, y);
-        *valid = 0;
-        return;
-    }
-
-    // Si espace, vérifier qu'il est entouré de murs ou d'autres espaces
-    if (data->copie_map[y][x] == ' ')
-    {
-        char up = (y > 0) ? data->copie_map[y-1][x] : ' ';
-        char down = (y < data->map_height-1) ? data->copie_map[y+1][x] : ' ';
-        char left = (x > 0) ? data->copie_map[y][x-1] : ' ';
-        char right = (x < data->map_width-1) ? data->copie_map[y][x+1] : ' ';
-
-        if ((up != '1' && up != ' ' && up != 'V') ||
-            (down != '1' && down != ' ' && down != 'V') ||
-            (left != '1' && left != ' ' && left != 'V') ||
-            (right != '1' && right != ' ' && right != 'V'))
-        {
-            printf("DEBUG: Space not enclosed by walls at x:%d, y:%d\n", x, y);
-            *valid = 0;
-            return;
-        }
-    }
-
-    // Marquer comme visité
     data->copie_map[y][x] = 'V';
 
-    // Récursion dans les 8 directions (incluant diagonales)
-    for (int dy = -1; dy <= 1; dy++)
-    {
-        for (int dx = -1; dx <= 1; dx++)
-        {
-            flood_fill(data, x + dx, y + dy, valid);
-        }
-    }
+    // Uniquement 4 directions
+    flood_fill(data, x + 1, y, valid);  // droite
+    flood_fill(data, x - 1, y, valid);  // gauche
+    flood_fill(data, x, y + 1, valid);  // bas
+    flood_fill(data, x, y - 1, valid);  // haut
 }
+
+// void flood_fill(t_data *data, int x, int y, int *valid)
+// {
+//     // Si hors limites ou déjà visité ou mur
+//     if (x < 0 || x >= data->map_width || y < 0 || y >= data->map_height || 
+//         data->copie_map[y][x] == '1' || data->copie_map[y][x] == 'V')
+//         return;
+
+//     // Si caractère invalide
+//     if (!is_valid_char(data->copie_map[y][x]))
+//     {
+//         printf("DEBUG: Invalid character '%c' at x:%d, y:%d\n", data->copie_map[y][x], x, y);
+//         *valid = 0;
+//         return;
+//     }
+
+//     // Si espace, vérifier qu'il est entouré de murs ou d'autres espaces
+//     if (data->copie_map[y][x] == ' ')
+//     {
+//         char up = (y > 0) ? data->copie_map[y-1][x] : ' ';
+//         char down = (y < data->map_height-1) ? data->copie_map[y+1][x] : ' ';
+//         char left = (x > 0) ? data->copie_map[y][x-1] : ' ';
+//         char right = (x < data->map_width-1) ? data->copie_map[y][x+1] : ' ';
+
+//         if ((up != '1' && up != ' ' && up != 'V') ||
+//             (down != '1' && down != ' ' && down != 'V') ||
+//             (left != '1' && left != ' ' && left != 'V') ||
+//             (right != '1' && right != ' ' && right != 'V'))
+//         {
+//             printf("DEBUG: Space not enclosed by walls at x:%d, y:%d\n", x, y);
+//             *valid = 0;
+//             return;
+//         }
+//     }
+
+//     // Marquer comme visité
+//     data->copie_map[y][x] = 'V';
+
+//     // Récursion dans les 8 directions (incluant diagonales)
+//     for (int dy = -1; dy <= 1; dy++)
+//     {
+//         for (int dx = -1; dx <= 1; dx++)
+//         {
+//             flood_fill(data, x + dx, y + dy, valid);
+//         }
+//     }
+// }
 
 
 int check_map_valid(t_data *data)
@@ -205,57 +332,19 @@ int check_map_valid(t_data *data)
     int player_x = -1, player_y = -1;
 
     print_map_state(data, "Map before flood fill");
-
+    
     find_player_position(data, &player_x, &player_y);
     if (player_x == -1)
         return (error_exit("Error: No player found"), 0);
-
+    
+    convert_spaces_to_walls(data);
     flood_fill(data, player_x, player_y, &valid);
     print_map_state(data, "Map after flood fill");
-
+    restore_spaces(data);
+    print_map_state(data, "Map after restoring spaces");
+    
     if (!check_all_zeros_are_visited(data))
         return (error_exit("Error: Inaccessible areas in map"), 0);
 
-    return 1;
+    return valid;
 }
-
-//int check_map_valid(t_data *data)
-//{
-//    int valid = 1;
-//    int start_x = -1, start_y = -1;
-    
-//    // Debug: Afficher la map avant flood fill
-//    printf("\nBefore flood fill:\n");
-//    for (int y = 0; y < data->map_height; y++)
-//        printf("[%s]\n", data->copie_map[y]);
-
-//    // Trouver le point de départ
-//    printf("\nSearching for starting position...\n");
-//    for (int y = 0; y < data->map_height; y++)
-//    {
-//        for (int x = 0; x < data->map_width; x++)
-//        {
-//            if (ft_strchr("NSEW", data->copie_map[y][x]))
-//            {
-//                start_x = x;
-//                start_y = y;
-//                printf("Found starting position at x:%d, y:%d\n", x, y);
-//                break;
-//            }
-//        }
-//        if (start_x != -1)
-//            break;
-//    }
-//    if (start_x == -1)
-//        return (error_exit("Error: No starting position found"), 0);
-//    printf("Starting flood fill at x:%d, y:%d\n", start_x, start_y);
-//    flood_fill(data, start_x, start_y, &valid);
-	
-//    printf("\nAfter flood fill:\n");
-//    for (int y = 0; y < data->map_height; y++)
-//        printf("[%s]\n", data->copie_map[y]);
-
-//    if (!valid)
-//        return (error_exit("Error: Map is not closed"), 0);
-//    return 1;
-//}
