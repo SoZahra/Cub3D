@@ -66,10 +66,10 @@ int main(int ac, char **av)
     for (int i = 0; i < data.map_height; i++)
         printf("[%s]\n", data.map[i]);
 
-    printf("\n--- Flood Fill Result ---\n");
-	for (int i = 0; i < data.map_height; i++)
-        printf("%s", data.copie_map[i]);
+    // printf("\n--- Flood Fill Result ---\n");
+	// for (int i = 0; i < data.map_height; i++)
+    //     printf("%s", data.copie_map[i]);
     //free_lines(lines);
-	free_map(&data);
+    free_map(&data);
     return 0;
 }
