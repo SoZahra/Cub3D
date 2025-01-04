@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 15:14:56 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/02 15:31:01 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/04 14:22:03 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ typedef struct s_player
 //structure donnees de la map
 typedef struct s_data
 {
-	// t_img		*img;
 	t_player	player;
 	void		*mlx;
 	void		*win;
@@ -55,18 +54,18 @@ typedef struct s_data
 	char 		*s_t;
 	char 		*w_t;
 	char 		*e_t;
-	int 		f_color;
 	int			c_color;
+	int 		f_color;
 	int			no_loaded; // flag pour NO chargé
 	int			so_loaded; // flag pour SO chargé
 	int			we_loaded; // flag pour WE chargé
 	int			ea_loaded; // flag pour EA chargé
 	int			f_loaded;  // flag pour F chargé
 	int			c_loaded;  // flag pour C chargé
-	char *so_texture;
-    char *we_texture;
-    char *ea_texture;
-    char *no_texture;
+	char		*so_texture;
+    char		*we_texture;
+    char		*ea_texture;
+    char		*no_texture;
 }				t_data;
 
 ///parsing/parsing.c
