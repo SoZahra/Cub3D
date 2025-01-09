@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 13:48:36 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/09 14:20:45 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/09 18:09:49 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -341,71 +341,89 @@ int	check_zeros(t_data *data)
 	}
 	return 1;
 }
-
-int	check_player(t_data *data)
+static int check_line_for_player(char *line, int y, int *count)
 {
-	int	player_count;
-	int	line_len;
+    int    x;
+    int    len;
 
-	player_count = 0;
-	for (int y = 0; y < data->map_height; y++)
-	{
-		line_len = ft_strlen(data->map[y]);
-		for (int x = 0; x < line_len; x++)
-		{
-			printf("DEBUG: Checking position y:%d, x:%d, char:'%c'\n", y, x,
-				data->map[y][x]);
-			if (ft_strchr("NSEW", data->map[y][x]))
-				player_count++;
-		}
-	}
-	if (player_count != 1)
-	{
-		printf("DEBUG: Found %d players\n", player_count);
-		return (error_exit("Error: Must have exactly one player"), 0);
-	}
-	return 1;
+    x = 0;
+    len = ft_strlen(line);
+    while (x < len)
+    {
+        printf("DEBUG: Checking position y:%d, x:%d, char:'%c'\n", y, x, line[x]);
+        if (ft_strchr("NSEW", line[x]))
+            (*count)++;
+        x++;
+    }
+    return (1);
+}
+
+int check_player(t_data *data)
+{
+    int    y;
+    int    player_count;
+
+    y = 0;
+    player_count = 0;
+    while (y < data->map_height)
+    {
+        check_line_for_player(data->map[y], y, &player_count);
+        y++;
+    }
+    if (player_count != 1)
+    {
+        printf("DEBUG: Found %d players\n", player_count);
+        return (error_exit("Error: Must have exactly one player"), 0);
+    }
+    return (1);
+}
+
+static int	is_map_char(char c)
+{
+	return (c == '1' || c == '0' || c == ' ' ||
+		ft_strchr("NSEW", c) != NULL);
 }
 
 int	check_valid_characters(t_data *data)
 {
-	int		line_len;
-	char	c;
+	int		y;
+	int		x;
 
-	for (int y = 0; y < data->map_height; y++)
+	y = 0;
+	while (y < data->map_height)
 	{
-		line_len = ft_strlen(data->map[y]);
-		for (int x = 0; x < line_len; x++)
+		x = 0;
+		while (x < data->map_width)
 		{
-			c = data->map[y][x];
-			if (data->map[y][x] == '\t')
-				return(error_exit("Error: map should not have tab"), 0);
-			if (c != '0' && c != '1' && c != ' ' && c != 'N' && c != 'S'
-				&& c != 'E' && c != 'W')
-			{
-				printf("DEBUG: Invalid character '%c' at y:%d, x:%d\n", c, y,
-					x);
-				return error_exit("Error: Invalid character in map"), 0;
-			}
+			if (!is_map_char(data->map[y][x]))
+				return (error_exit("Error: Invalid character in map"), 0);
+			x++;
 		}
+		y++;
 	}
-	return 1;
+	return (1);
 }
 
 int	check_map_valid(t_data *data)
 {
+	int y;
+	int x;
+
+	y = ((x = 0));
 	print_map_state(data, "Map before validation");
 	if (!check_valid_characters(data))
 		return 0;
 	if (!check_map_borders(data))
 		return 0;
-	for (int y = 0; y < data->map_height; y++)
+	while(y < data->map_height)
 	{
-		for (int x = 0; x < data->map_width; x++)
+		while(x < data->map_width)
 		{
 			if (!is_space_closed(data, y, x))
 				return error_exit("Error: Map has unclosed spaces"), 0;
+			x++;
 		}
+		y++;
 	}
 	if (!check_zeros(data))
 		return 0;
