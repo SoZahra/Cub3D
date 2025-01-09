@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:11:44 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/02 15:46:17 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/09 11:25:14 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int validate_color_values(char *str)
     char **values = ft_split(str, ',');
     if (!values)
         return 0;
-        
+
     while (values[count])
     {
         int val = ft_atoi(values[count]);
@@ -108,11 +108,11 @@ int ft_strncmp2(const char *s1, const char *s2, unsigned int n)
     return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }
 
-char *clean_line(char *line) 
+char *clean_line(char *line)
 {
     char *clean = ft_strdup(line);
     int len = ft_strlen(clean);
-    
+
     if (len > 0 && clean[len-1] == '\n')
         clean[len-1] = '\0';
     while (len > 0 && (clean[len-1] == ' ' || clean[len-1] == '\t'))
@@ -147,9 +147,9 @@ int is_valid_identifier(char *line)
 //         line++;
 //     while (*line)
 //     {
-//         if (*line == '1' || *line == '0' || 
-//             *line == 'N' || *line == 'S' || 
-//             *line == 'E' || *line == 'W' || 
+//         if (*line == '1' || *line == '0' ||
+//             *line == 'N' || *line == 'S' ||
+//             *line == 'E' || *line == 'W' ||
 //             *line == ' ')
 //         {
 //             if (*line != ' ')
@@ -170,15 +170,15 @@ int parse_texture_line(t_data *data, char *line)
     char *cleaned = clean_line(line);
 	printf("DEBUG: Parsing line: [%s]\n", line);
     printf("DEBUG: After cleaning: [%s]\n", cleaned);
-	
+
 	if (!cleaned || cleaned[0] == '\0')
         return (free(cleaned), 1);
 
-	if (data->no_loaded && data->so_loaded && data->we_loaded && 
+	if (data->no_loaded && data->so_loaded && data->we_loaded &&
         data->ea_loaded && data->f_loaded && data->c_loaded)
     {
         free(cleaned);
-        return (1);  
+        return (1);
     }
 	if (!is_valid_identifier(cleaned))
         return (free(cleaned), error_exit("Error: Invalid line found between elements"), 0);
@@ -251,11 +251,11 @@ int parse_texture_line(t_data *data, char *line)
 //     int map_start = find_map_start(lines);
 
 //     printf("DEBUG: Starting texture parsing\n");
-    
-//     while (lines[i]) 
+
+//     while (lines[i])
 //     {
 //         printf("DEBUG: Processing line %d\n", i);
-//         if (!parse_texture_line(data, lines[i])) 
+//         if (!parse_texture_line(data, lines[i]))
 //             return -1;
 //         i++;
 //     }
@@ -292,13 +292,14 @@ int parse_texture_line(t_data *data, char *line)
 int parse_texture_colors(t_data *data, char **lines, const char *filename)
 {
     (void)filename;
-    int i = 0;
-    
+    int i;
+
+    i = 0;
     printf("DEBUG: Starting texture parsing\n");
-    while (lines[i]) 
+    while (lines[i])
     {
         printf("DEBUG: Processing line %d\n", i);
-        if (!parse_texture_line(data, lines[i])) 
+        if (!parse_texture_line(data, lines[i]))
             return -1;
         i++;
     }
@@ -348,8 +349,7 @@ char	**read_file_lines(const char *filename)
 		printf("Read line %d: '%s'\n", lines_count, line);
 	}
 	lines[lines_count] = NULL;
-	close(fd);
-	return (lines);
+	return (close(fd), lines);
 }
 
 int parse_map(t_data *data, char **lines)
@@ -358,14 +358,12 @@ int parse_map(t_data *data, char **lines)
     int map_line_count = 0;
 
     i = 0;
-    // Comptage des lignes de la carte
     while (lines[i])
     {
-        if (ft_strchr("NSWE01", lines[i][0])) // Ligne de la carte valide
+        if (ft_strchr("NSWE01", lines[i][0]))
             map_line_count++;
         i++;
     }
-    // Allouer de la mémoire pour la carte
     data->map = malloc((map_line_count + 1) * sizeof(char *));
     if (!data->map)
         return (error_exit("Error: Memory allocation for map failed"), -1);
@@ -404,7 +402,7 @@ int check_for_duplicates(t_data *data, const char *line)
    {
        if (!is_valid_color_format(line + 2))
            return 0;
-       if (data->c_loaded)  
+       if (data->c_loaded)
            return error_exit("Error: Duplicate C color found."), 0;
        data->c_loaded = 1;
        data->c_color = parse_color(line + 2);

@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 13:48:36 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/04 16:03:08 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/09 12:26:13 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,119 +200,64 @@ int	check_all_zeros_are_visited(t_data *data)
 
 int store_map(t_data *data, char **lines, int start_line)
 {
-    int i, line_len;
+    int i;
+	int line_len;
     char *src_line;
+    int height;
+    int width;
 
-    // Compter la hauteur de la map
-    int height = 0;
-    while (lines[start_line + height])
+	height = ((width = i = 0));
+	while (lines[start_line + height])
         height++;
-
-    // Trouver la largeur maximale
-    int width = 0;
-    for (i = 0; i < height; i++) {
+	while(i < height)
+	{
         int len = ft_strlen(lines[start_line + i]);
         while (len > 0 && (lines[start_line + i][len - 1] == '\n' || !ft_isprint(lines[start_line + i][len - 1])))
             len--;
         if (len > width)
             width = len;
+		i++;
     }
-
-    // Allouer la mémoire pour la map et sa copie
     data->map = malloc(sizeof(char *) * (height + 1));
     data->copie_map = malloc(sizeof(char *) * (height + 1));
-    if (!data->map || !data->copie_map)
+	if (!data->map || !data->copie_map)
         return (0);
-
-    for (i = 0; i < height; i++) {
-        src_line = lines[start_line + i];
+	i = 0;
+	while(i < height)
+	{
+        // src_line = lines[start_line + i];
+        // line_len = ft_strlen(src_line);
+		data->map[i] = malloc(width + 1);
+		data->copie_map[i] = malloc(width + 1);
+		if (!data->map[i] || !data->copie_map[i])
+            return 0;
+		ft_memset(data->map[i], ' ', width);
+		ft_memset(data->copie_map[i], ' ', width);
+		src_line = lines[start_line + i];
         line_len = ft_strlen(src_line);
         while (line_len > 0 && (src_line[line_len - 1] == '\n' || !ft_isprint(src_line[line_len - 1])))
             line_len--;
-
-        // Allouer la mémoire pour chaque ligne, basée sur la largeur maximale
-        data->map[i] = malloc(width + 1);
-        data->copie_map[i] = malloc(width + 1);
-        if (!data->map[i] || !data->copie_map[i])
-            return (0);
-
-        // Copier les caractères de la ligne source
-        ft_memcpy(data->map[i], src_line, line_len);
-        ft_memcpy(data->copie_map[i], src_line, line_len);
-
-        // Remplir le reste de la ligne avec des espaces
-        // for (j = line_len; j < width; j++) {
-        //     data->map[i][j] = ' ';
-        //     data->copie_map[i][j] = ' ';
-        // }
-
-        // Terminer chaque ligne avec un '\0'
-        data->map[i][width] = '\0';
-        data->copie_map[i][width] = '\0';
+        // data->map[i] = malloc(width + 1);
+        // data->copie_map[i] = malloc(width + 1);
+        // if (!data->map[i] || !data->copie_map[i])
+        //     return (0);
+        // ft_memcpy(data->map[i], src_line, line_len);
+        // ft_memcpy(data->copie_map[i], src_line, line_len);
+        // data->map[i][width] = '\0';
+        // data->copie_map[i][width] = '\0';
+		if(line_len > 0)
+		{
+			ft_memcpy(data->map[i], src_line, line_len);
+			ft_memcpy(data->copie_map[i], src_line, line_len);
+		}
+		i++;
     }
-
     data->map[height] = NULL;
     data->copie_map[height] = NULL;
     data->map_height = height;
     data->map_width = width;
-
     return (1);
 }
-
-
-// int	store_map(t_data *data, char **lines, int start_line)
-// {
-// 	int		i;
-// 	char	*line;
-// 	int		len;
-// 	char	*src_line;
-// 	int		line_len;
-
-// 	int height, width;
-// 	i = 0;
-// 	// Compter les lignes de la map
-// 	while (lines[start_line + i])
-// 		i++;
-// 	height = i;
-// 	// Trouver la largeur maximale réelle (sans \n)
-// 	width = 0;
-// 	i = 0;
-// 	while (i < height)
-// 	{
-// 		line = lines[start_line + i];
-// 		len = ft_strlen(line);
-// 		if (len > 0 && (line[len - 1] == '\n'  || !ft_isprint(line[len-1])))
-// 			len--;
-// 		if (len > width)
-// 			width = len;
-// 		i++;
-// 	}
-// 	data->map = malloc(sizeof(char *) * (height + 1));
-// 	data->copie_map = malloc(sizeof(char *) * (height + 1));
-// 	if (!data->map || !data->copie_map)
-// 		return (0);
-// 	// Copier la map en supprimant les \n
-// 	for (i = 0; i < height; i++)
-// 	{
-// 		src_line = lines[start_line + i];
-// 		line_len = ft_strlen(src_line);
-// 		 while (line_len > 0 && (src_line[line_len-1] == '\n' || !ft_isprint(src_line[line_len-1])))
-//             line_len--;
-// 		data->map[i] = malloc(line_len + 1);
-// 		data->copie_map[i] = malloc(line_len + 1);
-// 		if (!data->map[i] || !data->copie_map[i])
-// 			return (0);
-// 		ft_memcpy(data->map[i], src_line, line_len);
-// 		ft_memcpy(data->copie_map[i], src_line, line_len);
-// 		data->map[i][line_len] = '\0';
-// 		data->copie_map[i][line_len] = '\0';
-// 	}
-// 	data->map[height] = NULL;
-// 	data->copie_map[height] = NULL;
-// 	data->map_height = height;
-// 	data->map_width = width;
-// 	return (1);
-// }
 
 int	is_valid_char(char c)
 {
@@ -325,7 +270,7 @@ int	is_space_at_beginning(t_data *data, int y, int x)
 	int	i;
 
 	i = 0;
-	while (i < x && (data->map[y][i] == ' ' || data->map[y][i] == '\t'))
+	while (i < x && (data->map[y][i] == ' '))
 		i++;
 	return (i == x);
 }
@@ -336,18 +281,16 @@ int	check_space_sequence(t_data *data, int y, int x)
 	int	right;
 
 	left = x - 1;
-	while (left >= 0 && (data->map[y][left] == ' ' || data->map[y][left] == '\t'))
+	right = x + 1;
+	while (left >= 0 && (data->map[y][left] == ' '))
 		left--;
 	if (left >= 0 && data->map[y][left] == '1')
 	{
-		right = x + 1;
-		while (right < data->map_width && (data->map[y][right] == ' ' || data->map[y][right] == '\t'))
+
+		while (right < data->map_width && (data->map[y][right] == ' '))
 			right++;
 		if (right < data->map_width && data->map[y][right] == '1')
-		{
-			// Si l'espace est entre deux '1' sur la même ligne, il est valide
 			return (1);
-		}
 	}
 	return (0);
 }
@@ -474,64 +417,38 @@ int	is_border_valid(t_data *data, int y, int x)
 int check_map_borders(t_data *data)
 {
     int last_char_index;
+	int line_len;
+	int y;
+	int x;
 
-    for (int y = 0; y < data->map_height; y++) {
-        // Trouver le dernier caractère non-espace de la ligne
-        last_char_index = data->map_width - 1;
+	y = ((x = 0));
+	while(y < data->map_height)
+	{
+		line_len = ft_strlen(data->map[y]);
+        last_char_index = line_len - 1;
         while (last_char_index >= 0 && data->map[y][last_char_index] == ' ')
             last_char_index--;
-
-        if (last_char_index < 0 || data->map[y][last_char_index] != '1') {
+        if (last_char_index < 0 || data->map[y][last_char_index] != '1')
+		{
             printf("DEBUG: Line %d does not end with a wall\n", y);
             return error_exit("Error: Map line does not end with a wall"), 0;
         }
+		if(y == 0 || y == data->map_height - 1)
+		{
+			while(x < line_len)
+			{
+				if(data->map[0][x] != '1' && data->map[0][x] != ' ')
+				{
+					printf("DEBUG: First line has invalid character at x:%d\n", x);
+					return error_exit("Error: First map line not valid"), 0;
+				}
+				x++;
+			}
+		}
+		y++;
     }
-
-    // Vérifier la première et la dernière ligne pour s'assurer qu'elles sont entièrement constituées de murs
-    for (int x = 0; x < data->map_width; x++) {
-        if (data->map[0][x] != '1' && data->map[0][x] != ' ') {
-            printf("DEBUG: First line has invalid character at x:%d\n", x);
-            return error_exit("Error: First map line not valid"), 0;
-        }
-        if (data->map[data->map_height - 1][x] != '1' && data->map[data->map_height - 1][x] != ' ') {
-            printf("DEBUG: Last line has invalid character at x:%d\n", x);
-            return error_exit("Error: Last map line not valid"), 0;
-        }
-    }
-
     return 1;
 }
-
-
-// int	check_map_borders(t_data *data)
-// {
-// 	int	len;
-// 	int	first_len;
-// 	int	last_len;
-
-// 	for (int y = 0; y < data->map_height; y++)
-// 	{
-// 		len = ft_strlen(data->map[y]);
-// 		if (data->map[y][len - 1] != '1')
-// 		{
-// 			printf("DEBUG: Line %d does not end with a wall\n", y);
-// 			return error_exit("Error: Map line does not end with a wall"), 0;
-// 		}
-// 	}
-// 	first_len = ft_strlen(data->map[0]);
-// 	last_len = ft_strlen(data->map[data->map_height - 1]);
-// 	for (int x = 0; x < first_len; x++)
-// 	{
-// 		if (!is_border_valid(data, 0, x))
-// 			return 0;
-// 	}
-// 	for (int x = 0; x < last_len; x++)
-// 	{
-// 		if (!is_border_valid(data, data->map_height - 1, x))
-// 			return 0;
-// 	}
-// 	return 1;
-// }
 
 int	check_zeros(t_data *data)
 {
@@ -562,10 +479,9 @@ int	check_player(t_data *data)
 	{
 		line_len = ft_strlen(data->map[y]);
 		for (int x = 0; x < line_len; x++)
-			// Utiliser line_len au lieu de data->map_width
 		{
 			printf("DEBUG: Checking position y:%d, x:%d, char:'%c'\n", y, x,
-				data->map[y][x]); // Debug pour voir ce qu'on trouve
+				data->map[y][x]);
 			if (ft_strchr("NSEW", data->map[y][x]))
 				player_count++;
 		}
@@ -573,7 +489,6 @@ int	check_player(t_data *data)
 	if (player_count != 1)
 	{
 		printf("DEBUG: Found %d players\n", player_count);
-			// Debug pour voir combien de joueurs sont trouvés
 		return (error_exit("Error: Must have exactly one player"), 0);
 	}
 	return 1;
@@ -590,6 +505,8 @@ int	check_valid_characters(t_data *data)
 		for (int x = 0; x < line_len; x++)
 		{
 			c = data->map[y][x];
+			if (data->map[y][x] == '\t')
+				return(error_exit("Error: map should not have tab"), 0);
 			if (c != '0' && c != '1' && c != ' ' && c != 'N' && c != 'S'
 				&& c != 'E' && c != 'W')
 			{
