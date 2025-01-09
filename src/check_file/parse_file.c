@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:11:44 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/09 11:25:14 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/09 14:22:45 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,10 @@ int ft_str_is_whitespace(const char *str)
 
 char *ft_strtrim2(const char *str)
 {
-    while (*str == ' ' || *str == '\t' || *str == '\n') // Ignore les espaces, tabulations et retours à la ligne en début
+    while (*str == ' ' || *str == '\t' || *str == '\n')
         str++;
     size_t len = ft_strlen(str);
-    while (len > 0 && (str[len - 1] == ' ' || str[len - 1] == '\t' || str[len - 1] == '\n')) // Et en fin de chaîne
+    while (len > 0 && (str[len - 1] == ' ' || str[len - 1] == '\t' || str[len - 1] == '\n'))
         len--;
     char *trimmed = malloc(len + 1);
     if (!trimmed)
@@ -138,33 +138,6 @@ int is_valid_identifier(char *line)
             ft_strncmp(line, "C ", 2) == 0);
 }
 
-// int is_valid_map_line(char *line)
-// {
-//     int has_map_char = 0;
-
-//     printf("DEBUG: Checking map line: [%s]\n", line);
-//     while (*line == ' ' || *line == '\t')
-//         line++;
-//     while (*line)
-//     {
-//         if (*line == '1' || *line == '0' ||
-//             *line == 'N' || *line == 'S' ||
-//             *line == 'E' || *line == 'W' ||
-//             *line == ' ')
-//         {
-//             if (*line != ' ')
-//                 has_map_char = 1;
-//         }
-//         else
-//         {
-//             printf("DEBUG: Invalid character found: '%c'\n", *line);
-//             return 0;
-//         }
-//         line++;
-//     }
-//     return has_map_char;
-// }
-
 int parse_texture_line(t_data *data, char *line)
 {
     char *cleaned = clean_line(line);
@@ -244,51 +217,6 @@ int parse_texture_line(t_data *data, char *line)
     return 1;
 }
 
-// int parse_texture_colors(t_data *data, char **lines, const char *filename)
-// {
-//     (void)filename;
-//     int i = 0;
-//     int map_start = find_map_start(lines);
-
-//     printf("DEBUG: Starting texture parsing\n");
-
-//     while (lines[i])
-//     {
-//         printf("DEBUG: Processing line %d\n", i);
-//         if (!parse_texture_line(data, lines[i]))
-//             return -1;
-//         i++;
-//     }
-//     if (!data->no_loaded || !data->so_loaded || !data->we_loaded ||
-//         !data->ea_loaded || !data->f_loaded || !data->c_loaded)
-//         return (error_exit("Error: Missing required elements"), -1);
-//     i = 0;
-//     while (lines[i])
-//     {
-//         char *cleaned = clean_line(lines[i]);
-//         if (cleaned && *cleaned && (*cleaned == '1' || *cleaned == ' '))
-//         {
-//             map_start = i;
-//             free(cleaned);
-//             break;
-//         }
-//         free(cleaned);
-//         i++;
-//     }
-
-//     printf("DEBUG: Map starts at line %d\n", map_start);
-
-//     // Stocker la map
-//     if (!store_map(data, lines, map_start))
-//         return (error_exit("Error: Failed to store map"), -1);
-
-//     // Vérifier la validité de la map
-//     if (!check_map_valid(data))
-//         return -1;
-
-//     return 1;
-// }
-
 int parse_texture_colors(t_data *data, char **lines, const char *filename)
 {
     (void)filename;
@@ -355,9 +283,9 @@ char	**read_file_lines(const char *filename)
 int parse_map(t_data *data, char **lines)
 {
     int i;
-    int map_line_count = 0;
+    int map_line_count;
 
-    i = 0;
+    map_line_count = ((i = 0));
     while (lines[i])
     {
         if (ft_strchr("NSWE01", lines[i][0]))
@@ -367,12 +295,10 @@ int parse_map(t_data *data, char **lines)
     data->map = malloc((map_line_count + 1) * sizeof(char *));
     if (!data->map)
         return (error_exit("Error: Memory allocation for map failed"), -1);
-    // Copier les lignes de la carte dans le tableau
-    i = 0;
-    map_line_count = 0;
+    i = ((map_line_count = 0));
     while (lines[i])
     {
-        if (ft_strchr("NSWE01", lines[i][0])) // Ligne de la carte valide
+        if (ft_strchr("NSWE01", lines[i][0]))
         {
             data->map[map_line_count] = ft_strdup(lines[i]);
             if (!data->map[map_line_count])
@@ -381,7 +307,7 @@ int parse_map(t_data *data, char **lines)
         }
         i++;
     }
-    data->map[map_line_count] = NULL; // Terminer le tableau de la carte
+    data->map[map_line_count] = NULL;
     return 1;
 }
 

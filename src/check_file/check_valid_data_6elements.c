@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 15:29:52 by fzayani           #+#    #+#             */
-/*   Updated: 2024/12/31 19:02:42 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/09 14:23:44 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,13 @@ int is_valid_texture_path(const char *path)
 
 int is_valid_color_format(const char *str)
 {
-    while (*str == ' ') // Ignorer les espaces en début de ligne
+    while (*str == ' ')
         str++;
     while (*str)
     {
         if (!ft_isdigit(*str) && *str != ',' && *str != ' ')
         {
-            printf("Invalid character found: '%c'\n", *str); // Ajout de débogage
+            printf("Invalid character found: '%c'\n", *str);
             return 0;
         }
         str++;

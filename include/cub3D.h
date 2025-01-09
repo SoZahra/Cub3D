@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 15:14:56 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/04 14:22:03 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/09 14:24:20 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,6 @@ int check_for_duplicates(t_data *data, const char *line);
 //check_file/utils_file.c
 
 int	ft_arraylen(char **array);
-int is_empty_line(const char *line);
 char *ft_strtrim2(const char *str);
 
 ////check_file/check_valid_data_6elements.c
