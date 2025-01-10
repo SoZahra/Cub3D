@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 15:13:28 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/10 12:07:26 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/10 20:34:54 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,50 @@ void	print_parsed_map(char **map)
 	while (map && map[i])
 		printf("%s", map[i++]);
 	printf("\n----------\n");
+}
+
+void    init_data(t_data *data)
+{
+    data->map = NULL;
+    data->copie_map = NULL;
+    data->no_texture = NULL;
+    data->so_texture = NULL;
+    data->we_texture = NULL;
+    data->ea_texture = NULL;
+	data->no_loaded = 0;
+    data->so_loaded = 0;
+    data->we_loaded = 0;
+    data->ea_loaded = 0;
+	data->c_loaded = 0;
+    data->f_loaded = 0;
+    data->n_t = NULL;
+    data->s_t = NULL;
+    data->w_t = NULL;
+    data->e_t = NULL;
+    data->f_color = -1;
+    data->c_color = -1;
+    data->map_width = 0;
+    data->map_height = 0;
+}
+
+void    clean_lines_until(char **lines, int index)
+{
+    int    i;
+
+    printf("DEBUG: Starting clean_lines_until index %d\n", index);
+    i = 0;
+    while (i < index)
+    {
+        if (lines[i])
+        {
+            printf("DEBUG: Freeing line %d in cleanup\n", i);
+            free(lines[i]);
+        }
+        i++;
+    }
+    printf("DEBUG: Cleaned %d lines\n", i);
+    free(lines);
+    printf("DEBUG: Freed lines array in cleanup\n");
 }
 
 char	**read_file(const char *filename)
@@ -43,8 +87,10 @@ char	**read_file(const char *filename)
 	while (fgets(buffer, sizeof(buffer), file) && i < MAX_LINES)
 	{
 		lines[i] = ft_strdup(buffer);
+		clean_lines_until(lines, i);
 		i++;
 	}
+	lines[i] = NULL;
 	fclose(file);
 	return (lines);
 }
@@ -58,18 +104,20 @@ int	main(int ac, char **av)
 		return (printf("Usage: %s <cub_file>\n", av[0]), 1);
 	if (!check_arguments(ac, av))
 		return (1);
-	data = (t_data){0};
+	// data = (t_data){0};
 	init_data(&data);
 	lines = read_file(av[1]);
 	if (!lines)
 		return (printf("Failed to read the file\n"), 1);
 	if (parse_texture_colors(&data, lines, av[1]) == -1)
-		return (free_lines(lines), printf("Parsing failed\n"), 1);
-	// print_parsed_map(data.map);
+		return (free_all(&data, lines), 1);
 	printf("Parsing completed successfully!\n");
 	// printf("\n--- Original Map ---\n");
 	// for (int i = 0; i < data.map_height; i++)
 	// 	printf("[%s]\n", data.map[i]);
-	free_map(&data);
+	// free_textures(&data),
+	// free_map(&data);
+	// free_lines(lines);
+	free_all(&data, lines);
 	return (0);
 }

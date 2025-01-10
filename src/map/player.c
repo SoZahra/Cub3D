@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 14:22:42 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/10 15:13:09 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/10 18:49:15 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static int	check_line_for_player(char *line, int y, int *count)
 {
+	(void)y;
 	int	x;
 	int	len;
 
@@ -21,8 +22,8 @@ static int	check_line_for_player(char *line, int y, int *count)
 	len = ft_strlen(line);
 	while (x < len)
 	{
-		printf("DEBUG: Checking position y:%d, x:%d, char:'%c'\n", y, x,
-			line[x]);
+		// printf("DEBUG: Checking position y:%d, x:%d, char:'%c'\n", y, x,
+		// 	line[x]);
 		if (ft_strchr("NSEW", line[x]))
 			(*count)++;
 		x++;
@@ -44,7 +45,7 @@ int	check_player(t_data *data)
 	}
 	if (player_count != 1)
 	{
-		printf("DEBUG: Found %d players\n", player_count);
+		// printf("DEBUG: Found %d players\n", player_count);
 		return (error_exit("Error: Must have exactly one player"), 0);
 	}
 	return (1);

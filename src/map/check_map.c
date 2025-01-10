@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 17:58:38 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/10 15:14:25 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/10 18:47:58 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int	check_border_line(t_data *data, int y)
 	{
 		if (data->map[0][x] != '1' && data->map[0][x] != ' ')
 		{
-			printf("DEBUG: First line has invalid character at x:%d\n", x);
+			// printf("DEBUG: First line has invalid character at x:%d\n", x);
 			return (error_exit("Error: First map line not valid"), 0);
 		}
 		x++;
@@ -54,7 +54,7 @@ int	check_map_borders(t_data *data)
 		last_wall = find_last_wall(data, y);
 		if (last_wall < 0 || data->map[y][last_wall] != '1')
 		{
-			printf("DEBUG: Line %d does not end with a wall\n", y);
+			// printf("DEBUG: Line %d does not end with a wall\n", y);
 			return (error_exit("Error: Map line does not end with a wall"), 0);
 		}
 		if (y == 0 || y == data->map_height - 1)

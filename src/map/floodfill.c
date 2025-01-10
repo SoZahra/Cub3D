@@ -6,26 +6,26 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 13:48:36 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/10 15:15:51 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/10 18:48:14 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3D.h"
 
-// void	print_map_state(t_data *data, char *message)
-// {
-// 	printf("=== %s ===\n", message);
-// 	for (int y = 0; y < data->map_height; y++)
-// 	{
-// 		printf("Line %2d: [", y);
-// 		for (int x = 0; x < data->map_width; x++)
-// 		{
-// 			printf("%c", data->copie_map[y][x]);
-// 		}
-// 		printf("]\n");
-// 	}
-// 	printf("\n===================\n");
-// }
+void	print_map_state(t_data *data, char *message)
+{
+	printf("=== %s ===\n", message);
+	for (int y = 0; y < data->map_height; y++)
+	{
+		printf("Line %2d: [", y);
+		for (int x = 0; x < data->map_width; x++)
+		{
+			printf("%c", data->copie_map[y][x]);
+		}
+		printf("]\n");
+	}
+	printf("\n===================\n");
+}
 
 int	is_border_valid(t_data *data, int y, int x)
 {
@@ -36,8 +36,8 @@ int	is_border_valid(t_data *data, int y, int x)
 	{
 		if (x == line_len && line_len > 0 && data->map[y][line_len - 1] == '1')
 			return (1);
-		printf("DEBUG: Invalid border - position beyond line length at y:%d,\
-			x:%d (line length: %d)\n", y, x, line_len);
+		// printf("DEBUG: Invalid border - position beyond line length at y:%d,\
+		// 	x:%d (line length: %d)\n", y, x, line_len);
 		return (0);
 	}
 	if (data->map[y][x] == '1')

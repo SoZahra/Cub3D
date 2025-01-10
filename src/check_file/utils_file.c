@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 18:52:12 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/10 13:57:38 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/10 19:17:11 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,11 @@ char	*ft_strtrim2(const char *str)
 	return (trimmed);
 }
 
-void	init_data(t_data *data)
-{
-	data->f_color = -1;
-	data->c_color = -1;
-}
+// void	init_data(t_data *data)
+// {
+// 	data->f_color = -1;
+// 	data->c_color = -1;
+// }
 
 char	*clean_line(char *line)
 {
@@ -53,6 +53,8 @@ char	*clean_line(char *line)
 	int		len;
 
 	clean = ft_strdup(line);
+	if(!clean)
+		return (NULL);
 	len = ft_strlen(clean);
 	if (len > 0 && clean[len - 1] == '\n')
 		clean[len - 1] = '\0';

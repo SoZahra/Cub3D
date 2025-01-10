@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 15:14:56 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/10 15:14:40 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/10 16:03:58 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,8 @@ int	check_space_sequence(t_data *data, int y, int x);
 void			free_map(t_data *data);
 void			ft_free_split(char **array);
 void			free_lines(char **lines);
+void	free_textures(t_data *data);
+void    free_all(t_data *data, char **lines);
 
 // utils/errors.c
 

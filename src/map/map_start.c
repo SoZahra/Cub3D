@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 14:27:13 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/10 14:56:12 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/10 18:49:42 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ static int	validate_map_line(char *trimmed)
 
 static int	check_valid_start(char **lines, char *trimmed, int i)
 {
+	(void)lines;
 	int	j;
 	int	valid_line;
 
@@ -52,8 +53,8 @@ static int	check_valid_start(char **lines, char *trimmed, int i)
 	}
 	if (valid_line)
 	{
-		printf("DEBUG: Map starts at line %d with content: [%s]\n", i,
-			lines[i]);
+		// printf("DEBUG: Map starts at line %d with content: [%s]\n", i,
+		// 	lines[i]);
 		return (i);
 	}
 	return (-1);
