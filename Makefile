@@ -6,7 +6,7 @@
 #    By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/01 15:05:07 by fzayani           #+#    #+#              #
-#    Updated: 2025/01/09 18:17:45 by fzayani          ###   ########.fr        #
+#    Updated: 2025/01/10 15:07:08 by fzayani          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,8 +20,8 @@ MAP_DIR             =   $(SRC_PATH)map
 SRCS_FILES  =   main.c \
                 parsing/parsing.c parsing/utils_parsing.c \
                 check_extension/cub_extension.c \
-				check_file/parse_file.c check_file/utils_file.c check_file/check_valid_data_6elements.c check_file/textures.c \
-                map/check_map.c map/floodfill.c\
+				check_file/parse_file.c check_file/utils_file.c check_file/check_path.c check_file/textures.c check_file/texture_color.c \
+                map/check_map.c map/floodfill.c  map/utils_map.c  map/map_closed.c map/player.c map/map_start.c map/store_map.c map/utils_store.c\
 				utils/errors.c utils/free.c
 
 

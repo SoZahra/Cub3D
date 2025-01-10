@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi_unsig.c                                    :+:      :+:    :+:   */
+/*   ft_itoa_unsig.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:34:10 by fzayani           #+#    #+#             */
-/*   Updated: 2024/10/08 10:34:27 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/10 12:01:15 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 
 static int	ft_unsigned_num_len(unsigned int n)
 {
-	int	len = 1;
+	int	len;
 
+	len = 1;
 	while (n >= 10)
 	{
 		n /= 10;
@@ -33,11 +34,11 @@ char	*ft_itoa_unsigned(unsigned int n)
 	str = (char *)malloc(sizeof(char) * (len + 1));
 	if (!str)
 		return (NULL);
-	str[len] = '\0';  // Terminer la chaîne par le caractère nul
+	str[len] = '\0';
 	while (len > 0)
 	{
-		str[--len] = (n % 10) + '0';  // Obtenir le dernier chiffre
-		n /= 10;  // Réduire le nombre
+		str[--len] = (n % 10) + '0';
+		n /= 10;
 	}
 	return (str);
 }

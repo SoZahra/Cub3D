@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 15:14:56 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/09 18:19:37 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/10 15:14:40 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,17 @@
 # define CUB3D_H
 
 # include "../libft/libft.h"
+# include "../mlx/mlx.h"
+# include "fcntl.h"
 # include "math.h"
 # include "stdio.h"
 # include "unistd.h"
-# include "fcntl.h"
-# include <string.h>
-# include "../mlx/mlx.h"
 # include <X11/X.h>
 # include <X11/keysym.h>
-#include <limits.h>
+# include <limits.h>
+# include <string.h>
 
-#define MAX_LINES 1000
+# define MAX_LINES 1000
 
 typedef struct s_player
 {
@@ -39,7 +39,7 @@ typedef struct s_player
 	int			count;
 }				t_player;
 
-//structure donnees de la map
+// structure donnees de la map
 typedef struct s_data
 {
 	t_player	player;
@@ -50,85 +50,109 @@ typedef struct s_data
 	int			map_width;
 	int			map_height;
 	void		*texture;
-	char 		*n_t;
-	char 		*s_t;
-	char 		*w_t;
-	char 		*e_t;
+	char		*n_t;
+	char		*s_t;
+	char		*w_t;
+	char		*e_t;
 	int			c_color;
-	int 		f_color;
-	int			no_loaded; // flag pour NO chargé
-	int			so_loaded; // flag pour SO chargé
-	int			we_loaded; // flag pour WE chargé
-	int			ea_loaded; // flag pour EA chargé
-	int			f_loaded;  // flag pour F chargé
-	int			c_loaded;  // flag pour C chargé
+	int			f_color;
+	int			no_loaded;
+	int			so_loaded;
+	int			we_loaded;
+	int			ea_loaded;
+	int			f_loaded;
+	int			c_loaded;
 	char		*so_texture;
-    char		*we_texture;
-    char		*ea_texture;
-    char		*no_texture;
+	char		*we_texture;
+	char		*ea_texture;
+	char		*no_texture;
 }				t_data;
 
-///parsing/parsing.c
-void	count_map_elements(t_data *data, int *exit_count, int *start_count,
-		int *collectible_count);
-int	check_map_elements(t_data *data);
-void	check_invalid_characters(t_data *data, char element);
+/// parsing/parsing.c
 
-///check_extension/cub_extension.c
-int	cub_extension(const char *filename);
-int	check_arguments(int ac, char **av);
+/// check_extension/cub_extension.c
+int				cub_extension(const char *filename);
+int				check_arguments(int ac, char **av);
 
-///map/check_map.c
-int	check_map_walls(t_data *data);
-void	check_map(t_data *data);
+///map/map_closed.c
 
-///map/floodfill.c
+int	get_map_dimensions(char **lines, int start_line, int *height, int *width);
+int	is_space_closed(t_data *data, int y, int x);
 
-int store_map(t_data *data, char **lines, int start_line);
-void flood_fill(t_data *data, int x, int y, int *valid);
-int check_map_valid(t_data *data);
-int find_map_start(char **lines);
-int is_valid_map_line(char *line);
+/// map/check_map.c
 
-///utils/free.c
+int	check_map_borders(t_data *data);
+int	check_space_sequence(t_data *data, int y, int x);
 
-void	free_map(t_data *data);
-void	ft_free_split(char **array);
-void free_lines(char **lines);
+///map/utils_map.c
 
-//utils/errors.c
+int	is_space_at_beginning(t_data *data, int y, int x);
+int	is_valid_char(char c);
+int	is_map_char(char c);
+int	handle_empty_line(char *trimmed);
+int	handle_texture_line(char *trimmed, int *f_elements);
 
-void	error_exit(const char *message);
+//map/player.c
 
+int	check_player(t_data *data);
+int	is_valid_map_line(char *line);
 
-///check_file/parse_file.c
+//map/map_start.c
+
+int is_texture_identifier(const char *str);
+int	process_line(char **lines, int *i, int *f_elements);
+
+//map/store_map.c
+
+int				store_map(t_data *data, char **lines, int start_line);
+
+//map/utils_store.c
+
+int	get_map_height(char **lines, int start_line);
+int	get_adjusted_len(char *line);
+
+/// map/floodfill.c
+
+int				check_map_valid(t_data *data);
+int				find_map_start(char **lines);
+int				is_valid_map_line(char *line);
+int	check_space_sequence(t_data *data, int y, int x);
+
+/// utils/free.c
+
+void			free_map(t_data *data);
+void			ft_free_split(char **array);
+void			free_lines(char **lines);
+
+// utils/errors.c
+
+void			error_exit(const char *message);
+
+/// check_file/parse_file.c
+
+int	parse_color(const char *str);
 
 // int parse_texture_colors(t_data *data, char **lines);
-int parse_texture_colors(t_data *data, char **lines, const char *filename);
-int parse_cub(t_data *data, const char *filename);
-int	parse_color(const char *line);
-int parse_map(t_data *data, char **lines);
-int validate_map(t_data *data, char **lines, int map_start);
-void	init_texture_colors_flags(t_data *data);
-int	verify_texture_and_colors(t_data *data);
-int	compare_loaded(t_data *data, char *line);
-void init_data(t_data *data);
-int parse_cub(t_data *data, const char *filename);
-int check_for_duplicates(t_data *data, const char *line);
+int				parse_texture_colors(t_data *data, char **lines,
+					const char *filename);
+void			init_data(t_data *data);
+int				parse_texture_line(t_data *data, char *line);
+int				check_texture_format(const char *path);
+char			*clean_line(char *line);
+int				is_valid_identifier(char *line);
 
-int parse_texture_line(t_data *data, char *line);
-int	check_texture_format(const char *path);
-char	*clean_line(char *line);
-int	is_valid_identifier(char *line);
+/// check_file/parse_texture_color.c
 
-//check_file/utils_file.c
+int	validate_color_values(char *str);
 
-int	ft_arraylen(char **array);
-char *ft_strtrim2(const char *str);
+// check_file/utils_file.c
+
+int				ft_arraylen(char **array);
+char			*ft_strtrim2(const char *str);
 
 ////check_file/check_valid_data_6elements.c
 
-int is_valid_texture_path(const char *path);
-int is_valid_color_format(const char *str);
+int				is_valid_texture_path(const char *path);
+int				is_valid_color_format(const char *str);
 
 #endif

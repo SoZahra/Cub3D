@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 19:04:35 by fzayani           #+#    #+#             */
-/*   Updated: 2024/10/07 19:18:01 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/10 12:03:06 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	ft_putnbr_unsigned_printf_fd(unsigned int n, int fd)
 	char	*num_str;
 	int		len;
 
-	num_str = ft_itoa_unsigned(n);  // Implémenter une variante pour unsigned
+	num_str = ft_itoa_unsigned(n);
 	len = ft_putstr_printf_fd(num_str, fd);
 	free(num_str);
 	return (len);
@@ -31,15 +31,16 @@ int	ft_aff_p_fd(va_list args, int fd)
 	i = 0;
 	address = va_arg(args, unsigned long);
 	if (address)
-		i += ft_putstr_printf_fd("0x", fd);  // Affichage du préfixe "0x"
-	i += ft_putnbr_base_printf_fd(address, "0123456789abcdef", fd);  // Affichage de l'adresse en hexadécimal
+		i += ft_putstr_printf_fd("0x", fd);
+	i += ft_putnbr_base_printf_fd(address, "0123456789abcdef", fd);
 	return (i);
 }
 
 int	ft_check_format_fd(char str, va_list args, int fd)
 {
-	int	i = 0;
+	int	i;
 
+	i = 0;
 	if (str == 'c')
 		i += ft_putchar_printf_fd(va_arg(args, int), fd);
 	else if (str == 's')
@@ -49,9 +50,11 @@ int	ft_check_format_fd(char str, va_list args, int fd)
 	else if (str == 'u')
 		i += ft_putnbr_unsigned_printf_fd(va_arg(args, unsigned int), fd);
 	else if (str == 'x')
-		i += ft_putnbr_base_printf_fd(va_arg(args, unsigned int), "0123456789abcdef", fd);
+		i += ft_putnbr_base_printf_fd(va_arg(args, unsigned int),
+				"0123456789abcdef", fd);
 	else if (str == 'X')
-		i += ft_putnbr_base_printf_fd(va_arg(args, unsigned int), "0123456789ABCDEF", fd);
+		i += ft_putnbr_base_printf_fd(va_arg(args, unsigned int),
+				"0123456789ABCDEF", fd);
 	else if (str == 'p')
 		i += ft_aff_p_fd(args, fd);
 	else if (str == '%')
@@ -61,10 +64,11 @@ int	ft_check_format_fd(char str, va_list args, int fd)
 
 int	ft_printf_fd(int fd, const char *format, ...)
 {
-	int		i = 0;
-	int		stock = 0;
+	int		i;
+	int		stock;
 	va_list	args;
 
+	i = ((stock = 0));
 	if (!format)
 		return (-1);
 	va_start(args, format);
