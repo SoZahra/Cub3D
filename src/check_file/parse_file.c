@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:11:44 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/10 20:32:01 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/13 11:27:48 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int    parse_texture_colors(t_data *data, char **lines, const char *filename)
 {
     int    i;
 
-    printf("\nDEBUG: Starting parse_texture_colors\n");
+    // printf("\nDEBUG: Starting parse_texture_colors\n");
     (void)filename;
     if (!lines)
     {
@@ -80,7 +80,7 @@ int    parse_texture_colors(t_data *data, char **lines, const char *filename)
     i = 0;
     while (lines[i])
     {
-        printf("DEBUG: Processing line %d: [%s]\n", i, lines[i]);
+        // printf("DEBUG: Processing line %d: [%s]\n", i, lines[i]);
         if (!parse_texture_line(data, lines[i]))
         {
             printf("DEBUG: Error in parse_texture_line, calling free_lines\n");

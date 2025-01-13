@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 15:14:56 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/10 16:03:58 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/13 16:37:20 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 # include "../libft/libft.h"
 # include "../mlx/mlx.h"
+# include <X11/X.h>
+# include <X11/keysym.h>
 # include "fcntl.h"
 # include "math.h"
 # include "stdio.h"
@@ -25,26 +27,94 @@
 # include <string.h>
 
 # define MAX_LINES 1000
+# define WIN_WIDTH 1024
+# define WIN_HEIGHT 768
 
+# define KEY_ESC 65307
+# define KEY_W 119
+# define KEY_A 97
+# define KEY_S 115
+# define KEY_D 100
+# define KEY_LEFT 65361
+# define KEY_RIGHT 65363
+
+
+typedef struct s_movement
+{
+	int			forward;
+	int			backward;
+	int			left;
+	int			right;
+	int			rot_left;
+	int			rot_right;
+	double		move_speed;
+	double		rot_speed;
+}				t_movement;
 typedef struct s_player
 {
-	int			player_x;
-	int			player_y;
+	double		pos_x;
+	double		pos_y;
+	double		dir_x;
+	double		dir_y;
+	double		plane_x;
+	double		plane_y;
 	int			player_dir;
-	int			p_n;
-	int			p_s;
-	int			p_e;
-	int			p_w;
-	int			cc;
 	int			count;
 }				t_player;
 
-// structure donnees de la map
+typedef struct s_texture
+{
+    void    *img;
+    int		*addr;
+    int     bits_per_pixel;
+    int     line_length;
+    int     endian;
+    int     width;
+    int     height;
+} 	t_texture;
+
+typedef struct s_ray
+{
+	double		camera_x;
+	double		pos_x;
+	double		pos_y;
+	double		dir_x;
+	double		dir_y;
+	double		plane_x;
+	double		plane_y;
+	double		ray_dir_x;
+	double		ray_dir_y;
+	int			map_x;
+	int			map_y;
+	double		side_dist_x;
+	double		side_dist_y;
+	double		delta_dist_x;
+	double		delta_dist_y;
+	int			step_x;
+	int			step_y;
+	int			hit;
+	int			side;
+	double		wall_dist;
+	int			line_height;
+	int			draw_start;
+	int			draw_end;
+}				t_ray;
+
+typedef struct s_mlx_data
+{
+    void        *mlx;
+    void        *win;
+    t_texture   no_tex;
+    t_texture   so_tex;
+    t_texture   we_tex;
+    t_texture   ea_tex;
+} 	t_mlx_data;
+
 typedef struct s_data
 {
 	t_player	player;
-	void		*mlx;
-	void		*win;
+	// void		*mlx;
+	// void		*win;
 	char		**map;
 	char		**copie_map;
 	int			map_width;
@@ -66,6 +136,9 @@ typedef struct s_data
 	char		*we_texture;
 	char		*ea_texture;
 	char		*no_texture;
+	t_mlx_data	mlx;
+	t_texture 	img;
+	t_movement	movement;
 }				t_data;
 
 /// parsing/parsing.c
@@ -126,6 +199,11 @@ void			free_lines(char **lines);
 void	free_textures(t_data *data);
 void    free_all(t_data *data, char **lines);
 
+//utils/clean_mlx.c
+
+void    cleanup_mlx(t_data *data);
+void    destroy_texture(void *mlx, t_texture *tex);
+
 // utils/errors.c
 
 void			error_exit(const char *message);
@@ -156,5 +234,50 @@ char			*ft_strtrim2(const char *str);
 
 int				is_valid_texture_path(const char *path);
 int				is_valid_color_format(const char *str);
+
+//mlx/init_mlx.c
+
+int init_mlx(t_data *data);
+int load_texture(t_data *data, t_texture *tex, char *path);
+int    load_textures(t_data *data);
+int    init_game(t_data *data);
+
+//mlc/init_hooks.c
+
+void	init_hooks(t_data *data);
+int	exit_game(t_data *data);
+
+//mlx/draw_map.c
+
+void    draw_background(t_data *data);
+int     render(t_data *data);
+
+//raycasting/raycasting.c
+
+void	init_player_pos(t_ray *ray, t_data *data);
+void	raycasting(t_data *data);
+int	game_loop(t_data *data);
+int	get_texture_color(t_data *data, t_ray *ray, int y);
+void	init_ray_dir(t_ray *ray, t_data *data, int x);
+void	init_ray_dist(t_ray *ray);
+void	init_ray_step(t_ray *ray);
+void	perform_dda(t_ray *ray, t_data *data);
+void	calculate_wall_dist(t_ray *ray);
+void	calculate_line_height(t_ray *ray);
+
+//contols/player_mouvement.c
+
+void	handle_forward_movement(t_data *data);
+void	handle_strafe_movement(t_data *data);
+void	handle_rotation_left(t_data *data);
+
+//rotation
+
+void	handle_rotation(t_data *data);
+
+//vectors
+
+void	set_direction_vectors(t_ray *ray, char dir);
+
 
 #endif

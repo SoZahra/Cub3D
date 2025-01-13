@@ -6,7 +6,7 @@
 #    By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/01 15:05:07 by fzayani           #+#    #+#              #
-#    Updated: 2025/01/10 15:07:08 by fzayani          ###   ########.fr        #
+#    Updated: 2025/01/13 16:21:41 by fzayani          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,10 +22,14 @@ SRCS_FILES  =   main.c \
                 check_extension/cub_extension.c \
 				check_file/parse_file.c check_file/utils_file.c check_file/check_path.c check_file/textures.c check_file/texture_color.c \
                 map/check_map.c map/floodfill.c  map/utils_map.c  map/map_closed.c map/player.c map/map_start.c map/store_map.c map/utils_store.c\
-				utils/errors.c utils/free.c
-
+				mlx/init_mlx.c mlx/draw_map.c mlx/init_hooks.c \
+				utils/errors.c utils/free.c utils/clean_mlx.c \
+				raycasting/raycasting.c raycasting/init_ray.c raycasting/perform_dda.c raycasting/vectors.c \
+				controls/key_events.c controls/player_movement.c controls/player_rotation.c
 
 SRCS        =   $(addprefix $(SRC_PATH), $(SRCS_FILES))
+# OBJS		=	$(addprefix $(OBJS_PATH), $(SRCS:.c=.o))
+# INC			=	$(addprefix $(INC_PATH), $(INC_FILE))
 
 # Fichiers objets générés dans le dossier .objs/
 OBJS_PATH   =   .objs/
@@ -35,6 +39,9 @@ OBJS        =   $(SRCS:$(SRC_PATH)%.c=$(OBJS_PATH)%.o)
 INC_PATH    =   include/
 LIBFT_PATH  =   ./libft/
 LIBFT_LIB   =   $(LIBFT_PATH)libft.a
+
+MLX_PATH	=	./mlx/
+MLX_LIB		=	$(MLX_PATH)libmlx_Linux.a
 
 # Compilation
 CC          =   cc
@@ -51,7 +58,7 @@ RESET       =   \033[0m
 # Règle principale
 all:    $(NAME)
 
-$(NAME):    $(OBJS) $(LIBFT_LIB)
+$(NAME):    $(OBJS) $(LIBFT_LIB) $(MLX_LIB)
 	@echo "$$BANNER"
 	@$(CC) $(CFLAGS) $(OBJS) $(LFLAGS) -o $(NAME)
 	@echo "$(GREEN)[DONE] CUB3D compiled!$(RESET)"
@@ -66,10 +73,14 @@ $(OBJS_PATH)%.o: $(SRC_PATH)%.c
 $(LIBFT_LIB):
 	@make -C $(LIBFT_PATH) --silent
 
+$(MLX_LIB):
+	@make -C $(MLX_PATH) --silent
+
 # Nettoyage des objets
 clean:
 	$(RM) $(OBJS_PATH)
 	@make clean -C $(LIBFT_PATH)
+	@make clean -C $(MLX_PATH)
 	@echo "$(RED)[DONE] Objects files deleted...$(RESET)"
 
 # Nettoyage complet
