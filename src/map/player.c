@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 14:22:42 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/13 16:41:57 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/14 12:20:19 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,12 +82,12 @@ static int    check_line_for_player(char *line, int y, t_data *data, int *count)
     len = ft_strlen(line);
     while (x < len)
     {
-        printf("DEBUG: Checking char at y:%d, x:%d: '%c'\n", y, x, line[x]);
+        // printf("DEBUG: Checking char at y:%d, x:%d: '%c'\n", y, x, line[x]);
         if (ft_strchr("NSEW", line[x]))
         {
-            printf("DEBUG: Found player at y:%d, x:%d: '%c'\n", y, x, line[x]);
+            // printf("DEBUG: Found player at y:%d, x:%d: '%c'\n", y, x, line[x]);
             (*count)++;
-            printf("DEBUG: Player count now: %d\n", *count);
+            // printf("DEBUG: Player count now: %d\n", *count);
             data->player.pos_x = x;
             data->player.pos_y = y;
             data->player.player_dir = line[x];
@@ -105,17 +105,17 @@ int    check_player(t_data *data)
 
     y = 0;
     player_count = 0;
-    printf("\nDEBUG: Starting player check\n");
-    printf("DEBUG: Map height: %d\n", data->map_height);
+    // printf("\nDEBUG: Starting player check\n");
+    // printf("DEBUG: Map height: %d\n", data->map_height);
 
     while (y < data->map_height)
     {
-        printf("\nDEBUG: Checking line %d: [%s]\n", y, data->map[y]);
+        // printf("\nDEBUG: Checking line %d: [%s]\n", y, data->map[y]);
         check_line_for_player(data->map[y], y, data, &player_count);
         y++;
     }
 
-    printf("DEBUG: Final player count: %d\n\n", player_count);
+    // printf("DEBUG: Final player count: %d\n\n", player_count);
 
     if (player_count != 1)
         return (error_exit("Error: Must have exactly one player"), 0);

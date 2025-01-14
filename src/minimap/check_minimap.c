@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 17:06:21 by lizzieanani       #+#    #+#             */
-/*   Updated: 2025/01/14 11:29:18 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/14 13:32:24 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,11 @@ static int	check_map_closure(t_data *data)
 // 		return (error_msg("Il doit y avoir exactement une position de départ"));
 // 	return (0);
 // }
+
 int	is_valid_map_char(char c)
 {
 	return (c == '0' || c == '1' || c == 'N' || c == 'S' || c == 'E' || c == 'W'
-		|| c == ' ' || c == '\n');
+		|| c == ' ' || c == '\n' || c == 'D');
 }
 
 int	is_valid_player_char(char c)

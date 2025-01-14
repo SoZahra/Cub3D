@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 19:51:36 by lizzieanani       #+#    #+#             */
-/*   Updated: 2025/01/13 16:35:09 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/14 16:08:14 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,22 @@ void	perform_dda(t_ray *ray, t_data *data)
 			|| ray->map_y >= data->map_height
 			|| data->map[ray->map_y][ray->map_x] == '1')
 			ray->hit = 1;
+		if (data->map[ray->map_y][ray->map_x] == '1')
+            ray->hit = 1;
+        else if (data->map[ray->map_y][ray->map_x] == 'D')
+        {
+            // Chercher si cette porte est ouverte
+            for (int i = 0; i < data->num_doors; i++)
+            {
+                if (data->doors[i].x == ray->map_x &&
+                    data->doors[i].y == ray->map_y)
+                {
+                    if (!data->doors[i].is_open)
+                        ray->hit = 2;  // 2 pour indiquer que c'est une porte
+                    break;
+                }
+            }
+        }
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 18:10:16 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/10 20:33:32 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/14 15:59:40 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,41 +66,67 @@ void    free_lines(char **lines)
     free(lines);
 }
 
-void    free_textures(t_data *data)
+void free_textures(t_data *data)
 {
+    if (!data)
+        return;
+
+    // Textures paths
     if (data->no_texture)
+    {
         free(data->no_texture);
+        data->no_texture = NULL;
+    }
     if (data->so_texture)
+    {
         free(data->so_texture);
+        data->so_texture = NULL;
+    }
     if (data->we_texture)
+    {
         free(data->we_texture);
+        data->we_texture = NULL;
+    }
     if (data->ea_texture)
+    {
         free(data->ea_texture);
-    if (data->n_t)
-        free(data->n_t);
-    if (data->s_t)
-        free(data->s_t);
-    if (data->w_t)
-        free(data->w_t);
-    if (data->e_t)
-        free(data->e_t);
-    data->no_texture = NULL;
-    data->so_texture = NULL;
-    data->we_texture = NULL;
-    data->ea_texture = NULL;
+        data->ea_texture = NULL;
+    }
+    if (data->do_texture)
+    {
+        free(data->do_texture);
+        data->do_texture = NULL;
+    }
+
+    // Variables *_t ne devraient pas être libérées si elles ne sont pas allouées
     data->n_t = NULL;
     data->s_t = NULL;
     data->w_t = NULL;
     data->e_t = NULL;
+    data->do_t = NULL;
 }
 
-void    free_all(t_data *data, char **lines)
+void free_all(t_data *data, char **lines)
 {
+    if (!data)
+        return;
+    if (data->doors)
+    {
+        free(data->doors);
+        data->doors = NULL;
+    }
+    free_map(data);
+    free_textures(data);
     if (lines)
         free_lines(lines);
-    if (data)
-    {
-        free_textures(data);
-        free_map(data);
-    }
 }
+
+// void    free_all(t_data *data, char **lines)
+// {
+//     if (!data)
+//         return;
+//     free_map(data);
+//     free_textures(data);
+//     if (lines)
+//         free_lines(lines);
+// }

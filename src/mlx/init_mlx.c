@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 11:41:34 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/14 11:49:03 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/14 16:09:46 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,70 +52,13 @@
 
 void init_data(t_data *data)
 {
-    // Initialisation basique
-    data->mlx.mlx = NULL;
-    data->mlx.win = NULL;
-    data->map = NULL;
-    data->copie_map = NULL;
-    data->map_width = 0;
-    data->map_height = 0;
+    ft_memset(data, 0, sizeof(t_data));  // Initialise tout à 0
 
-    // Flags de chargement (très important pour éviter les problèmes de Valgrind)
-    data->no_loaded = 0;
-    data->so_loaded = 0;
-    data->we_loaded = 0;
-    data->ea_loaded = 0;
-    data->f_loaded = 0;
-    data->c_loaded = 0;
-
-    // textures
-    data->no_texture = NULL;
-    data->so_texture = NULL;
-    data->we_texture = NULL;
-    data->ea_texture = NULL;
-    data->n_t = NULL;  // Ces pointeurs apparaissent dans le header
-    data->s_t = NULL;  // mais n'étaient pas initialisés
-    data->w_t = NULL;
-    data->e_t = NULL;
-
-    // couleurs
+    // Puis définir les valeurs spécifiques non-nulles
     data->f_color = -1;
     data->c_color = -1;
-
-    // joueur
-    data->player.pos_x = 0;
-    data->player.pos_y = 0;
-    data->player.dir_x = 0;
-    data->player.dir_y = 0;
-    data->player.player_dir = 0;
-    data->player.plane_x = 0;
-    data->player.plane_y = 0;
-    data->player.count = 0;  // N'était pas initialisé
-
-    // mouvements
-    data->movement.forward = 0;
-    data->movement.backward = 0;
-    data->movement.left = 0;
-    data->movement.right = 0;
-    data->movement.rot_left = 0;
-    data->movement.rot_right = 0;
-    data->movement.move_speed = 0.05;
-    data->movement.rot_speed = 0.03;
-
-    // image
-    data->img.img = NULL;
-    data->img.addr = NULL;
-    data->img.bits_per_pixel = 0;
-    data->img.line_length = 0;
-    data->img.endian = 0;
-    data->img.width = 0;
-    data->img.height = 0;
-
-    // Initialisation des textures MLX
-    data->mlx.no_tex = (t_texture){0};
-    data->mlx.so_tex = (t_texture){0};
-    data->mlx.we_tex = (t_texture){0};
-    data->mlx.ea_tex = (t_texture){0};
+    data->movement.move_speed = 0.1;
+    data->movement.rot_speed = 0.05;
 }
 
 void    init_minimap(t_data *data)
@@ -148,39 +91,88 @@ int	init_game(t_data *data)
 		cleanup_mlx(data);
 		return (0);
 	}
+    if (!init_doors(data))
+	{
+		cleanup_mlx(data);
+		return (0);
+	}
 	init_minimap(data);
 	init_hooks(data);
 	raycasting(data);
 	return (1);
 }
 
-int	init_mlx(t_data *data)
+// int	init_mlx(t_data *data)
+// {
+// 	data->mlx.mlx = mlx_init();
+// 	if (!data->mlx.mlx)
+// 		return (error_exit("Failed to init MLX"), 0);
+// 	data->mlx.win = mlx_new_window(data->mlx.mlx, WIN_WIDTH, WIN_HEIGHT,
+// 			"Cub3D");
+// 	if (!data->mlx.win)
+// 	{
+// 		mlx_destroy_display(data->mlx.mlx);
+// 		free(data->mlx.mlx);
+// 		return (error_exit("Failed to create window"), 0);
+// 	}
+// 	// Initialiser l'image pour le raycasting
+// 	data->img.img = mlx_new_image(data->mlx.mlx, WIN_WIDTH, WIN_HEIGHT);
+// 	if (!data->img.img)
+// 	{
+// 		mlx_destroy_window(data->mlx.mlx, data->mlx.win);
+// 		mlx_destroy_display(data->mlx.mlx);
+// 		free(data->mlx.mlx);
+// 		return (error_exit("Failed to create image"), 0);
+// 	}
+// 	data->img.addr = (int *)mlx_get_data_addr(data->img.img,
+//                                   &data->img.bits_per_pixel,
+//                                   &data->img.line_length,
+//                                   &data->img.endian);
+// 	return (1);
+// }
+
+int init_mlx(t_data *data)
 {
-	data->mlx.mlx = mlx_init();
-	if (!data->mlx.mlx)
-		return (error_exit("Failed to init MLX"), 0);
-	data->mlx.win = mlx_new_window(data->mlx.mlx, WIN_WIDTH, WIN_HEIGHT,
-			"Cub3D");
-	if (!data->mlx.win)
-	{
-		mlx_destroy_display(data->mlx.mlx);
-		free(data->mlx.mlx);
-		return (error_exit("Failed to create window"), 0);
-	}
-	// Initialiser l'image pour le raycasting
-	data->img.img = mlx_new_image(data->mlx.mlx, WIN_WIDTH, WIN_HEIGHT);
-	if (!data->img.img)
-	{
-		mlx_destroy_window(data->mlx.mlx, data->mlx.win);
-		mlx_destroy_display(data->mlx.mlx);
-		free(data->mlx.mlx);
-		return (error_exit("Failed to create image"), 0);
-	}
-	data->img.addr = (int *)mlx_get_data_addr(data->img.img,
-                                  &data->img.bits_per_pixel,
-                                  &data->img.line_length,
-                                  &data->img.endian);
-	return (1);
+    data->mlx.mlx = mlx_init();
+    if (!data->mlx.mlx)
+        return (error_exit("Failed to init MLX"), 0);
+    data->mlx.win = mlx_new_window(data->mlx.mlx, WIN_WIDTH, WIN_HEIGHT, "Cub3D");
+    if (!data->mlx.win)
+    {
+        mlx_destroy_display(data->mlx.mlx);
+        free(data->mlx.mlx);
+        return (error_exit("Failed to create window"), 0);
+    }
+    int bits_per_pixel;
+    int line_length;
+    int endian;
+    data->img.img = mlx_new_image(data->mlx.mlx, WIN_WIDTH, WIN_HEIGHT);
+    if (!data->img.img)
+    {
+        mlx_destroy_window(data->mlx.mlx, data->mlx.win);
+        mlx_destroy_display(data->mlx.mlx);
+        free(data->mlx.mlx);
+        return (error_exit("Failed to create image"), 0);
+    }
+    data->img.addr = (int *)mlx_get_data_addr(data->img.img,
+                                             &bits_per_pixel,
+                                             &line_length,
+                                             &endian);
+    if (!data->img.addr)
+    {
+        mlx_destroy_image(data->mlx.mlx, data->img.img);
+        mlx_destroy_window(data->mlx.mlx, data->mlx.win);
+        mlx_destroy_display(data->mlx.mlx);
+        free(data->mlx.mlx);
+        return (error_exit("Failed to get image address"), 0);
+    }
+    data->img.bits_per_pixel = bits_per_pixel;
+    data->img.line_length = line_length;
+    data->img.endian = endian;
+    data->img.width = WIN_WIDTH;
+    data->img.height = WIN_HEIGHT;
+
+    return (1);
 }
 
 void	check_textures_loaded(t_data *data)
@@ -289,11 +281,7 @@ int load_texture(t_data *data, t_texture *tex, char *path)
 
 int	load_textures(t_data *data)
 {
-	printf("\nDEBUG: Starting to load textures\n");
-	printf("DEBUG: NO texture path: [%s]\n", data->no_texture);
-	printf("DEBUG: SO texture path: [%s]\n", data->so_texture);
-	printf("DEBUG: WE texture path: [%s]\n", data->we_texture);
-	printf("DEBUG: EA texture path: [%s]\n", data->ea_texture);
+
 	if (!load_texture(data, &data->mlx.no_tex, data->no_texture))
 		return (error_exit("Failed to load NO texture"), 0);
 	if (!load_texture(data, &data->mlx.so_tex, data->so_texture))
@@ -302,6 +290,8 @@ int	load_textures(t_data *data)
 		return (error_exit("Failed to load WE texture"), 0);
 	if (!load_texture(data, &data->mlx.ea_tex, data->ea_texture))
 		return (error_exit("Failed to load EA texture"), 0);
-	printf("DEBUG: All textures loaded successfully\n");
+    if (!load_texture(data, &data->mlx.do_tex, data->do_texture))
+		return (error_exit("Failed to load DO texture"), 0);
+	// printf("DEBUG: All textures loaded successfully\n");
 	return (1);
 }

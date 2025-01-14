@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 15:13:28 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/14 11:03:08 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/14 15:51:02 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,12 +113,20 @@ int    main(int ac, char **av)
     free_lines(lines);
     if (!init_game(&data))
     {
+		cleanup_mlx(&data);
         free_all(&data, NULL);
         return (1);
     }
     // mlx_loop(&data.mlx);
+	// if (data.mlx.mlx && data.mlx.win)
+    //     mlx_loop(data.mlx.mlx);
 	if (data.mlx.mlx && data.mlx.win)
-        mlx_loop(data.mlx.mlx);
+	{
+		mlx_loop_hook(data.mlx.mlx, game_loop, &data);  // Assurez-vous d'avoir cette ligne
+		mlx_loop(data.mlx.mlx);
+	}
+	cleanup_mlx(&data);      // D'abord nettoyer MLX
+    free_textures(&data);
 	free_all(&data, NULL);
     return (0);
 }

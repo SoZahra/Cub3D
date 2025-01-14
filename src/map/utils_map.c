@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 14:16:55 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/10 14:57:12 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/14 15:19:25 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	is_valid_char(char c)
 
 int	is_map_char(char c)
 {
-	return (c == '1' || c == '0' || c == ' ' || ft_strchr("NSEW", c) != NULL);
+	return (c == '1' || c == '0' || c == ' ' || ft_strchr("NSEWD", c) != NULL);
 }
 
 int	handle_empty_line(char *trimmed)

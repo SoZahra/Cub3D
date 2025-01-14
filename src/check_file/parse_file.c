@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:11:44 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/14 10:31:36 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/14 13:57:35 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ int	parse_texture_colors(t_data *data, char **lines, const char *filename)
 		i++;
 	}
 	if (!data->no_loaded || !data->so_loaded || !data->we_loaded
-		|| !data->ea_loaded || !data->f_loaded || !data->c_loaded)
+		|| !data->ea_loaded || !data->f_loaded || !data->c_loaded || !data->do_loaded)
 		return (error_exit("Error: Missing required elements"), -1);
 	map_start = find_map_start(lines);
 	if (map_start == -1)

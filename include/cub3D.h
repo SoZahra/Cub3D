@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 15:14:56 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/14 11:26:31 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/14 17:05:46 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@
 # define KEY_LEFT 65361
 # define KEY_RIGHT 65363
 # define MINIMAP_SIZE 200
+#define MOVE_SPEED 0.05
+#define ROT_SPEED 0.03
 
 typedef struct s_movement
 {
@@ -48,6 +50,20 @@ typedef struct s_movement
 	double		move_speed;
 	double		rot_speed;
 }				t_movement;
+
+typedef struct s_door {
+    int     x;              // Position X de la porte
+    int     y;              // Position Y de la porte
+    int     is_open;        // État de la porte (0: fermée, 1: ouverte)
+    double  animation;      // Pour l'animation (0.0 à 1.0)
+} t_door;
+
+typedef struct s_keys
+{
+	int e;
+}	t_keys;
+
+
 typedef struct s_minimap
 {
 	double		scale;
@@ -114,6 +130,7 @@ typedef struct s_mlx_data
 	t_texture	so_tex;
 	t_texture	we_tex;
 	t_texture	ea_tex;
+	t_texture	do_tex;
 }				t_mlx_data;
 
 typedef struct s_data
@@ -130,22 +147,29 @@ typedef struct s_data
 	char		*s_t;
 	char		*w_t;
 	char		*e_t;
+	char		*do_t;
 	int			c_color;
 	int			f_color;
 	int			no_loaded;
 	int			so_loaded;
 	int			we_loaded;
 	int			ea_loaded;
+	int			do_loaded;
 	int			f_loaded;
 	int			c_loaded;
 	char		*so_texture;
 	char		*we_texture;
 	char		*ea_texture;
 	char		*no_texture;
+	char		*do_texture;
 	t_mlx_data	mlx;
 	t_texture	img;
 	t_movement	movement;
-	t_minimap   minimap;
+	t_minimap	minimap;
+	t_door		*doors;
+	t_keys		keys;
+	int			num_doors;
+	t_ray       ray;
 }				t_data;
 
 /// parsing/parsing.c
@@ -283,6 +307,7 @@ void    draw_map_content(t_data *data);
 void    draw_player_on_map(t_data *data);
 void    put_minimap_pixel(t_data *data, int x, int y, int color);
 int	is_valid_player_char(char c);
+ void	put_pixel_minimap(t_data *data, int x, int y, int color);
 
 // contols/player_mouvement.c
 
@@ -293,6 +318,12 @@ void			handle_rotation_left(t_data *data);
 // rotation
 
 void			handle_rotation(t_data *data);
+
+//doors
+
+int init_doors(t_data *data);
+void handle_door(t_data *data);
+void update_doors(t_data *data);
 
 // vectors
 
