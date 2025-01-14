@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 15:13:28 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/13 16:37:57 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/14 11:03:08 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,8 +116,9 @@ int    main(int ac, char **av)
         free_all(&data, NULL);
         return (1);
     }
-    mlx_loop(&data.mlx);
-    // free_resources(&data);
+    // mlx_loop(&data.mlx);
+	if (data.mlx.mlx && data.mlx.win)
+        mlx_loop(data.mlx.mlx);
 	free_all(&data, NULL);
     return (0);
 }

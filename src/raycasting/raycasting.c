@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 19:56:03 by lizzieanani       #+#    #+#             */
-/*   Updated: 2025/01/13 16:36:43 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/14 11:48:10 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ int	game_loop(t_data *data)
 	handle_strafe_movement(data);
 	handle_rotation(data);
 	raycasting(data);
+	draw_minimap(data);
+	//mlx_put_image_to_window(data->mlx.mlx, data->mlx.win, data->img.img, 0, 0);
 	return (0);
 }
 
@@ -26,14 +28,12 @@ void	init_player_pos(t_ray *ray, t_data *data)
 	ray->pos_x = (double)data->player.pos_x + 0.5;
 	ray->pos_y = (double)data->player.pos_y + 0.5;
 	set_direction_vectors(ray, data->player.player_dir);
-	    // Synchroniser avec data->player
     data->player.dir_x = ray->dir_x;
     data->player.dir_y = ray->dir_y;
     data->player.plane_x = ray->plane_x;
     data->player.plane_y = ray->plane_y;
-
-	data->movement.move_speed = 0.05;
-	data->movement.rot_speed = 0.03;
+	data->movement.move_speed = 0.1;
+	data->movement.rot_speed = 0.1;
 	data->movement.forward = 0;
 	data->movement.backward = 0;
 	data->movement.left = 0;
@@ -66,35 +66,25 @@ static void	adjust_tex_y(int *tex_y, int tex_height)
 		*tex_y = tex_height - 1;
 }
 
-static void	*select_texture(t_data *data, t_ray *ray)
+static t_texture *select_texture(t_data *data, t_ray *ray)
 {
-	if (ray->side == 0)
-	{
-		if (ray->ray_dir_x > 0)
-			return (data->ea_texture);
-		return (data->we_texture);
-	}
-	if (ray->ray_dir_y > 0)
-		return (data->so_texture);
-	return (data->no_texture);
+    if (ray->side == 0)
+    {
+        if (ray->ray_dir_x > 0)
+            return (&data->mlx.ea_tex);
+        return (&data->mlx.we_tex);
+    }
+    if (ray->ray_dir_y > 0)
+        return (&data->mlx.so_tex);
+    return (&data->mlx.no_tex);
 }
 
-// int	get_tex_color(t_texture *texture, int tex_x, int tex_y)
-// {
-// 	char	*pixel;
-// 	int		color;
-
-// 	pixel = texture->addr + (tex_y * texture->line_length + tex_x
-// 			* (texture->bits_per_pixel / 8));
-// 	color = *(unsigned int *)pixel;
-// 	return (color);
-// }
-
-
-int    get_tex_color(t_texture *texture, int tex_x, int tex_y)
+int get_tex_color(t_texture *texture, int tex_x, int tex_y)
 {
-    // Puisque addr est maintenant un int*, on peut directement calculer l'index
-    return texture->addr[tex_y * (texture->line_length / sizeof(int)) + tex_x];
+    // Vérifications de sécurité
+    if (tex_x < 0 || tex_x >= texture->width || tex_y < 0 || tex_y >= texture->height)
+        return (0);
+    return texture->addr[tex_y * (texture->line_length / 4) + tex_x];
 }
 
 int	get_texture_color(t_data *data, t_ray *ray, int y)
@@ -105,6 +95,8 @@ int	get_texture_color(t_data *data, t_ray *ray, int y)
 	double		step;
 
 	texture = select_texture(data, ray);
+	if (!texture || !texture->addr)
+        return (0);
 	tex_x = get_tex_x(texture, ray);
 	step = 1.0 * texture->height / ray->line_height;
 	tex_y = (int)((y - ray->draw_start) * step);

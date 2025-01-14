@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 18:13:26 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/10 20:18:50 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/14 10:30:46 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,16 @@
 
 static int	no_texture(t_data *data, char *cleaned)
 {
+	if (!data || !cleaned)
+        return (0);
 	if (data->no_loaded)
 		return (free(cleaned), error_exit("Error: Duplicate NO texture"), 0);
 	if (!check_texture_format(cleaned + 3))
 		return (free(cleaned), error_exit("Error: Invalid NO texture format"),
 			0);
 	data->no_texture = ft_strdup(cleaned + 3);
+	if (!data->no_texture)
+    	return (free(cleaned), 0);
 	free(cleaned);
 	data->no_loaded = 1;
 	return (1);
@@ -27,12 +31,16 @@ static int	no_texture(t_data *data, char *cleaned)
 
 static int	so_texture(t_data *data, char *cleaned)
 {
+	if (!data || !cleaned)
+        return (0);
 	if (data->so_loaded)
 		return (free(cleaned), error_exit("Error: Duplicate SO texture"), 0);
 	if (!check_texture_format(cleaned + 3))
 		return (free(cleaned), error_exit("Error: Invalid SO texture format"),
 			0);
 	data->so_texture = ft_strdup(cleaned + 3);
+	if (!data->so_texture)
+    	return (free(cleaned), 0);
 	free(cleaned);
 	data->so_loaded = 1;
 	return (1);
@@ -40,6 +48,8 @@ static int	so_texture(t_data *data, char *cleaned)
 
 static int	ea_we_tex(t_data *data, char *cleaned, int is_east)
 {
+	if (!data || !cleaned)
+        return (0);
 	if (is_east)
 	{
 		if (data->ea_loaded)
@@ -48,6 +58,8 @@ static int	ea_we_tex(t_data *data, char *cleaned, int is_east)
 		if (!check_texture_format(cleaned + 3))
 			return (free(cleaned), error_exit("Error: Invalid EA format"), 0);
 		data->ea_texture = ft_strdup(cleaned + 3);
+		if (!data->ea_texture)
+    		return (free(cleaned), 0);
 		free(cleaned);
 		data->ea_loaded = 1;
 	}
@@ -59,6 +71,8 @@ static int	ea_we_tex(t_data *data, char *cleaned, int is_east)
 		if (!check_texture_format(cleaned + 3))
 			return (free(cleaned), error_exit("Error: Invalid WE format"), 0);
 		data->we_texture = ft_strdup(cleaned + 3);
+		if (!data->we_texture)
+			return (free(cleaned), 0);
 		free(cleaned);
 		data->we_loaded = 1;
 	}
@@ -69,6 +83,8 @@ static int    floor_ceil(t_data *data, char *cleaned, int is_floor)
 {
     int ret;
 
+	if (!data || !cleaned)
+        return (0);
     if (is_floor)
     {
         if (data->f_loaded)

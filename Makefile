@@ -6,7 +6,7 @@
 #    By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/01 15:05:07 by fzayani           #+#    #+#              #
-#    Updated: 2025/01/13 16:21:41 by fzayani          ###   ########.fr        #
+#    Updated: 2025/01/14 11:16:54 by fzayani          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ SRCS_FILES  =   main.c \
                 map/check_map.c map/floodfill.c  map/utils_map.c  map/map_closed.c map/player.c map/map_start.c map/store_map.c map/utils_store.c\
 				mlx/init_mlx.c mlx/draw_map.c mlx/init_hooks.c \
 				utils/errors.c utils/free.c utils/clean_mlx.c \
+				minimap/check_minimap.c minimap/minimap_player.c minimap/minimap_utils.c minimap/minimap.c \
 				raycasting/raycasting.c raycasting/init_ray.c raycasting/perform_dda.c raycasting/vectors.c \
 				controls/key_events.c controls/player_movement.c controls/player_rotation.c
 
