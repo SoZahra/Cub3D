@@ -6,7 +6,7 @@
 /*   By: lanani-f <lanani-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:11:44 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/15 16:27:25 by lanani-f         ###   ########.fr       */
+/*   Updated: 2025/01/15 16:38:34 by lanani-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	parse_texture_colors(t_data *data, char **lines, const char *filename)
 	(void)filename;
 	i = 0;
 	if (!data || !lines)
-        return (-1);
+		return (-1);
 	while (lines[i])
 	{
 		if (!parse_texture_line(data, lines[i]))
@@ -82,7 +82,8 @@ int	parse_texture_colors(t_data *data, char **lines, const char *filename)
 		i++;
 	}
 	if (!data->no_loaded || !data->so_loaded || !data->we_loaded
-		|| !data->ea_loaded || !data->f_loaded || !data->c_loaded || !data->do_loaded)
+		|| !data->ea_loaded || !data->f_loaded || !data->c_loaded
+		|| !data->do_loaded)
 		return (error_exit("Error: Missing required elements"), -1);
 	map_start = find_map_start(lines);
 	if (map_start == -1)

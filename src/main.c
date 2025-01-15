@@ -6,7 +6,7 @@
 /*   By: lanani-f <lanani-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 15:13:28 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/15 16:35:41 by lanani-f         ###   ########.fr       */
+/*   Updated: 2025/01/15 16:49:03 by lanani-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,21 +23,21 @@ void	print_parsed_map(char **map)
 	printf("\n----------\n");
 }
 
-void    clean_lines_until(char **lines, int index)
+void	clean_lines_until(char **lines, int index)
 {
-    int    i;
+	int	i;
 
-    printf("DEBUG: Starting clean_lines_until index %d\n", index);
-    i = 0;
-    while (i < index)
-    {
-        if (lines[i])
-        {
-            free(lines[i]);
-        }
-        i++;
-    }
-    free(lines);
+	printf("DEBUG: Starting clean_lines_until index %d\n", index);
+	i = 0;
+	while (i < index)
+	{
+		if (lines[i])
+		{
+			free(lines[i]);
+		}
+		i++;
+	}
+	free(lines);
 }
 
 char	**read_file(const char *filename)
@@ -60,7 +60,6 @@ char	**read_file(const char *filename)
 	while (fgets(buffer, sizeof(buffer), file) && i < MAX_LINES)
 	{
 		lines[i] = ft_strdup(buffer);
-		// clean_lines_until(lines, i);
 		i++;
 	}
 	lines[i] = NULL;
@@ -68,76 +67,35 @@ char	**read_file(const char *filename)
 	return (lines);
 }
 
-int    main(int ac, char **av)
+int	main(int ac, char **av)
 {
-    t_data    data;
-    char    **lines;
+	t_data	data;
+	char	**lines;
 
-    if (ac != 2)
-        return (printf("Usage: %s <cub_file>\n", av[0]), 1);
-    if (!check_arguments(ac, av))
-        return (1);
-    init_data(&data);
-    lines = read_file(av[1]);
-    if (!lines)
-        return (printf("Failed to read the file\n"), 1);
-    if (parse_texture_colors(&data, lines, av[1]) == -1)
-        return (free_all(&data, lines), 1);
-    free_lines(lines);
-    if (!init_game(&data))
-    {
+	if (ac != 2)
+		return (printf("Usage: %s <cub_file>\n", av[0]), 1);
+	if (!check_arguments(ac, av))
+		return (1);
+	init_data(&data);
+	lines = read_file(av[1]);
+	if (!lines)
+		return (printf("Failed to read the file\n"), 1);
+	if (parse_texture_colors(&data, lines, av[1]) == -1)
+		return (free_all(&data, lines), 1);
+	free_lines(lines);
+	if (!init_game(&data))
+	{
 		cleanup_mlx(&data);
-        free_all(&data, NULL);
-        return (1);
-    }
+		free_all(&data, NULL);
+		return (1);
+	}
 	if (data.mlx.mlx && data.mlx.win)
 	{
 		mlx_loop_hook(data.mlx.mlx, game_loop, &data);
 		mlx_loop(data.mlx.mlx);
 	}
 	cleanup_mlx(&data);
-    free_textures(&data);
+	free_textures(&data);
 	free_all(&data, NULL);
-    return (0);
+	return (0);
 }
-
-// int	main(int ac, char **av)
-// {
-// 	t_data	data;
-// 	char	**lines;
-
-// 	if (ac != 2)
-// 		return (printf("Usage: %s <cub_file>\n", av[0]), 1);
-// 	if (!check_arguments(ac, av))
-// 		return (1);
-// 	// data = (t_data){0};
-// 	init_data(&data);
-// 	lines = read_file(av[1]);
-// 	if (!lines)
-// 		return (printf("Failed to read the file\n"), 1);
-// 	if (parse_texture_colors(&data, lines, av[1]) == -1)
-// 		return (free_all(&data, lines), 1);
-// 	free_lines(lines);
-// 	printf("Parsing completed successfully!\n");
-// 	if (!init_mlx(&data) || !load_textures(&data))
-//     {
-//         cleanup_mlx(&data);
-//         free_textures(&data);
-//         return (1);
-//     }
-//     draw_background(&data);
-//     mlx_loop_hook(data.mlx.mlx, render, &data);
-//     mlx_hook(data.mlx.win, 17, 0, (void *)mlx_loop_end, data.mlx.mlx);  // Pour gérer la fermeture de fenêtre
-//     mlx_loop(data.mlx.mlx);
-//     cleanup_mlx(&data);
-//     free_textures(&data);
-// 	free_all(&data, lines);
-// 	return (0);
-// }
-
-	// printf("\n--- Original Map ---\n");
-	// for (int i = 0; i < data.map_height; i++)
-	// 	printf("[%s]\n", data.map[i]);
-	// free_textures(&data),
-	// free_map(&data);
-	// free_lines(lines);

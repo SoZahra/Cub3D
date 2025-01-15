@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_start.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lanani-f <lanani-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 14:27:13 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/10 18:49:42 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/15 16:52:33 by lanani-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,10 @@ static int	validate_map_line(char *trimmed)
 
 static int	check_valid_start(char **lines, char *trimmed, int i)
 {
-	(void)lines;
 	int	j;
 	int	valid_line;
 
+	(void)lines;
 	j = 0;
 	valid_line = 0;
 	if (validate_map_line(trimmed) == -1)
@@ -53,8 +53,6 @@ static int	check_valid_start(char **lines, char *trimmed, int i)
 	}
 	if (valid_line)
 	{
-		// printf("DEBUG: Map starts at line %d with content: [%s]\n", i,
-		// 	lines[i]);
 		return (i);
 	}
 	return (-1);

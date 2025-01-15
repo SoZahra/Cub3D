@@ -6,7 +6,7 @@
 /*   By: lanani-f <lanani-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 19:51:36 by lizzieanani       #+#    #+#             */
-/*   Updated: 2025/01/15 16:26:37 by lanani-f         ###   ########.fr       */
+/*   Updated: 2025/01/15 16:46:13 by lanani-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,35 +34,35 @@ void	perform_dda(t_ray *ray, t_data *data)
 			|| data->map[ray->map_y][ray->map_x] == '1')
 			ray->hit = 1;
 		if (data->map[ray->map_y][ray->map_x] == '1')
-            ray->hit = 1;
-        else if (data->map[ray->map_y][ray->map_x] == 'D')
-        {
-            for (int i = 0; i < data->num_doors; i++)
-            {
-                if (data->doors[i].x == ray->map_x &&
-                    data->doors[i].y == ray->map_y)
-                {
-                    if (!data->doors[i].is_open)
-                        ray->hit = 2;
-                    break;
-                }
-            }
-        }
+			ray->hit = 1;
+		else if (data->map[ray->map_y][ray->map_x] == 'D')
+		{
+			for (int i = 0; i < data->num_doors; i++)
+			{
+				if (data->doors[i].x == ray->map_x
+					&& data->doors[i].y == ray->map_y)
+				{
+					if (!data->doors[i].is_open)
+						ray->hit = 2;
+					break ;
+				}
+			}
+		}
 	}
 }
 
-void calculate_wall_dist(t_ray *ray)
+void	calculate_wall_dist(t_ray *ray)
 {
-    if (ray->side == 0)
-    {
-        ray->wall_dist = (ray->side_dist_x - ray->delta_dist_x);
-    }
-    else
-    {
-        ray->wall_dist = (ray->side_dist_y - ray->delta_dist_y);
-    }
-    if (ray->wall_dist < 0)
-        ray->wall_dist = 0;
+	if (ray->side == 0)
+	{
+		ray->wall_dist = (ray->side_dist_x - ray->delta_dist_x);
+	}
+	else
+	{
+		ray->wall_dist = (ray->side_dist_y - ray->delta_dist_y);
+	}
+	if (ray->wall_dist < 0)
+		ray->wall_dist = 0;
 }
 
 void	calculate_line_height(t_ray *ray)

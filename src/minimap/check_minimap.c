@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_minimap.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lanani-f <lanani-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 17:06:21 by lizzieanani       #+#    #+#             */
-/*   Updated: 2025/01/14 13:32:24 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/15 16:41:44 by lanani-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,35 +47,6 @@ static int	check_map_closure(t_data *data)
 	}
 	return (0);
 }
-
-// static int	validate_player_position(t_data *data)
-// {
-// 	int	player_count;
-// 	int	x;
-// 	int	y;
-
-// 	player_count = 0;
-// 	y = 0;
-// 	while (y < data->map_height)
-// 	{
-// 		x = 0;
-// 		while (data->map[y][x])
-// 		{
-// 			if (is_valid_player_char(data->map[y][x]))
-// 			{
-// 				player_count++;
-// 				data->player.pos_x = x;
-// 				data->player.pos_y = y;
-// 				data->player.player_dir = data->map[y][x];
-// 			}
-// 			x++;
-// 		}
-// 		y++;
-// 	}
-// 	if (player_count != 1)
-// 		return (error_msg("Il doit y avoir exactement une position de départ"));
-// 	return (0);
-// }
 
 int	is_valid_map_char(char c)
 {
@@ -119,29 +90,10 @@ static int	validate_player_position(t_data *data)
 	}
 	printf("Total players found: %d\n", player_count);
 	if (player_count != 1)
-		return (error_exit("Il doit y avoir exactement une position de départ"), 1);
+		return (error_exit("Il doit y avoir exactement une position de départ"),
+			1);
 	return (0);
 }
-
-// static int	validate_map_chars(char **map, int height)
-// {
-// 	int	x;
-// 	int	y;
-
-// 	y = 0;
-// 	while (y < height)
-// 	{
-// 		x = 0;
-// 		while (map[y][x])
-// 		{
-// 			if (!is_valid_map_char(map[y][x]))
-// 				return (error_msg("Caractère invalide dans la map"));
-// 			x++;
-// 		}
-// 		y++;
-// 	}
-// 	return (0);
-// }
 
 static int	validate_map_chars(char **map, int height)
 {

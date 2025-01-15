@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_closed.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lanani-f <lanani-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 14:16:17 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/10 18:47:39 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/15 16:52:54 by lanani-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ int	is_space_closed(t_data *data, int y, int x)
 		return (1);
 	if (check_space_sequence(data, y, x))
 		return (1);
-	// printf("DEBUG: Checking space at y:%d, x:%d\n", y, x);
 	last_char_index = find_last_non_space(data, y);
 	if (x > last_char_index)
 		return (1);
