@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lanani-f <lanani-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 19:56:03 by lizzieanani       #+#    #+#             */
-/*   Updated: 2025/01/15 14:29:15 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/15 15:28:55 by lanani-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,13 +91,14 @@ int	get_tex_x(t_texture *texture, t_ray *ray)
 		tex_x = texture->width - tex_x - 1;
 	return (tex_x);
 }
-static void	adjust_tex_y(int *tex_y, int tex_height)
-{
-	if (*tex_y < 0)
-		*tex_y = 0;
-	if (*tex_y >= tex_height)
-		*tex_y = tex_height - 1;
-}
+
+// static void	adjust_tex_y(int *tex_y, int tex_height)
+// {
+// 	if (*tex_y < 0)
+// 		*tex_y = 0;
+// 	if (*tex_y >= tex_height)
+// 		*tex_y = tex_height - 1;
+// }
 
 static t_texture *select_texture(t_data *data, t_ray *ray)
 {
@@ -122,22 +123,60 @@ int get_tex_color(t_texture *texture, int tex_x, int tex_y)
 }
 
 // si pas solution trouver pour la texture passer a 2 le step
-int	get_texture_color(t_data *data, t_ray *ray, int y)
-{
-	int			tex_x;
-	int			tex_y;
-	t_texture	*texture;
-	double		step;
+// int	get_texture_color(t_data *data, t_ray *ray, int y)
+// {
+// 	int			tex_x;
+// 	int			tex_y;
+// 	t_texture	*texture;
+// 	double		step;
 
-	texture = select_texture(data, ray);
-	if (!texture || !texture->addr)
+// 	texture = select_texture(data, ray);
+// 	if (!texture || !texture->addr)
+//         return (0);
+// 	tex_x = get_tex_x(texture, ray);
+// 	step = 1.0 * texture->height / ray->line_height;
+// 	tex_y = (int)((y - ray->draw_start) * step);
+// 	adjust_tex_y(&tex_y, texture->height);
+// 	return (get_tex_color(texture, tex_x, tex_y));
+// }
+
+int get_texture_color(t_data *data, t_ray *ray, int y)
+{
+    t_texture *texture = select_texture(data, ray);
+    if (!texture || !texture->addr)
         return (0);
-	tex_x = get_tex_x(texture, ray);
-	step = 1.0 * texture->height / ray->line_height;
-	tex_y = (int)((y - ray->draw_start) * step);
-	adjust_tex_y(&tex_y, texture->height);
-	return (get_tex_color(texture, tex_x, tex_y));
+
+    int tex_x = get_tex_x(texture, ray);
+
+    // Calcul précis de la position Y de la texture
+    double wall_dist = ray->wall_dist;
+    if (wall_dist < 0.1)
+        wall_dist = 0.1;
+
+    // Position exacte où le rayon touche le mur
+    double wall_x;
+    if (ray->side == 0)
+        wall_x = ray->pos_y + wall_dist * ray->ray_dir_y;
+    else
+        wall_x = ray->pos_x + wall_dist * ray->ray_dir_x;
+    wall_x -= floor(wall_x);
+
+    // Calcul de la coordonnée Y de la texture avec ajustement de précision
+    double tex_pos = (y - ray->draw_start) * 1.0 / (ray->draw_end - ray->draw_start);
+    int tex_y = (int)(tex_pos * texture->height);
+
+    // Protection contre les débordements
+    if (tex_y < 0)
+        tex_y = 0;
+    if (tex_y >= texture->height)
+        tex_y = texture->height - 1;
+
+    // Récupération de la couleur
+    return texture->addr[tex_y * texture->width + tex_x];
 }
+
+
+
 
 // void draw_vertical_line(t_data *data, t_ray *ray, int x)
 // {
