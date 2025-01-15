@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lanani-f <lanani-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 18:10:16 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/14 15:59:40 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/15 16:35:27 by lanani-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,6 @@ void free_textures(t_data *data)
 {
     if (!data)
         return;
-
-    // Textures paths
     if (data->no_texture)
     {
         free(data->no_texture);
@@ -97,8 +95,6 @@ void free_textures(t_data *data)
         free(data->do_texture);
         data->do_texture = NULL;
     }
-
-    // Variables *_t ne devraient pas être libérées si elles ne sont pas allouées
     data->n_t = NULL;
     data->s_t = NULL;
     data->w_t = NULL;
@@ -120,13 +116,3 @@ void free_all(t_data *data, char **lines)
     if (lines)
         free_lines(lines);
 }
-
-// void    free_all(t_data *data, char **lines)
-// {
-//     if (!data)
-//         return;
-//     free_map(data);
-//     free_textures(data);
-//     if (lines)
-//         free_lines(lines);
-// }

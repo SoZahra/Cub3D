@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lanani-f <lanani-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 18:11:22 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/09 17:08:58 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/15 16:34:51 by lanani-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,5 @@
 void	error_exit(const char *message)
 {
 	ft_printf("%s\n", message);
-	//free
 	exit(EXIT_FAILURE);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lanani-f <lanani-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 15:13:28 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/15 10:33:01 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/15 16:35:41 by lanani-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,30 +22,6 @@ void	print_parsed_map(char **map)
 		printf("%s", map[i++]);
 	printf("\n----------\n");
 }
-
-// void    init_data(t_data *data)
-// {
-//     data->map = NULL;
-//     data->copie_map = NULL;
-//     data->no_texture = NULL;
-//     data->so_texture = NULL;
-//     data->we_texture = NULL;
-//     data->ea_texture = NULL;
-// 	data->no_loaded = 0;
-//     data->so_loaded = 0;
-//     data->we_loaded = 0;
-//     data->ea_loaded = 0;
-// 	data->c_loaded = 0;
-//     data->f_loaded = 0;
-//     data->n_t = NULL;
-//     data->s_t = NULL;
-//     data->w_t = NULL;
-//     data->e_t = NULL;
-//     data->f_color = -1;
-//     data->c_color = -1;
-//     data->map_width = 0;
-//     data->map_height = 0;
-// }
 
 void    clean_lines_until(char **lines, int index)
 {

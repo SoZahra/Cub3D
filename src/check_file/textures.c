@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   textures.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lanani-f <lanani-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 18:13:26 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/15 13:45:13 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/15 16:27:44 by lanani-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,14 +171,10 @@ int parse_texture_line(t_data *data, char *line)
     int        ret;
 
     cleaned = clean_line(line);
-    // printf("Processing line: '%s'\n", cleaned); // Debug
     if (!cleaned)
         return (0);
     if (cleaned[0] == '\0')
         return (free(cleaned), 1);
-    // printf("Already loaded - NO: %d, SO: %d, WE: %d, EA: %d, DO: %d\n",
-        //    data->no_loaded, data->so_loaded, data->we_loaded,
-        //    data->ea_loaded, data->do_loaded); // Debug
     if (data->no_loaded && data->so_loaded && data->we_loaded
         && data->ea_loaded && data->f_loaded && data->c_loaded && data->do_loaded)
         return (free(cleaned), 1);

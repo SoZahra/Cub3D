@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_doors.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lanani-f <lanani-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 13:34:26 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/14 14:01:45 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/15 16:31:31 by lanani-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,9 @@ void handle_door(t_data *data)
         if (abs(player_x - data->doors[i].x) <= 1 &&
             abs(player_y - data->doors[i].y) <= 1)
         {
-            // Si la touche E est pressée
-            if (data->keys.e)  // Vous devrez ajouter cette variable
+            if (data->keys.e)
             {
                 data->doors[i].is_open = !data->doors[i].is_open;
-                // Animation peut être ajoutée ici
             }
         }
     }

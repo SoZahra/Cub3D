@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_file.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lanani-f <lanani-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:11:44 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/14 13:57:35 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/15 16:27:25 by lanani-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,33 +65,6 @@ int	check_texture_format(const char *path)
 	ft_free_split(parts);
 	return (result);
 }
-
-// int    parse_texture_colors(t_data *data, char **lines, const char *filename)
-// {
-//     int    i;
-
-//     // printf("\nDEBUG: Starting parse_texture_colors\n");
-//     (void)filename;
-//     if (!lines)
-//     {
-//         printf("DEBUG: lines is NULL in parse_texture_colors\n");
-//         return (-1);
-//     }
-//     i = 0;
-//     while (lines[i])
-//     {
-//         // printf("DEBUG: Processing line %d: [%s]\n", i, lines[i]);
-//         if (!parse_texture_line(data, lines[i]))
-//         {
-//             printf("DEBUG: Error in parse_texture_line, calling free_lines\n");
-//             free_lines(lines);
-//             printf("DEBUG: Finished cleanup after parse_texture_line error\n");
-//             return (-1);
-//         }
-//         i++;
-//     }
-//     return (1);
-// }
 
 int	parse_texture_colors(t_data *data, char **lines, const char *filename)
 {

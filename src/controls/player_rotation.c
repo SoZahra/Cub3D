@@ -6,51 +6,17 @@
 /*   By: lanani-f <lanani-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 20:08:20 by lizzieanani       #+#    #+#             */
-/*   Updated: 2025/01/15 14:53:43 by lanani-f         ###   ########.fr       */
+/*   Updated: 2025/01/15 16:29:24 by lanani-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/cub3D.h"
-
-// void handle_rotation(t_data *data)
-// {
-//     // printf("test");
-//     double old_dir_x;
-//     double old_plane_x;
-//     double rot_speed = data->movement.rot_speed;
-
-//     if (!data->movement.rot_left && !data->movement.rot_right)
-//         return;
-//     if (data->movement.rot_right)
-//         rot_speed = -rot_speed;
-
-//     // Rotation de la direction
-//     old_dir_x = data->player.dir_x;
-//     data->player.dir_x = old_dir_x * cos(rot_speed) - data->player.dir_y * sin(rot_speed);
-//     data->player.dir_y = old_dir_x * sin(rot_speed) + data->player.dir_y * cos(rot_speed);
-
-//     // Rotation du plan de la caméra
-//     old_plane_x = data->player.plane_x;
-//     data->player.plane_x = old_plane_x * cos(rot_speed) - data->player.plane_y * sin(rot_speed);
-//     data->player.plane_y = old_plane_x * sin(rot_speed) + data->player.plane_y * cos(rot_speed);
-
-//     // Synchroniser avec ray
-//     data->ray.dir_x = data->player.dir_x;
-//     data->ray.dir_y = data->player.dir_y;
-//     data->ray.plane_x = data->player.plane_x;
-//     data->ray.plane_y = data->player.plane_y;
-// }
 
 void handle_rotation(t_data *data)
 {
     double oldDirX;
     double oldPlaneX;
     double rotSpeed = data->movement.rot_speed;
-
-    // printf("Rotation flags - Left: %d, Right: %d\n",
-    //        data->movement.rot_left, data->movement.rot_right);
-    // printf("Initial Dir: (%f, %f)\n", data->player.dir_x, data->player.dir_y);
-    // printf("Initial Plane: (%f, %f)\n", data->player.plane_x, data->player.plane_y);
 
     if (data->movement.rot_left)
     {
@@ -61,9 +27,6 @@ void handle_rotation(t_data *data)
         oldPlaneX = data->player.plane_x;
         data->player.plane_x = data->player.plane_x * cos(rotSpeed) - data->player.plane_y * sin(rotSpeed);
         data->player.plane_y = oldPlaneX * sin(rotSpeed) + data->player.plane_y * cos(rotSpeed);
-
-        // printf("After Left Rotation - Dir: (%f, %f)\n",
-        //        data->player.dir_x, data->player.dir_y);
     }
     if (data->movement.rot_right)
     {
@@ -74,12 +37,7 @@ void handle_rotation(t_data *data)
         oldPlaneX = data->player.plane_x;
         data->player.plane_x = data->player.plane_x * cos(-rotSpeed) - data->player.plane_y * sin(-rotSpeed);
         data->player.plane_y = oldPlaneX * sin(-rotSpeed) + data->player.plane_y * cos(-rotSpeed);
-
-        // printf("After Right Rotation - Dir: (%f, %f)\n",
-        //        data->player.dir_x, data->player.dir_y);
     }
-
-    // Synchronisation avec ray
     data->ray.dir_x = data->player.dir_x;
     data->ray.dir_y = data->player.dir_y;
     data->ray.plane_x = data->player.plane_x;

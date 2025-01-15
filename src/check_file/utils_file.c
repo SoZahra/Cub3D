@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_file.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lanani-f <lanani-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 18:52:12 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/14 15:18:33 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/15 16:27:50 by lanani-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,6 @@ char	*ft_strtrim2(const char *str)
 	trimmed[len] = '\0';
 	return (trimmed);
 }
-
-// void	init_data(t_data *data)
-// {
-// 	data->f_color = -1;
-// 	data->c_color = -1;
-// }
 
 char	*clean_line(char *line)
 {

@@ -6,7 +6,7 @@
 /*   By: lanani-f <lanani-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 19:49:58 by lizzieanani       #+#    #+#             */
-/*   Updated: 2025/01/15 15:18:13 by lanani-f         ###   ########.fr       */
+/*   Updated: 2025/01/15 16:32:29 by lanani-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,22 +19,7 @@ void	init_ray_dir(t_ray *ray, t_data *data, int x)
 	ray->ray_dir_y = data->player.dir_y + ray->plane_y * ray->camera_x;
 	ray->map_x = (int)ray->pos_x;
 	ray->map_y = (int)ray->pos_y;
-
-	// ray->delta_dist_x = fabs(1 / ray->ray_dir_x);
-    // ray->delta_dist_y = fabs(1 / ray->ray_dir_y);
 }
-
-// void	init_ray_dist(t_ray *ray)
-// {
-// 	if (!ray->ray_dir_x)
-// 		ray->delta_dist_x = 1e30;
-// 	else
-// 		ray->delta_dist_x = fabs(1 / ray->ray_dir_x);
-// 	if (!ray->ray_dir_y)
-// 		ray->delta_dist_y = 1e30;
-// 	else
-// 		ray->delta_dist_y = fabs(1 / ray->ray_dir_y);
-// }
 
 void init_ray_dist(t_ray *ray)
 {
