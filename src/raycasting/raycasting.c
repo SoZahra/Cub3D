@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 19:56:03 by lizzieanani       #+#    #+#             */
-/*   Updated: 2025/01/15 10:43:44 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/15 14:29:15 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ void init_player_pos(t_ray *ray, t_data *data)
     // Position
     ray->pos_x = (double)data->player.pos_x + 0.5;
     ray->pos_y = (double)data->player.pos_y + 0.5;
-
     if (data->player.player_dir == 'N')
     {
         ray->dir_x = 0;
@@ -66,21 +65,14 @@ void init_player_pos(t_ray *ray, t_data *data)
     data->player.dir_y = ray->dir_y;
     data->player.plane_x = ray->plane_x;
     data->player.plane_y = ray->plane_y;
-
     data->movement.move_speed = 0.1;
     data->movement.rot_speed = 0.05;
-
     data->movement.forward = 0;
     data->movement.backward = 0;
     data->movement.left = 0;
     data->movement.right = 0;
     data->movement.rot_left = 0;
     data->movement.rot_right = 0;
-
-    // Debug print pour vérifier l'initialisation
-    // printf("Initial Direction: (%f, %f)\n", ray->dir_x, ray->dir_y);
-    // printf("Initial Plane: (%f, %f)\n", ray->plane_x, ray->plane_y);
-    // printf("Player Direction: %c\n", data->player.player_dir);
 }
 
 int	get_tex_x(t_texture *texture, t_ray *ray)
@@ -93,9 +85,9 @@ int	get_tex_x(t_texture *texture, t_ray *ray)
 	else
 		wall_x = ray->pos_x + ray->wall_dist * ray->ray_dir_x;
 	wall_x -= floor(wall_x);
-	tex_x = (int)(wall_x * texture->width);
-	if ((ray->side == 0 && ray->ray_dir_x > 0) || (ray->side == 1
-			&& ray->ray_dir_y < 0))
+	tex_x = (int)(wall_x * (double)texture->width);
+	if ((ray->side == 0 && ray->ray_dir_x > 0)
+		|| (ray->side == 1 && ray->ray_dir_y < 0))
 		tex_x = texture->width - tex_x - 1;
 	return (tex_x);
 }
@@ -129,6 +121,7 @@ int get_tex_color(t_texture *texture, int tex_x, int tex_y)
     return texture->addr[tex_y * (texture->line_length / 4) + tex_x];
 }
 
+// si pas solution trouver pour la texture passer a 2 le step
 int	get_texture_color(t_data *data, t_ray *ray, int y)
 {
 	int			tex_x;
@@ -146,6 +139,35 @@ int	get_texture_color(t_data *data, t_ray *ray, int y)
 	return (get_tex_color(texture, tex_x, tex_y));
 }
 
+// void draw_vertical_line(t_data *data, t_ray *ray, int x)
+// {
+//     int y;
+
+//     if (!data || !data->img.addr)
+//         return;
+//     if (x < 0 || x >= WIN_WIDTH)
+//         return;
+//     y = 0;
+//     while (y < ray->draw_start && y < WIN_HEIGHT)
+//     {
+//         if ((y * WIN_WIDTH + x) < (WIN_WIDTH * WIN_HEIGHT))
+//             data->img.addr[y * WIN_WIDTH + x] = data->c_color;
+//         y++;
+//     }
+//     while (y < ray->draw_end && y < WIN_HEIGHT)
+//     {
+//         if ((y * WIN_WIDTH + x) < (WIN_WIDTH * WIN_HEIGHT))
+//             data->img.addr[y * WIN_WIDTH + x] = get_texture_color(data, ray, y);
+//         y++;
+//     }
+//     while (y < WIN_HEIGHT)
+//     {
+//         if ((y * WIN_WIDTH + x) < (WIN_WIDTH * WIN_HEIGHT))
+//             data->img.addr[y * WIN_WIDTH + x] = data->f_color;
+//         y++;
+//     }
+// }
+
 void draw_vertical_line(t_data *data, t_ray *ray, int x)
 {
     int y;
@@ -156,11 +178,22 @@ void draw_vertical_line(t_data *data, t_ray *ray, int x)
         return;
     y = 0;
     while (y < ray->draw_start && y < WIN_HEIGHT)
-    {
-        if ((y * WIN_WIDTH + x) < (WIN_WIDTH * WIN_HEIGHT))
-            data->img.addr[y * WIN_WIDTH + x] = data->c_color;
-        y++;
-    }
+	{
+		if ((y * WIN_WIDTH + x) < (WIN_WIDTH * WIN_HEIGHT))
+		{
+			if (data->c_is_texture)
+			{
+				double rot = atan2(data->player.dir_y, data->player.dir_x);
+				int tex_x = (int)((x + rot * WIN_WIDTH / (2 * M_PI)) * data->sky_tex.width / WIN_WIDTH) % data->sky_tex.width;
+				int tex_y = (int)(y * data->sky_tex.height / (WIN_HEIGHT / 2)) % data->sky_tex.height;
+
+				data->img.addr[y * WIN_WIDTH + x] = get_tex_color(&data->sky_tex, tex_x, tex_y);
+			}
+			else
+				data->img.addr[y * WIN_WIDTH + x] = data->c_color;
+		}
+		y++;
+	}
     while (y < ray->draw_end && y < WIN_HEIGHT)
     {
         if ((y * WIN_WIDTH + x) < (WIN_WIDTH * WIN_HEIGHT))

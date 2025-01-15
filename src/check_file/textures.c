@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 18:13:26 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/14 17:01:30 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/15 13:45:13 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,11 +116,24 @@ static int    floor_ceil(t_data *data, char *cleaned, int is_floor)
     {
         if (data->c_loaded)
             return (free(cleaned), error_exit("Error: Duplicate C color"), 0);
-        ret = parse_color(cleaned + 2);
-        if (ret == -1)
-            return (free(cleaned), error_exit("Error: Invalid C color"), 0);
-        data->c_color = ret;
-        data->c_loaded = 1;
+		if(cleaned[2] == '.' || (cleaned[2] == ' ' && cleaned[3] == '.'))
+		{
+			if(!check_texture_format(cleaned + 2))
+				return (free(cleaned), error_exit("Error: Invalid C format"), 0);
+			data->c_texture = ft_strdup(cleaned + 2);
+			if (!data->c_texture)
+				return (free(cleaned), 0);
+			data->c_is_texture = 1;
+		}
+		else
+		{
+			ret = parse_color(cleaned + 2);
+			if (ret == -1)
+				return (free(cleaned), error_exit("Error: Invalid C color"), 0);
+			data->c_color = ret;
+			data->c_is_texture = 0;
+		}
+		data->c_loaded = 1;
     }
     free(cleaned);
     return (1);
@@ -174,22 +187,3 @@ int parse_texture_line(t_data *data, char *line)
     ret = handle_texture_line_(data, cleaned);
     return (ret);
 }
-
-// int	parse_texture_line(t_data *data, char *line)
-// {
-// 	char	*cleaned;
-// 	int		ret;
-
-// 	cleaned = clean_line(line);
-// 	if (!cleaned)
-// 		return (0);
-// 	if (cleaned[0] == '\0')
-// 		return (free(cleaned), 1);
-// 	if (data->no_loaded && data->so_loaded && data->we_loaded
-// 		&& data->ea_loaded && data->f_loaded && data->c_loaded && data->do_loaded)
-// 		return (free(cleaned), 1);
-// 	if (!is_valid_identifier(cleaned))
-// 		return (free(cleaned), error_exit("Error: Invalid line"), 0);
-// 	ret = handle_texture_line_(data, cleaned);
-// 	return (ret);
-// }

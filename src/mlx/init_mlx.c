@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 11:41:34 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/15 10:44:28 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/15 13:50:41 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -295,6 +295,8 @@ int	load_textures(t_data *data)
 		return (error_exit("Failed to load EA texture"), 0);
     if (!load_texture(data, &data->mlx.do_tex, data->do_texture))
 		return (error_exit("Failed to load DO texture"), 0);
+	if (data->c_is_texture && !load_texture(data, &data->sky_tex, data->c_texture))
+		return (error_exit("Failed to load SKY texture"), 0);
 	// printf("DEBUG: All textures loaded successfully\n");
 	return (1);
 }

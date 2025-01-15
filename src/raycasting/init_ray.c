@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 19:49:58 by lizzieanani       #+#    #+#             */
-/*   Updated: 2025/01/13 16:33:24 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/15 11:50:51 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,34 @@ void	init_ray_dir(t_ray *ray, t_data *data, int x)
 	ray->ray_dir_y = data->player.dir_y + ray->plane_y * ray->camera_x;
 	ray->map_x = (int)ray->pos_x;
 	ray->map_y = (int)ray->pos_y;
+
+	// ray->delta_dist_x = fabs(1 / ray->ray_dir_x);
+    // ray->delta_dist_y = fabs(1 / ray->ray_dir_y);
 }
 
-void	init_ray_dist(t_ray *ray)
+// void	init_ray_dist(t_ray *ray)
+// {
+// 	if (!ray->ray_dir_x)
+// 		ray->delta_dist_x = 1e30;
+// 	else
+// 		ray->delta_dist_x = fabs(1 / ray->ray_dir_x);
+// 	if (!ray->ray_dir_y)
+// 		ray->delta_dist_y = 1e30;
+// 	else
+// 		ray->delta_dist_y = fabs(1 / ray->ray_dir_y);
+// }
+
+void init_ray_dist(t_ray *ray)
 {
-	if (!ray->ray_dir_x)
-		ray->delta_dist_x = 1e30;
-	else
-		ray->delta_dist_x = fabs(1 / ray->ray_dir_x);
-	if (!ray->ray_dir_y)
-		ray->delta_dist_y = 1e30;
-	else
-		ray->delta_dist_y = fabs(1 / ray->ray_dir_y);
+    if (ray->ray_dir_x == 0)
+        ray->delta_dist_x = 1e30;
+    else
+        ray->delta_dist_x = fabs(1 / ray->ray_dir_x);
+
+    if (ray->ray_dir_y == 0)
+        ray->delta_dist_y = 1e30;
+    else
+        ray->delta_dist_y = fabs(1 / ray->ray_dir_y);
 }
 
 void	init_ray_step(t_ray *ray)

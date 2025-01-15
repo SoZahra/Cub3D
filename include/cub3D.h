@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 15:14:56 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/14 17:05:46 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/15 14:31:35 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,10 @@
 # define MINIMAP_SIZE 200
 #define MOVE_SPEED 0.05
 #define ROT_SPEED 0.03
+
+# ifndef M_PI
+#  define M_PI 3.14159265358979323846
+# endif
 
 typedef struct s_movement
 {
@@ -157,19 +161,22 @@ typedef struct s_data
 	int			do_loaded;
 	int			f_loaded;
 	int			c_loaded;
+	int			c_is_texture;
 	char		*so_texture;
 	char		*we_texture;
 	char		*ea_texture;
 	char		*no_texture;
 	char		*do_texture;
+	char		*c_texture;
 	t_mlx_data	mlx;
 	t_texture	img;
+	t_texture	sky_tex;
 	t_movement	movement;
 	t_minimap	minimap;
 	t_door		*doors;
 	t_keys		keys;
+	t_ray		ray;
 	int			num_doors;
-	t_ray       ray;
 }				t_data;
 
 /// parsing/parsing.c

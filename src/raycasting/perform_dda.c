@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 19:51:36 by lizzieanani       #+#    #+#             */
-/*   Updated: 2025/01/14 16:08:14 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/15 13:57:35 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	perform_dda(t_ray *ray, t_data *data)
 {
 	ray->hit = 0;
-	while (!ray->hit)
+	while (ray->hit == 0)
 	{
 		if (ray->side_dist_x < ray->side_dist_y)
 		{
@@ -37,14 +37,13 @@ void	perform_dda(t_ray *ray, t_data *data)
             ray->hit = 1;
         else if (data->map[ray->map_y][ray->map_x] == 'D')
         {
-            // Chercher si cette porte est ouverte
             for (int i = 0; i < data->num_doors; i++)
             {
                 if (data->doors[i].x == ray->map_x &&
                     data->doors[i].y == ray->map_y)
                 {
                     if (!data->doors[i].is_open)
-                        ray->hit = 2;  // 2 pour indiquer que c'est une porte
+                        ray->hit = 2;
                     break;
                 }
             }
@@ -52,13 +51,23 @@ void	perform_dda(t_ray *ray, t_data *data)
 	}
 }
 
-void	calculate_wall_dist(t_ray *ray)
+void calculate_wall_dist(t_ray *ray)
 {
-	if (ray->side == 0)
-		ray->wall_dist = ray->side_dist_x - ray->delta_dist_x;
-	else
-		ray->wall_dist = ray->side_dist_y - ray->delta_dist_y;
+    if (ray->side == 0)
+        ray->wall_dist = (ray->map_x - ray->pos_x + (1 - ray->step_x) / 2) / ray->ray_dir_x;
+    else
+        ray->wall_dist = (ray->map_y - ray->pos_y + (1 - ray->step_y) / 2) / ray->ray_dir_y;
 }
+
+// void calculate_wall_dist(t_ray *ray)
+// {
+// 	if (ray->side == 0)
+//         ray->wall_dist = (ray->map_x - ray->pos_x + (1 - ray->step_x) / 2) / ray->ray_dir_x;
+// 	else
+//         ray->wall_dist = (ray->map_y - ray->pos_y + (1 - ray->step_y) / 2) / ray->ray_dir_y;
+// 	if (ray->wall_dist < 0)
+//         ray->wall_dist = 0;
+// }
 
 void	calculate_line_height(t_ray *ray)
 {

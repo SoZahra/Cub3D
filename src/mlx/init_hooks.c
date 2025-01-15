@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 16:20:05 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/15 10:40:12 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/15 11:24:15 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	handle_keyrelease(int keycode, t_data *data)
 
 int    key_press(int keycode, t_data *data)
 {
-    printf("Keycode pressed: %d\n", keycode);
+    // printf("Keycode pressed: %d\n", keycode);
     if (keycode == KEY_ESC)
         exit_game(data);
     if (keycode == KEY_W)
@@ -55,15 +55,9 @@ int    key_press(int keycode, t_data *data)
     if (keycode == KEY_D)
         data->movement.right = 1;
     if (keycode == KEY_LEFT)
-    {
-        printf("Left arrow pressed\n");
         data->movement.rot_left = 1;
-    }
     if (keycode == KEY_RIGHT)
-    {
-        printf("Right arrow pressed\n");
         data->movement.rot_right = 1;
-    }
     if (keycode == 'e' || keycode == 'E')
         data->keys.e = 1;
     return (0);

@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 20:08:20 by lizzieanani       #+#    #+#             */
-/*   Updated: 2025/01/15 10:39:16 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/15 11:23:18 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,10 @@ void handle_rotation(t_data *data)
     double oldPlaneX;
     double rotSpeed = data->movement.rot_speed;
 
-    printf("Rotation flags - Left: %d, Right: %d\n",
-           data->movement.rot_left, data->movement.rot_right);
-    printf("Initial Dir: (%f, %f)\n", data->player.dir_x, data->player.dir_y);
-    printf("Initial Plane: (%f, %f)\n", data->player.plane_x, data->player.plane_y);
+    // printf("Rotation flags - Left: %d, Right: %d\n",
+    //        data->movement.rot_left, data->movement.rot_right);
+    // printf("Initial Dir: (%f, %f)\n", data->player.dir_x, data->player.dir_y);
+    // printf("Initial Plane: (%f, %f)\n", data->player.plane_x, data->player.plane_y);
 
     if (data->movement.rot_left)
     {
@@ -62,8 +62,8 @@ void handle_rotation(t_data *data)
         data->player.plane_x = data->player.plane_x * cos(rotSpeed) - data->player.plane_y * sin(rotSpeed);
         data->player.plane_y = oldPlaneX * sin(rotSpeed) + data->player.plane_y * cos(rotSpeed);
 
-        printf("After Left Rotation - Dir: (%f, %f)\n",
-               data->player.dir_x, data->player.dir_y);
+        // printf("After Left Rotation - Dir: (%f, %f)\n",
+        //        data->player.dir_x, data->player.dir_y);
     }
     if (data->movement.rot_right)
     {
@@ -75,8 +75,8 @@ void handle_rotation(t_data *data)
         data->player.plane_x = data->player.plane_x * cos(-rotSpeed) - data->player.plane_y * sin(-rotSpeed);
         data->player.plane_y = oldPlaneX * sin(-rotSpeed) + data->player.plane_y * cos(-rotSpeed);
 
-        printf("After Right Rotation - Dir: (%f, %f)\n",
-               data->player.dir_x, data->player.dir_y);
+        // printf("After Right Rotation - Dir: (%f, %f)\n",
+        //        data->player.dir_x, data->player.dir_y);
     }
 
     // Synchronisation avec ray
