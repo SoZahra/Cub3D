@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lanani-f <lanani-f@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 15:13:28 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/15 16:49:03 by lanani-f         ###   ########.fr       */
+/*   Updated: 2025/01/15 17:41:47 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,11 +84,7 @@ int	main(int ac, char **av)
 		return (free_all(&data, lines), 1);
 	free_lines(lines);
 	if (!init_game(&data))
-	{
-		cleanup_mlx(&data);
-		free_all(&data, NULL);
-		return (1);
-	}
+		return (cleanup_mlx(&data),free_all(&data, NULL), 1);
 	if (data.mlx.mlx && data.mlx.win)
 	{
 		mlx_loop_hook(data.mlx.mlx, game_loop, &data);

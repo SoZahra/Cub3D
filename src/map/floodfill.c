@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 13:48:36 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/15 17:32:23 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/15 18:21:19 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,16 +36,12 @@ int	is_border_valid(t_data *data, int y, int x)
 	{
 		if (x == line_len && line_len > 0 && data->map[y][line_len - 1] == '1')
 			return (1);
-		// printf("DEBUG: Invalid border - position beyond line length at y:%d,\
-		// 	x:%d (line length: %d)\n", y, x, line_len);
 		return (0);
 	}
 	if (data->map[y][x] == '1')
 		return (1);
 	if (data->map[y][x] == ' ')
 		return (is_space_closed(data, y, x));
-	printf("DEBUG: Invalid border character at y:%d, x:%d, char:'%c'\n", y, x,
-		data->map[y][x]);
 	return (0);
 }
 

@@ -6,51 +6,76 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 13:34:26 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/15 17:30:55 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/15 18:19:22 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3D.h"
 
+static void	count_door_in_row(t_data *data, int i, int j, int *count)
+{
+	if (j >= data->map_width)
+		return ;
+	if (data->map[i][j] == 'D')
+		(*count)++;
+	count_door_in_row(data, i, j + 1, count);
+}
+
+static void	count_doors_recursive(t_data *data, int i, int *count)
+{
+	if (i >= data->map_height)
+		return ;
+	count_door_in_row(data, i, 0, count);
+	count_doors_recursive(data, i + 1, count);
+}
+
+static void	init_door(t_door *door, int x, int y)
+{
+	door->x = x;
+	door->y = y;
+	door->is_open = 0;
+	door->animation = 0.0;
+}
+
+static void	fill_door_in_row(t_data *data, int i, int j, int *count)
+{
+	if (j >= data->map_width)
+		return ;
+	if (data->map[i][j] == 'D')
+	{
+		init_door(&data->doors[*count], j, i);
+		(*count)++;
+	}
+	fill_door_in_row(data, i, j + 1, count);
+}
+
+static void	fill_doors_recursive(t_data *data, int i, int *count)
+{
+	if (i >= data->map_height)
+		return ;
+	fill_door_in_row(data, i, 0, count);
+	fill_doors_recursive(data, i + 1, count);
+}
+
 int	init_doors(t_data *data)
 {
 	int	count;
-	int i;
-	int j;
 
-	count = ((i = 0));
-	while(i < data->map_height)
+	if (!data || !data->map)
+		return (0);
+	count = 0;
+	count_doors_recursive(data, 0, &count);
+	if (count == 0)
 	{
-		j = 0;
-		while(j < data->map_width)
-		{
-			if (data->map[i][j] == 'D')
-				count++;
-			j++;
-		}
-		i++;
+		data->doors = NULL;
+		data->num_doors = 0;
+		return (1);
 	}
 	data->doors = malloc(sizeof(t_door) * count);
 	if (!data->doors)
 		return (0);
-	count = ((i = 0));
-	while(i < data->map_height)
-	{
-		j= 0;
-		while(j < data->map_width)
-		{
-			if (data->map[i][j] == 'D')
-			{
-				data->doors[count].x = j;
-				data->doors[count].y = i;
-				data->doors[count].is_open = 0;
-				data->doors[count].animation = 0.0;
-				count++;
-			}
-			j++;
-		}
-		i++;
-	}
+	count = 0;
+	fill_doors_recursive(data, 0, &count);
 	data->num_doors = count;
 	return (1);
 }
@@ -59,12 +84,12 @@ void	handle_door(t_data *data)
 {
 	int	player_x;
 	int	player_y;
-    int i;
+	int	i;
 
 	player_x = (int)data->player.pos_x;
 	player_y = (int)data->player.pos_y;
-    i = 0;
-    while(i < data->num_doors)
+	i = 0;
+	while (i < data->num_doors)
 	{
 		if (abs(player_x - data->doors[i].x) <= 1 && abs(player_y
 				- data->doors[i].y) <= 1)
@@ -74,16 +99,16 @@ void	handle_door(t_data *data)
 				data->doors[i].is_open = !data->doors[i].is_open;
 			}
 		}
-        i++;
+		i++;
 	}
 }
 
 void	update_doors(t_data *data)
 {
-    int i;
+	int	i;
 
-    i = 0;
-	while(i < data->num_doors)
+	i = 0;
+	while (i < data->num_doors)
 	{
 		if (data->doors[i].is_open && data->doors[i].animation < 1.0)
 			data->doors[i].animation += 0.05;

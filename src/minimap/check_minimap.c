@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_minimap.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lanani-f <lanani-f@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 17:06:21 by lizzieanani       #+#    #+#             */
-/*   Updated: 2025/01/15 16:41:44 by lanani-f         ###   ########.fr       */
+/*   Updated: 2025/01/15 18:22:56 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,18 +67,13 @@ static int	validate_player_position(t_data *data)
 
 	player_count = 0;
 	y = 0;
-	printf("Checking for player position in map with height: %d\n",
-		data->map_height);
 	while (y < data->map_height)
 	{
 		x = 0;
-		printf("Checking line %d: '%s'\n", y, data->map[y]);
 		while (data->map[y][x])
 		{
 			if (is_valid_player_char(data->map[y][x]))
 			{
-				printf("Found player '%c' at position [%d][%d]\n",
-					data->map[y][x], y, x);
 				player_count++;
 				data->player.pos_x = x;
 				data->player.pos_y = y;
@@ -88,10 +83,8 @@ static int	validate_player_position(t_data *data)
 		}
 		y++;
 	}
-	printf("Total players found: %d\n", player_count);
 	if (player_count != 1)
-		return (error_exit("Il doit y avoir exactement une position de départ"),
-			1);
+		return (error_exit("Error : need just one start"), 1);
 	return (0);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_file.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lanani-f <lanani-f@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:11:44 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/15 16:38:34 by lanani-f         ###   ########.fr       */
+/*   Updated: 2025/01/15 17:43:17 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,7 @@ int	parse_texture_colors(t_data *data, char **lines, const char *filename)
 		return (error_exit("Error: Missing required elements"), -1);
 	map_start = find_map_start(lines);
 	if (map_start == -1)
-		return (error_exit("Error: Invalid map format or missing elements"),
-			-1);
+		return (error_exit("Error: map format or missing elements"), -1);
 	if (!store_map(data, lines, map_start))
 		return (error_exit("Error: Failed to store map"), -1);
 	if (!check_map_valid(data))

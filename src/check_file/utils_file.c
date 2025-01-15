@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_file.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lanani-f <lanani-f@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 18:52:12 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/15 16:38:50 by lanani-f         ###   ########.fr       */
+/*   Updated: 2025/01/15 17:43:59 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ char	*ft_strtrim2(const char *str)
 	while (*str == ' ' || *str == '\t' || *str == '\n')
 		str++;
 	len = ft_strlen(str);
-	while (len > 0 && (str[len - 1] == ' ' || str[len - 1] == '\t' || str[len
-			- 1] == '\n'))
+	while (len > 0 && (str[len - 1] == ' ' || str[len - 1] == '\t'
+			|| str[len - 1] == '\n'))
 		len--;
 	trimmed = malloc(len + 1);
 	if (!trimmed)

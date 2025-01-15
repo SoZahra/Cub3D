@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_mlx.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lanani-f <lanani-f@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 11:41:34 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/15 16:43:18 by lanani-f         ###   ########.fr       */
+/*   Updated: 2025/01/15 18:27:01 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,8 @@ int	init_game(t_data *data)
 	return (1);
 }
 
-int	init_mlx(t_data *data)
+static int	init_mlx_window(t_data *data)
 {
-	int	bits_per_pixel;
-	int	line_length;
-	int	endian;
-
 	data->mlx.mlx = mlx_init();
 	if (!data->mlx.mlx)
 		return (error_exit("Failed to init MLX"), 0);
@@ -82,6 +78,11 @@ int	init_mlx(t_data *data)
 		free(data->mlx.mlx);
 		return (error_exit("Failed to create window"), 0);
 	}
+	return (1);
+}
+
+static int	create_mlx_image(t_data *data)
+{
 	data->img.img = mlx_new_image(data->mlx.mlx, WIN_WIDTH, WIN_HEIGHT);
 	if (!data->img.img)
 	{
@@ -90,6 +91,24 @@ int	init_mlx(t_data *data)
 		free(data->mlx.mlx);
 		return (error_exit("Failed to create image"), 0);
 	}
+	return (1);
+}
+
+static void	set_image_properties(t_data *data, int bpp, int len, int endian)
+{
+	data->img.bits_per_pixel = bpp;
+	data->img.line_length = len;
+	data->img.endian = endian;
+	data->img.width = WIN_WIDTH;
+	data->img.height = WIN_HEIGHT;
+}
+
+static int	init_image_addr(t_data *data)
+{
+	int	bits_per_pixel;
+	int	line_length;
+	int	endian;
+
 	data->img.addr = (int *)mlx_get_data_addr(data->img.img, &bits_per_pixel,
 			&line_length, &endian);
 	if (!data->img.addr)
@@ -100,11 +119,20 @@ int	init_mlx(t_data *data)
 		free(data->mlx.mlx);
 		return (error_exit("Failed to get image address"), 0);
 	}
-	data->img.bits_per_pixel = bits_per_pixel;
-	data->img.line_length = line_length;
-	data->img.endian = endian;
-	data->img.width = WIN_WIDTH;
-	data->img.height = WIN_HEIGHT;
+	set_image_properties(data, bits_per_pixel, line_length, endian);
+	return (1);
+}
+
+int	init_mlx(t_data *data)
+{
+	if (!data)
+		return (0);
+	if (!init_mlx_window(data))
+		return (0);
+	if (!create_mlx_image(data))
+		return (0);
+	if (!init_image_addr(data))
+		return (0);
 	return (1);
 }
 
@@ -134,7 +162,6 @@ int	load_texture(t_data *data, t_texture *tex, char *path)
 		tex->img = NULL;
 		return (0);
 	}
-	// Vérification des dimensions
 	if (tex->width <= 0 || tex->height <= 0)
 	{
 		mlx_destroy_image(data->mlx.mlx, tex->img);
