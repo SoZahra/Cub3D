@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   perform_dda.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lanani-f <lanani-f@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 19:51:36 by lizzieanani       #+#    #+#             */
-/*   Updated: 2025/01/15 16:46:13 by lanani-f         ###   ########.fr       */
+/*   Updated: 2025/01/15 17:34:50 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	perform_dda(t_ray *ray, t_data *data)
 {
+    int i;
 	ray->hit = 0;
 	while (ray->hit == 0)
 	{
@@ -37,16 +38,18 @@ void	perform_dda(t_ray *ray, t_data *data)
 			ray->hit = 1;
 		else if (data->map[ray->map_y][ray->map_x] == 'D')
 		{
-			for (int i = 0; i < data->num_doors; i++)
-			{
-				if (data->doors[i].x == ray->map_x
+            i = 0;
+            while(i < data->num_doors)
+            {
+                if (data->doors[i].x == ray->map_x
 					&& data->doors[i].y == ray->map_y)
 				{
 					if (!data->doors[i].is_open)
 						ray->hit = 2;
 					break ;
 				}
-			}
+                i++;
+            }
 		}
 	}
 }
