@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lanani-f <lanani-f@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 19:56:03 by lizzieanani       #+#    #+#             */
-/*   Updated: 2025/01/15 16:45:49 by lanani-f         ###   ########.fr       */
+/*   Updated: 2025/01/15 18:33:28 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,42 +29,105 @@ int	game_loop(t_data *data)
 	return (0);
 }
 
-void	init_player_pos(t_ray *ray, t_data *data)
+// void	init_player_pos(t_ray *ray, t_data *data)
+// {
+// 	ray->pos_x = (double)data->player.pos_x + 0.5;
+// 	ray->pos_y = (double)data->player.pos_y + 0.5;
+// 	if (data->player.player_dir == 'N')
+// 	{
+// 		ray->dir_x = 0;
+// 		ray->dir_y = -1;
+// 		ray->plane_x = 0.66;
+// 		ray->plane_y = 0;
+// 	}
+// 	else if (data->player.player_dir == 'S')
+// 	{
+// 		ray->dir_x = 0;
+// 		ray->dir_y = 1;
+// 		ray->plane_x = -0.66;
+// 		ray->plane_y = 0;
+// 	}
+// 	else if (data->player.player_dir == 'E')
+// 	{
+// 		ray->dir_x = 1;
+// 		ray->dir_y = 0;
+// 		ray->plane_x = 0;
+// 		ray->plane_y = 0.66;
+// 	}
+// 	else if (data->player.player_dir == 'W')
+// 	{
+// 		ray->dir_x = -1;
+// 		ray->dir_y = 0;
+// 		ray->plane_x = 0;
+// 		ray->plane_y = -0.66;
+// 	}
+// 	data->player.dir_x = ray->dir_x;
+// 	data->player.dir_y = ray->dir_y;
+// 	data->player.plane_x = ray->plane_x;
+// 	data->player.plane_y = ray->plane_y;
+// 	data->movement.move_speed = 0.1;
+// 	data->movement.rot_speed = 0.05;
+// 	data->movement.forward = 0;
+// 	data->movement.backward = 0;
+// 	data->movement.left = 0;
+// 	data->movement.right = 0;
+// 	data->movement.rot_left = 0;
+// 	data->movement.rot_right = 0;
+// }
+
+static void	init_ray_position(t_ray *ray, t_data *data)
 {
+	if (!ray || !data)
+		return ;
 	ray->pos_x = (double)data->player.pos_x + 0.5;
 	ray->pos_y = (double)data->player.pos_y + 0.5;
-	if (data->player.player_dir == 'N')
-	{
-		ray->dir_x = 0;
-		ray->dir_y = -1;
-		ray->plane_x = 0.66;
-		ray->plane_y = 0;
-	}
-	else if (data->player.player_dir == 'S')
+}
+
+static void	set_direction_north(t_ray *ray)
+{
+	ray->dir_x = 0;
+	ray->dir_y = -1;
+	ray->plane_x = 0.66;
+	ray->plane_y = 0;
+}
+
+static void	set_direction_vectors_(t_ray *ray, char dir)
+{
+	if (dir == 'N')
+		set_direction_north(ray);
+	else if (dir == 'S')
 	{
 		ray->dir_x = 0;
 		ray->dir_y = 1;
 		ray->plane_x = -0.66;
 		ray->plane_y = 0;
 	}
-	else if (data->player.player_dir == 'E')
+	else if (dir == 'E')
 	{
 		ray->dir_x = 1;
 		ray->dir_y = 0;
 		ray->plane_x = 0;
 		ray->plane_y = 0.66;
 	}
-	else if (data->player.player_dir == 'W')
+	else if (dir == 'W')
 	{
 		ray->dir_x = -1;
 		ray->dir_y = 0;
 		ray->plane_x = 0;
 		ray->plane_y = -0.66;
 	}
+}
+
+static void	update_player_vectors(t_ray *ray, t_data *data)
+{
 	data->player.dir_x = ray->dir_x;
 	data->player.dir_y = ray->dir_y;
 	data->player.plane_x = ray->plane_x;
 	data->player.plane_y = ray->plane_y;
+}
+
+static void	init_movement_values(t_data *data)
+{
 	data->movement.move_speed = 0.1;
 	data->movement.rot_speed = 0.05;
 	data->movement.forward = 0;
@@ -73,6 +136,16 @@ void	init_player_pos(t_ray *ray, t_data *data)
 	data->movement.right = 0;
 	data->movement.rot_left = 0;
 	data->movement.rot_right = 0;
+}
+
+void	init_player_pos(t_ray *ray, t_data *data)
+{
+	if (!ray || !data)
+		return ;
+	init_ray_position(ray, data);
+	set_direction_vectors_(ray, data->player.player_dir);
+	update_player_vectors(ray, data);
+	init_movement_values(data);
 }
 
 int	get_tex_x(t_texture *texture, t_ray *ray)
