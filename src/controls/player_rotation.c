@@ -6,78 +6,80 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 20:08:20 by lizzieanani       #+#    #+#             */
-/*   Updated: 2025/01/14 17:05:26 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/15 10:39:16 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/cub3D.h"
 
-// void	handle_rotation(t_data *data)
+// void handle_rotation(t_data *data)
 // {
-// 	double	old_dir_x;
-// 	double	old_plane_x;
+//     // printf("test");
+//     double old_dir_x;
+//     double old_plane_x;
+//     double rot_speed = data->movement.rot_speed;
 
-// 	if (data->movement.rot_right)
-// 	{
-// 		old_dir_x = data->player.dir_x;
-// 		data->player.dir_x = data->player.dir_x * cos(-data->movement.rot_speed)
-// 			- data->player.dir_y * sin(-data->movement.rot_speed);
-// 		data->player.dir_y = old_dir_x * sin(-data->movement.rot_speed)
-// 			+ data->player.dir_y * cos(-data->movement.rot_speed);
-// 		old_plane_x = data->player.plane_x;
-// 		data->player.plane_x = data->player.plane_x
-// 			* cos(-data->movement.rot_speed) - data->player.plane_y
-// 			* sin(-data->movement.rot_speed);
-// 		data->player.plane_y = old_plane_x * sin(-data->movement.rot_speed)
-// 			+ data->player.plane_y * cos(-data->movement.rot_speed);
-// 	}
-// 	handle_rotation_left(data);
-// }
+//     if (!data->movement.rot_left && !data->movement.rot_right)
+//         return;
+//     if (data->movement.rot_right)
+//         rot_speed = -rot_speed;
 
-// void	handle_rotation_left(t_data *data)
-// {
-// 	double	old_dir_x;
-// 	double	old_plane_x;
+//     // Rotation de la direction
+//     old_dir_x = data->player.dir_x;
+//     data->player.dir_x = old_dir_x * cos(rot_speed) - data->player.dir_y * sin(rot_speed);
+//     data->player.dir_y = old_dir_x * sin(rot_speed) + data->player.dir_y * cos(rot_speed);
 
-// 	if (data->movement.rot_left)
-// 	{
-// 		old_dir_x = data->player.dir_x;
-// 		data->player.dir_x = data->player.dir_x * cos(data->movement.rot_speed)
-// 			- data->player.dir_y * sin(data->movement.rot_speed);
-// 		data->player.dir_y = old_dir_x * sin(data->movement.rot_speed)
-// 			+ data->player.dir_y * cos(data->movement.rot_speed);
-// 		old_plane_x = data->player.plane_x;
-// 		data->player.plane_x = data->player.plane_x
-// 			* cos(data->movement.rot_speed) - data->player.plane_y
-// 			* sin(data->movement.rot_speed);
-// 		data->player.plane_y = old_plane_x * sin(data->movement.rot_speed)
-// 			+ data->player.plane_y * cos(data->movement.rot_speed);
-// 	}
+//     // Rotation du plan de la caméra
+//     old_plane_x = data->player.plane_x;
+//     data->player.plane_x = old_plane_x * cos(rot_speed) - data->player.plane_y * sin(rot_speed);
+//     data->player.plane_y = old_plane_x * sin(rot_speed) + data->player.plane_y * cos(rot_speed);
+
+//     // Synchroniser avec ray
+//     data->ray.dir_x = data->player.dir_x;
+//     data->ray.dir_y = data->player.dir_y;
+//     data->ray.plane_x = data->player.plane_x;
+//     data->ray.plane_y = data->player.plane_y;
 // }
 
 void handle_rotation(t_data *data)
 {
-    double old_dir_x;
-    double old_plane_x;
-    double rot_speed = data->movement.rot_speed;
+    double oldDirX;
+    double oldPlaneX;
+    double rotSpeed = data->movement.rot_speed;
 
-    if (!data->movement.rot_left && !data->movement.rot_right)
-        return;
+    printf("Rotation flags - Left: %d, Right: %d\n",
+           data->movement.rot_left, data->movement.rot_right);
+    printf("Initial Dir: (%f, %f)\n", data->player.dir_x, data->player.dir_y);
+    printf("Initial Plane: (%f, %f)\n", data->player.plane_x, data->player.plane_y);
 
+    if (data->movement.rot_left)
+    {
+        oldDirX = data->player.dir_x;
+        data->player.dir_x = data->player.dir_x * cos(rotSpeed) - data->player.dir_y * sin(rotSpeed);
+        data->player.dir_y = oldDirX * sin(rotSpeed) + data->player.dir_y * cos(rotSpeed);
+
+        oldPlaneX = data->player.plane_x;
+        data->player.plane_x = data->player.plane_x * cos(rotSpeed) - data->player.plane_y * sin(rotSpeed);
+        data->player.plane_y = oldPlaneX * sin(rotSpeed) + data->player.plane_y * cos(rotSpeed);
+
+        printf("After Left Rotation - Dir: (%f, %f)\n",
+               data->player.dir_x, data->player.dir_y);
+    }
     if (data->movement.rot_right)
-        rot_speed = -rot_speed;
+    {
+        oldDirX = data->player.dir_x;
+        data->player.dir_x = data->player.dir_x * cos(-rotSpeed) - data->player.dir_y * sin(-rotSpeed);
+        data->player.dir_y = oldDirX * sin(-rotSpeed) + data->player.dir_y * cos(-rotSpeed);
 
-    // Rotation de la direction
-    old_dir_x = data->player.dir_x;
-    data->player.dir_x = old_dir_x * cos(rot_speed) - data->player.dir_y * sin(rot_speed);
-    data->player.dir_y = old_dir_x * sin(rot_speed) + data->player.dir_y * cos(rot_speed);
+        oldPlaneX = data->player.plane_x;
+        data->player.plane_x = data->player.plane_x * cos(-rotSpeed) - data->player.plane_y * sin(-rotSpeed);
+        data->player.plane_y = oldPlaneX * sin(-rotSpeed) + data->player.plane_y * cos(-rotSpeed);
 
-    // Rotation du plan de la caméra
-    old_plane_x = data->player.plane_x;
-    data->player.plane_x = old_plane_x * cos(rot_speed) - data->player.plane_y * sin(rot_speed);
-    data->player.plane_y = old_plane_x * sin(rot_speed) + data->player.plane_y * cos(rot_speed);
+        printf("After Right Rotation - Dir: (%f, %f)\n",
+               data->player.dir_x, data->player.dir_y);
+    }
 
-    // Synchroniser avec ray
+    // Synchronisation avec ray
     data->ray.dir_x = data->player.dir_x;
     data->ray.dir_y = data->player.dir_y;
     data->ray.plane_x = data->player.plane_x;
@@ -88,11 +90,9 @@ void handle_forward_movement(t_data *data)
 {
     double move_speed = data->movement.move_speed;
 
-    // Ajuster la vitesse si on se déplace en diagonale
     if ((data->movement.forward || data->movement.backward) &&
         (data->movement.left || data->movement.right))
         move_speed /= sqrt(2);
-
     if (data->movement.forward)
     {
         if (data->map[(int)data->player.pos_y]
@@ -122,7 +122,6 @@ void handle_strafe_movement(t_data *data)
     if ((data->movement.forward || data->movement.backward) &&
         (data->movement.left || data->movement.right))
         move_speed /= sqrt(2);
-
     if (data->movement.left)
     {
         if (data->map[(int)data->player.pos_y]

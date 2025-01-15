@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 11:41:34 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/14 16:09:46 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/15 10:44:28 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,8 @@ void    init_minimap(t_data *data)
 
 int	init_game(t_data *data)
 {
+    t_ray initial_ray;
+
 	if (!init_mlx(data))
 		return (0);
 	if (!check_player(data))
@@ -97,6 +99,7 @@ int	init_game(t_data *data)
 		return (0);
 	}
 	init_minimap(data);
+    init_player_pos(&initial_ray, data);
 	init_hooks(data);
 	raycasting(data);
 	return (1);

@@ -6,13 +6,12 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 16:20:05 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/14 17:01:03 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/15 10:40:12 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3D.h"
 
-// Gestionnaire de touche pressée
 int	handle_keypress(int keycode, t_data *data)
 {
 	if (keycode == KEY_ESC)
@@ -25,10 +24,6 @@ int	handle_keypress(int keycode, t_data *data)
 		data->movement.left = 1;
 	else if (keycode == KEY_D)
 		data->movement.right = 1;
-	else if (keycode == KEY_LEFT)
-		data->movement.rot_left = 1;
-	else if (keycode == KEY_RIGHT)
-		data->movement.rot_right = 1;
 	return (0);
 }
 
@@ -43,16 +38,12 @@ int	handle_keyrelease(int keycode, t_data *data)
 		data->movement.left = 0;
 	else if (keycode == KEY_D)
 		data->movement.right = 0;
-	else if (keycode == KEY_LEFT)
-		data->movement.rot_left = 0;
-	else if (keycode == KEY_RIGHT)
-		data->movement.rot_right = 0;
 	return (0);
 }
 
 int    key_press(int keycode, t_data *data)
 {
-    // printf("Keycode pressed: %d\n", keycode);
+    printf("Keycode pressed: %d\n", keycode);
     if (keycode == KEY_ESC)
         exit_game(data);
     if (keycode == KEY_W)
@@ -63,10 +54,16 @@ int    key_press(int keycode, t_data *data)
         data->movement.left = 1;
     if (keycode == KEY_D)
         data->movement.right = 1;
-    if (keycode == KEY_LEFT)  // Flèche gauche
+    if (keycode == KEY_LEFT)
+    {
+        printf("Left arrow pressed\n");
         data->movement.rot_left = 1;
-    if (keycode == KEY_RIGHT) // Flèche droite
+    }
+    if (keycode == KEY_RIGHT)
+    {
+        printf("Right arrow pressed\n");
         data->movement.rot_right = 1;
+    }
     if (keycode == 'e' || keycode == 'E')
         data->keys.e = 1;
     return (0);
@@ -91,43 +88,6 @@ int    key_release(int keycode, t_data *data)
     return (0);
 }
 
-
-// int    key_press(int keycode, t_data *data)
-// {
-//     if (keycode == KEY_ESC)
-//         exit_game(data);
-//     if (keycode == KEY_W)
-//         data->movement.forward = 1;
-//     if (keycode == KEY_S)
-//         data->movement.backward = 1;
-//     if (keycode == KEY_A)
-//         data->movement.left = 1;
-//     if (keycode == KEY_D)
-//         data->movement.right = 1;
-//     if (keycode == KEY_LEFT)
-//         data->movement.rot_left = 1;
-//     if (keycode == KEY_RIGHT)
-//         data->movement.rot_right = 1;
-//     return (0);
-// }
-
-// int    key_release(int keycode, t_data *data)
-// {
-//     if (keycode == KEY_W)
-//         data->movement.forward = 0;
-//     if (keycode == KEY_S)
-//         data->movement.backward = 0;
-//     if (keycode == KEY_A)
-//         data->movement.left = 0;
-//     if (keycode == KEY_D)
-//         data->movement.right = 0;
-//     if (keycode == KEY_LEFT)
-//         data->movement.rot_left = 0;
-//     if (keycode == KEY_RIGHT)
-//         data->movement.rot_right = 0;
-//     return (0);
-// }
-
 int    exit_game(t_data *data)
 {
     cleanup_mlx(data);
@@ -145,12 +105,3 @@ void init_hooks(t_data *data)
     mlx_hook(data->mlx.win, 2, 1L<<0, key_press, data);
     mlx_hook(data->mlx.win, 3, 1L<<1, key_release, data);
 }
-
-// void	init_hooks(t_data *data)
-// {
-// 	mlx_hook(data->mlx.win, 2, 1L << 0, handle_keypress, data);   // Touche pressée
-// 	mlx_hook(data->mlx.win, 3, 1L << 1, handle_keyrelease, data); // Touche relâchée
-// 	mlx_hook(data->mlx.win, 17, 0, exit_game, data);
-// 		// Fermeture fenêtre
-// 	mlx_loop_hook(data->mlx.mlx, game_loop, data);                // Boucle de jeu
-// }

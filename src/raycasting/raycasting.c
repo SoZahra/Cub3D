@@ -6,39 +6,22 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 19:56:03 by lizzieanani       #+#    #+#             */
-/*   Updated: 2025/01/14 17:00:30 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/15 10:43:44 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/cub3D.h"
 
-// int game_loop(t_data *data)
-// {
-//     handle_rotation(data);  // Gérer la rotation en premier
-//     handle_forward_movement(data);
-//     handle_strafe_movement(data);
-
-//     data->ray.pos_x = data->player.pos_x;  // Synchroniser les positions
-//     data->ray.pos_y = data->player.pos_y;
-
-//     raycasting(data);
-//     draw_minimap(data);
-
-//     mlx_put_image_to_window(data->mlx.mlx, data->mlx.win, data->img.img, 0, 0);
-//     return (0);
-// }
-
 int game_loop(t_data *data)
 {
     if (!data || !data->mlx.mlx || !data->mlx.win || !data->img.img || !data->img.addr)
         return (0);
+    ft_memset(data->img.addr, 0, WIN_WIDTH * WIN_HEIGHT * sizeof(int));
     handle_rotation(data);
     handle_forward_movement(data);
     handle_strafe_movement(data);
     handle_door(data);
     update_doors(data);
-    data->ray.pos_x = data->player.pos_x;
-    data->ray.pos_y = data->player.pos_y;
     raycasting(data);
     draw_minimap(data);
     mlx_put_image_to_window(data->mlx.mlx, data->mlx.win, data->img.img, 0, 0);
@@ -51,7 +34,6 @@ void init_player_pos(t_ray *ray, t_data *data)
     ray->pos_x = (double)data->player.pos_x + 0.5;
     ray->pos_y = (double)data->player.pos_y + 0.5;
 
-    // Direction initiale basée sur la direction du joueur
     if (data->player.player_dir == 'N')
     {
         ray->dir_x = 0;
@@ -80,18 +62,14 @@ void init_player_pos(t_ray *ray, t_data *data)
         ray->plane_x = 0;
         ray->plane_y = -0.66;
     }
-
-    // Synchroniser avec data->player
     data->player.dir_x = ray->dir_x;
     data->player.dir_y = ray->dir_y;
     data->player.plane_x = ray->plane_x;
     data->player.plane_y = ray->plane_y;
 
-    // Vitesses
     data->movement.move_speed = 0.1;
     data->movement.rot_speed = 0.05;
 
-    // Réinitialiser les mouvements
     data->movement.forward = 0;
     data->movement.backward = 0;
     data->movement.left = 0;
@@ -131,7 +109,7 @@ static void	adjust_tex_y(int *tex_y, int tex_height)
 
 static t_texture *select_texture(t_data *data, t_ray *ray)
 {
-    if (ray->hit == 2)  // Si c'est une porte
+    if (ray->hit == 2)
         return (&data->mlx.do_tex);
     if (ray->side == 0)
     {
@@ -146,7 +124,6 @@ static t_texture *select_texture(t_data *data, t_ray *ray)
 
 int get_tex_color(t_texture *texture, int tex_x, int tex_y)
 {
-    // Vérifications de sécurité
     if (tex_x < 0 || tex_x >= texture->width || tex_y < 0 || tex_y >= texture->height)
         return (0);
     return texture->addr[tex_y * (texture->line_length / 4) + tex_x];
@@ -169,39 +146,14 @@ int	get_texture_color(t_data *data, t_ray *ray, int y)
 	return (get_tex_color(texture, tex_x, tex_y));
 }
 
-// void	draw_vertical_line(t_data *data, t_ray *ray, int x)
-// {
-// 	int	y;
-
-// 	y = 0;
-// 	while (y < ray->draw_start)
-// 	{
-// 		data->img.addr[y * WIN_WIDTH + x] = data->c_color;
-// 		y++;
-// 	}
-// 	while (y < ray->draw_end)
-// 	{
-// 		data->img.addr[y * WIN_WIDTH + x] = get_texture_color(data, ray, y);
-// 		y++;
-// 	}
-// 	while (y < WIN_HEIGHT)
-// 	{
-// 		data->img.addr[y * WIN_WIDTH + x] = data->f_color;
-// 		y++;
-// 	}
-// }
-
 void draw_vertical_line(t_data *data, t_ray *ray, int x)
 {
     int y;
 
     if (!data || !data->img.addr)
         return;
-
-    // Vérifications des limites
     if (x < 0 || x >= WIN_WIDTH)
         return;
-
     y = 0;
     while (y < ray->draw_start && y < WIN_HEIGHT)
     {
@@ -223,23 +175,49 @@ void draw_vertical_line(t_data *data, t_ray *ray, int x)
     }
 }
 
-void	raycasting(t_data *data)
+void raycasting(t_data *data)
 {
-	t_ray	ray;
-	int		x;
+    t_ray   ray;
+    int     x;
 
-	x = 0;
-	init_player_pos(&ray, data);
-	while (x < WIN_WIDTH)
-	{
-		init_ray_dir(&ray, data, x);
-		init_ray_dist(&ray);
-		init_ray_step(&ray);
-		perform_dda(&ray, data);
-		calculate_wall_dist(&ray);
-		calculate_line_height(&ray);
-		draw_vertical_line(data, &ray, x);
-		x++;
-	}
-	mlx_put_image_to_window(data->mlx.mlx, data->mlx.win, data->img.img, 0, 0);
+    x = 0;
+    ray.pos_x = data->player.pos_x;
+    ray.pos_y = data->player.pos_y;
+    ray.dir_x = data->player.dir_x;
+    ray.dir_y = data->player.dir_y;
+    ray.plane_x = data->player.plane_x;
+    ray.plane_y = data->player.plane_y;
+    while (x < WIN_WIDTH)
+    {
+        init_ray_dir(&ray, data, x);
+        init_ray_dist(&ray);
+        init_ray_step(&ray);
+        perform_dda(&ray, data);
+        calculate_wall_dist(&ray);
+        calculate_line_height(&ray);
+        draw_vertical_line(data, &ray, x);
+        x++;
+    }
+    mlx_put_image_to_window(data->mlx.mlx, data->mlx.win, data->img.img, 0, 0);
 }
+
+// void	raycasting(t_data *data)
+// {
+// 	t_ray	ray;
+// 	int		x;
+
+// 	x = 0;
+// 	init_player_pos(&ray, data);
+// 	while (x < WIN_WIDTH)
+// 	{
+// 		init_ray_dir(&ray, data, x);
+// 		init_ray_dist(&ray);
+// 		init_ray_step(&ray);
+// 		perform_dda(&ray, data);
+// 		calculate_wall_dist(&ray);
+// 		calculate_line_height(&ray);
+// 		draw_vertical_line(data, &ray, x);
+// 		x++;
+// 	}
+// 	mlx_put_image_to_window(data->mlx.mlx, data->mlx.win, data->img.img, 0, 0);
+// }

@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 15:13:28 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/14 15:51:02 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/15 10:33:01 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,14 +57,11 @@ void    clean_lines_until(char **lines, int index)
     {
         if (lines[i])
         {
-            printf("DEBUG: Freeing line %d in cleanup\n", i);
             free(lines[i]);
         }
         i++;
     }
-    printf("DEBUG: Cleaned %d lines\n", i);
     free(lines);
-    printf("DEBUG: Freed lines array in cleanup\n");
 }
 
 char	**read_file(const char *filename)
@@ -117,15 +114,12 @@ int    main(int ac, char **av)
         free_all(&data, NULL);
         return (1);
     }
-    // mlx_loop(&data.mlx);
-	// if (data.mlx.mlx && data.mlx.win)
-    //     mlx_loop(data.mlx.mlx);
 	if (data.mlx.mlx && data.mlx.win)
 	{
-		mlx_loop_hook(data.mlx.mlx, game_loop, &data);  // Assurez-vous d'avoir cette ligne
+		mlx_loop_hook(data.mlx.mlx, game_loop, &data);
 		mlx_loop(data.mlx.mlx);
 	}
-	cleanup_mlx(&data);      // D'abord nettoyer MLX
+	cleanup_mlx(&data);
     free_textures(&data);
 	free_all(&data, NULL);
     return (0);
