@@ -6,7 +6,7 @@
 /*   By: lanani-f <lanani-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 19:56:03 by lizzieanani       #+#    #+#             */
-/*   Updated: 2025/01/15 15:28:55 by lanani-f         ###   ########.fr       */
+/*   Updated: 2025/01/15 15:50:40 by lanani-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,39 +139,40 @@ int get_tex_color(t_texture *texture, int tex_x, int tex_y)
 // 	adjust_tex_y(&tex_y, texture->height);
 // 	return (get_tex_color(texture, tex_x, tex_y));
 // }
-
 int get_texture_color(t_data *data, t_ray *ray, int y)
 {
     t_texture *texture = select_texture(data, ray);
     if (!texture || !texture->addr)
         return (0);
 
-    int tex_x = get_tex_x(texture, ray);
-
-    // Calcul précis de la position Y de la texture
-    double wall_dist = ray->wall_dist;
-    if (wall_dist < 0.1)
-        wall_dist = 0.1;
-
-    // Position exacte où le rayon touche le mur
+    // Calcul de la position X de la texture
     double wall_x;
     if (ray->side == 0)
-        wall_x = ray->pos_y + wall_dist * ray->ray_dir_y;
+        wall_x = ray->pos_y + ray->wall_dist * ray->ray_dir_y;
     else
-        wall_x = ray->pos_x + wall_dist * ray->ray_dir_x;
+        wall_x = ray->pos_x + ray->wall_dist * ray->ray_dir_x;
     wall_x -= floor(wall_x);
+    
+    int tex_x = (int)(wall_x * texture->width);
+    if ((ray->side == 0 && ray->ray_dir_x > 0) || 
+        (ray->side == 1 && ray->ray_dir_y < 0))
+        tex_x = texture->width - tex_x - 1;
 
-    // Calcul de la coordonnée Y de la texture avec ajustement de précision
-    double tex_pos = (y - ray->draw_start) * 1.0 / (ray->draw_end - ray->draw_start);
+    // Calcul précis de la position Y avec perspective préservée
+    double tex_pos;
+    // Calculer la position Y relative en tenant compte de la hauteur totale théorique
+    int line_height = (int)((double)WIN_HEIGHT / ray->wall_dist);
+    double relative_y = y - (WIN_HEIGHT / 2 - line_height / 2);
+    tex_pos = relative_y / (double)line_height;
+
     int tex_y = (int)(tex_pos * texture->height);
-
+    
     // Protection contre les débordements
-    if (tex_y < 0)
-        tex_y = 0;
-    if (tex_y >= texture->height)
-        tex_y = texture->height - 1;
+    if (tex_y < 0) tex_y = 0;
+    if (tex_y >= texture->height) tex_y = texture->height - 1;
+    if (tex_x < 0) tex_x = 0;
+    if (tex_x >= texture->width) tex_x = texture->width - 1;
 
-    // Récupération de la couleur
     return texture->addr[tex_y * texture->width + tex_x];
 }
 
