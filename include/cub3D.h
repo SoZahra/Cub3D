@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 15:14:56 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/15 18:33:14 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/16 11:31:57 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,13 @@ typedef struct s_movement
 	double		move_speed;
 	double		rot_speed;
 }				t_movement;
+
+typedef struct s_draw_section
+{
+	int	start;
+	int	end;
+	int	x;
+}	t_draw_section;
 
 typedef struct s_door {
     int     x;              // Position X de la porte
