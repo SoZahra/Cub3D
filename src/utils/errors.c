@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lanani-f <lanani-f@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 18:11:22 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/15 16:34:51 by lanani-f         ###   ########.fr       */
+/*   Updated: 2025/01/16 14:35:45 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3D.h"
 
-void	error_exit(const char *message)
+int	error_exit(const char *message)
 {
 	ft_printf("%s\n", message);
-	exit(EXIT_FAILURE);
+	return(0);
 }

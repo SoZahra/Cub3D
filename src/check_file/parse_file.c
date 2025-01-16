@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:11:44 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/15 17:43:17 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/16 15:10:32 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,8 @@ int	parse_texture_colors(t_data *data, char **lines, const char *filename)
 	while (lines[i])
 	{
 		if (!parse_texture_line(data, lines[i]))
-			return (free_all(data, lines), -1);
-		i++;
+			return (-1);
+		i++ ;
 	}
 	if (!data->no_loaded || !data->so_loaded || !data->we_loaded
 		|| !data->ea_loaded || !data->f_loaded || !data->c_loaded

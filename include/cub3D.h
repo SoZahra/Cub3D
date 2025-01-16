@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 15:14:56 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/16 11:31:57 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/16 14:34:56 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -252,7 +252,7 @@ void			destroy_texture(void *mlx, t_texture *tex);
 
 // utils/errors.c
 
-void			error_exit(const char *message);
+int			error_exit(const char *message);
 
 /// check_file/parse_file.c
 

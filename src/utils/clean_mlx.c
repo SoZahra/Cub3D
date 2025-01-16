@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean_mlx.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lanani-f <lanani-f@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 12:17:53 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/15 16:45:16 by lanani-f         ###   ########.fr       */
+/*   Updated: 2025/01/16 12:10:05 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	cleanup_mlx(t_data *data)
 	destroy_texture(data->mlx.mlx, &data->mlx.we_tex);
 	destroy_texture(data->mlx.mlx, &data->mlx.ea_tex);
 	destroy_texture(data->mlx.mlx, &data->mlx.do_tex);
+	destroy_texture(data->mlx.mlx, &data->sky_tex);
 	if (data->mlx.win)
 	{
 		mlx_destroy_window(data->mlx.mlx, data->mlx.win);

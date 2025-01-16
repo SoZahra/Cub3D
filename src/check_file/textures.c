@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 18:13:26 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/15 18:01:21 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/16 15:33:14 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,5 +208,7 @@ int	parse_texture_line(t_data *data, char *line)
 	if (!is_valid_identifier(cleaned))
 		return (free(cleaned), error_exit("Error: Invalid line"), 0);
 	ret = handle_texture_line_(data, cleaned);
+	if (!ret)
+		return (free_textures(data), 0);
 	return (ret);
 }

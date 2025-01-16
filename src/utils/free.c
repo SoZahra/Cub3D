@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 18:10:16 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/16 11:41:15 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/16 12:06:40 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,11 @@ void	free_textures_2(t_data *data)
 	{
 		free(data->do_texture);
 		data->do_texture = NULL;
+	}
+	if (data->c_texture)
+	{
+		free(data->c_texture);
+		data->c_texture = NULL;
 	}
 }
 
