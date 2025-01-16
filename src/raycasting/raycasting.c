@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 19:56:03 by lizzieanani       #+#    #+#             */
-/*   Updated: 2025/01/16 11:33:24 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/16 17:29:56 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,27 +201,56 @@ int	get_texture_color(t_data *data, t_ray *ray, int y)
 	return (texture->addr[tex_y * texture->width + tex_x]);
 }
 
+// static void	draw_sky(t_data *data, t_ray *ray, int x, int y)
+// {
+// 	double	rot;
+// 	int		tex_x;
+// 	int		tex_y;
+
+// 	(void)ray;
+// 	if ((y * WIN_WIDTH + x) >= (WIN_WIDTH * WIN_HEIGHT))
+// 		return ;
+// 	if (data->c_is_texture)
+// 	{
+// 		rot = atan2(data->player.dir_y, data->player.dir_x);
+// 		tex_x = (int)((x + rot * WIN_WIDTH / (2 * M_PI)) * data->sky_tex.width
+// 				/ WIN_WIDTH) % data->sky_tex.width;
+// 		tex_y = (int)(y * data->sky_tex.height / (WIN_HEIGHT / 2))
+// 			% data->sky_tex.height;
+// 		data->img.addr[y * WIN_WIDTH + x] = get_tex_color(&data->sky_tex, tex_x,
+// 				tex_y);
+// 	}
+// 	else
+// 		data->img.addr[y * WIN_WIDTH + x] = data->c_color;
+// }
+
 static void	draw_sky(t_data *data, t_ray *ray, int x, int y)
 {
-	double	rot;
-	int		tex_x;
-	int		tex_y;
+    double	rot;
+    int		tex_x;
+    int		tex_y;
 
-	(void)ray;
-	if ((y * WIN_WIDTH + x) >= (WIN_WIDTH * WIN_HEIGHT))
-		return ;
-	if (data->c_is_texture)
-	{
-		rot = atan2(data->player.dir_y, data->player.dir_x);
-		tex_x = (int)((x + rot * WIN_WIDTH / (2 * M_PI)) * data->sky_tex.width
-				/ WIN_WIDTH) % data->sky_tex.width;
-		tex_y = (int)(y * data->sky_tex.height / (WIN_HEIGHT / 2))
-			% data->sky_tex.height;
-		data->img.addr[y * WIN_WIDTH + x] = get_tex_color(&data->sky_tex, tex_x,
-				tex_y);
-	}
-	else
-		data->img.addr[y * WIN_WIDTH + x] = data->c_color;
+    (void)ray;
+    if ((y * WIN_WIDTH + x) >= (WIN_WIDTH * WIN_HEIGHT))
+        return ;
+    if (data->c_is_texture)
+    {
+        rot = atan2(data->player.dir_y, data->player.dir_x);
+        // Normaliser la rotation entre 0 et 2π
+        rot = fmod(rot + 2 * M_PI, 2 * M_PI);
+        // Ajuster le calcul de tex_x pour éviter les valeurs hors limites
+        tex_x = (int)(((float)x / WIN_WIDTH + rot / (2 * M_PI))
+                * data->sky_tex.width);
+        tex_x = ((tex_x % data->sky_tex.width) + data->sky_tex.width)
+                % data->sky_tex.width;
+        tex_y = (int)((float)y / WIN_HEIGHT * data->sky_tex.height);
+        tex_y = ((tex_y % data->sky_tex.height) + data->sky_tex.height)
+                % data->sky_tex.height;
+        data->img.addr[y * WIN_WIDTH + x] = get_tex_color(&data->sky_tex,
+                tex_x, tex_y);
+    }
+    else
+        data->img.addr[y * WIN_WIDTH + x] = data->c_color;
 }
 
 static void	draw_floor(t_data *data, int x, int y)
