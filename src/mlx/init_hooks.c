@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_hooks.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lanani-f <lanani-f@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 16:20:05 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/15 16:42:34 by lanani-f         ###   ########.fr       */
+/*   Updated: 2025/01/16 17:14:54 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,9 @@ int	key_press(int keycode, t_data *data)
 		data->movement.left = 1;
 	if (keycode == KEY_D)
 		data->movement.right = 1;
-	if (keycode == KEY_LEFT)
-		data->movement.rot_left = 1;
 	if (keycode == KEY_RIGHT)
+		data->movement.rot_left = 1;
+	if (keycode == KEY_LEFT)
 		data->movement.rot_right = 1;
 	if (keycode == 'e' || keycode == 'E')
 		data->keys.e = 1;
@@ -71,9 +71,9 @@ int	key_release(int keycode, t_data *data)
 		data->movement.left = 0;
 	if (keycode == KEY_D)
 		data->movement.right = 0;
-	if (keycode == KEY_LEFT)
-		data->movement.rot_left = 0;
 	if (keycode == KEY_RIGHT)
+		data->movement.rot_left = 0;
+	if (keycode == KEY_LEFT)
 		data->movement.rot_right = 0;
 	if (keycode == 'e' || keycode == 'E')
 		data->keys.e = 0;
