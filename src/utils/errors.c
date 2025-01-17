@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 18:11:22 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/16 14:35:45 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/17 11:48:57 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,5 +15,5 @@
 int	error_exit(const char *message)
 {
 	ft_printf("%s\n", message);
-	return(0);
+	return (0);
 }

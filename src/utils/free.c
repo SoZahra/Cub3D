@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 18:10:16 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/16 12:06:40 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/17 11:52:01 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,10 @@ void	free_textures_2(t_data *data)
 		free(data->we_texture);
 		data->we_texture = NULL;
 	}
+}
+
+void	free_textures_3(t_data *data)
+{
 	if (data->ea_texture)
 	{
 		free(data->ea_texture);
@@ -105,6 +109,7 @@ void	free_textures(t_data *data)
 	if (!data)
 		return ;
 	free_textures_2(data);
+	free_textures_3(data);
 	data->n_t = NULL;
 	data->s_t = NULL;
 	data->w_t = NULL;
