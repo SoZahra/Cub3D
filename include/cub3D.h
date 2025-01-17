@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 15:14:56 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/16 14:34:56 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/17 16:34:32 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,13 @@ typedef struct s_draw_section
 	int	x;
 }	t_draw_section;
 
-typedef struct s_door {
-    int     x;              // Position X de la porte
-    int     y;              // Position Y de la porte
-    int     is_open;        // État de la porte (0: fermée, 1: ouverte)
-    double  animation;      // Pour l'animation (0.0 à 1.0)
+
+typedef struct s_door
+{
+	int		x;
+	int		y;
+	int		is_open;        // État de la porte (0: fermée, 1: ouverte)
+	double  animation;      // Pour l'animation (0.0 à 1.0)
 } t_door;
 
 typedef struct s_keys
@@ -105,6 +107,12 @@ typedef struct s_texture
 	int			width;
 	int			height;
 }				t_texture;
+
+typedef struct s_door_texture
+{
+	t_texture	frames[8];
+	int			num_frames;
+}	t_door_texture;
 
 typedef struct s_ray
 {
@@ -147,8 +155,6 @@ typedef struct s_mlx_data
 typedef struct s_data
 {
 	t_player	player;
-	// void		*mlx;
-	// void		*win;
 	char		**map;
 	char		**copie_map;
 	int			map_width;
@@ -178,6 +184,7 @@ typedef struct s_data
 	t_mlx_data	mlx;
 	t_texture	img;
 	t_texture	sky_tex;
+	t_door_texture	door_tex;
 	t_movement	movement;
 	t_minimap	minimap;
 	t_door		*doors;
@@ -338,6 +345,7 @@ void			handle_rotation(t_data *data);
 int init_doors(t_data *data);
 void handle_door(t_data *data);
 void update_doors(t_data *data);
+int load_door_textures(t_data *data);
 
 // vectors
 

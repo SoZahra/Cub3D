@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 19:56:03 by lizzieanani       #+#    #+#             */
-/*   Updated: 2025/01/17 11:44:25 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/17 19:00:54 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,10 +119,27 @@ int	get_tex_x(t_texture *texture, t_ray *ray)
 	return (tex_x);
 }
 
-static t_texture	*select_texture(t_data *data, t_ray *ray)
+t_texture	*select_texture(t_data *data, t_ray *ray)
 {
+	int	i;
+	int	frame_i;
+
+	i = 0;
 	if (ray->hit == 2)
+	{
+		while (i < data->num_doors)
+		{
+			if (data->doors[i].x == ray->map_x
+				&& data->doors[i].y == ray->map_y)
+			{
+				frame_i = (int)(data->doors[i].animation
+						* (data->door_tex.num_frames - 1));
+				return (&data->door_tex.frames[frame_i]);
+			}
+			i++;
+		}
 		return (&data->mlx.do_tex);
+	}
 	if (ray->side == 0)
 	{
 		if (ray->ray_dir_x > 0)
@@ -157,9 +174,12 @@ static int	get_tex_x_(t_ray *ray, t_texture *texture, double wall_x)
 	int	tex_x;
 
 	tex_x = (int)(wall_x * texture->width);
-	if ((ray->side == 0 && ray->ray_dir_x > 0) || (ray->side == 1
-			&& ray->ray_dir_y < 0))
-		tex_x = texture->width - tex_x - 1;
+	if (ray->hit != 2)
+	{
+		if ((ray->side == 0 && ray->ray_dir_x > 0) || (ray->side == 1
+				&& ray->ray_dir_y < 0))
+			tex_x = texture->width - tex_x - 1;
+	}
 	if (tex_x < 0)
 		tex_x = 0;
 	if (tex_x >= texture->width)

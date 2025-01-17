@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 13:34:26 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/15 18:19:22 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/17 18:58:51 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,11 +80,35 @@ int	init_doors(t_data *data)
 	return (1);
 }
 
+// void	handle_door(t_data *data)
+// {
+// 	int	player_x;
+// 	int	player_y;
+// 	int	i;
+
+// 	player_x = (int)data->player.pos_x;
+// 	player_y = (int)data->player.pos_y;
+// 	i = 0;
+// 	while (i < data->num_doors)
+// 	{
+// 		if (abs(player_x - data->doors[i].x) <= 1 && abs(player_y
+// 				- data->doors[i].y) <= 1)
+// 		{
+// 			if (data->keys.e)
+// 			{
+// 				data->doors[i].is_open = !data->doors[i].is_open;
+// 			}
+// 		}
+// 		i++;
+// 	}
+// }
+
 void	handle_door(t_data *data)
 {
-	int	player_x;
-	int	player_y;
-	int	i;
+	int			player_x;
+	int			player_y;
+	int			i;
+	static int	last_e_state = 0;
 
 	player_x = (int)data->player.pos_x;
 	player_y = (int)data->player.pos_y;
@@ -94,26 +118,83 @@ void	handle_door(t_data *data)
 		if (abs(player_x - data->doors[i].x) <= 1 && abs(player_y
 				- data->doors[i].y) <= 1)
 		{
-			if (data->keys.e)
+			if (data->keys.e && !last_e_state)
 			{
 				data->doors[i].is_open = !data->doors[i].is_open;
 			}
 		}
 		i++;
 	}
+	last_e_state = data->keys.e;
 }
 
+// void	update_doors(t_data *data)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (i < data->num_doors)
+// 	{
+// 		if (data->doors[i].is_open && data->doors[i].animation < 1.0)
+// 			data->doors[i].animation += 0.05;
+// 		else if (!data->doors[i].is_open && data->doors[i].animation > 0.0)
+// 			data->doors[i].animation -= 0.05;
+// 		i++;
+// 	}
+// }
+
 void	update_doors(t_data *data)
+{
+	int		i;
+	double	animation_speed;
+
+	animation_speed = 0.05;  // Vous pouvez ajuster cette valeur
+	i = 0;
+	while (i < data->num_doors)
+	{
+		if (data->doors[i].is_open)  // Si la porte est ouverte
+		{
+			if (data->doors[i].animation < 1.0)  // Si l'animation n'est pas terminée
+			{
+				data->doors[i].animation += animation_speed;
+				if (data->doors[i].animation > 1.0)
+					data->doors[i].animation = 1.0;
+			}
+		}
+		else  // Si la porte est fermée
+		{
+			if (data->doors[i].animation > 0.0)  // Si l'animation n'est pas terminée
+			{
+				data->doors[i].animation -= animation_speed;
+				if (data->doors[i].animation < 0.0)
+					data->doors[i].animation = 0.0;
+			}
+		}
+		i++;
+	}
+}
+
+int	load_door_textures(t_data *data)
 {
 	int	i;
 
 	i = 0;
-	while (i < data->num_doors)
+	char *paths[] = {
+		"textures/door_0.xpm",
+		"textures/door_1.xpm",
+		"textures/door_2.xpm",
+		"textures/door_3.xpm",
+		"textures/door_4.xpm",
+		"textures/door_5.xpm",
+		"textures/door_6.xpm",
+		"textures/door_7.xpm",
+	};
+	data->door_tex.num_frames = 8;
+	while (i < data->door_tex.num_frames)
 	{
-		if (data->doors[i].is_open && data->doors[i].animation < 1.0)
-			data->doors[i].animation += 0.05;
-		else if (!data->doors[i].is_open && data->doors[i].animation > 0.0)
-			data->doors[i].animation -= 0.05;
+		if (!load_texture(data, &data->door_tex.frames[i], paths[i]))
+			return (0);
 		i++;
 	}
+	return (1);
 }
