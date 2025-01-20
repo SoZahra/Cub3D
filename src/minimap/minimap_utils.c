@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 01:10:53 by lizzieanani       #+#    #+#             */
-/*   Updated: 2025/01/14 11:17:44 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/20 17:28:55 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,15 @@ void	clear_minimap(t_data *data, t_minimap *minimap)
 		}
 		i++;
 	}
+}
+
+int	is_valid_map_char(char c)
+{
+	return (c == '0' || c == '1' || c == 'N' || c == 'S' || c == 'E' || c == 'W'
+		|| c == ' ' || c == '\n' || c == 'D');
+}
+
+int	is_valid_player_char(char c)
+{
+	return (c == 'N' || c == 'S' || c == 'E' || c == 'W');
 }

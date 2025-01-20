@@ -6,56 +6,11 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 13:34:26 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/17 18:58:51 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/20 17:34:42 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3D.h"
-
-static void	count_door_in_row(t_data *data, int i, int j, int *count)
-{
-	if (j >= data->map_width)
-		return ;
-	if (data->map[i][j] == 'D')
-		(*count)++;
-	count_door_in_row(data, i, j + 1, count);
-}
-
-static void	count_doors_recursive(t_data *data, int i, int *count)
-{
-	if (i >= data->map_height)
-		return ;
-	count_door_in_row(data, i, 0, count);
-	count_doors_recursive(data, i + 1, count);
-}
-
-static void	init_door(t_door *door, int x, int y)
-{
-	door->x = x;
-	door->y = y;
-	door->is_open = 0;
-	door->animation = 0.0;
-}
-
-static void	fill_door_in_row(t_data *data, int i, int j, int *count)
-{
-	if (j >= data->map_width)
-		return ;
-	if (data->map[i][j] == 'D')
-	{
-		init_door(&data->doors[*count], j, i);
-		(*count)++;
-	}
-	fill_door_in_row(data, i, j + 1, count);
-}
-
-static void	fill_doors_recursive(t_data *data, int i, int *count)
-{
-	if (i >= data->map_height)
-		return ;
-	fill_door_in_row(data, i, 0, count);
-	fill_doors_recursive(data, i + 1, count);
-}
 
 int	init_doors(t_data *data)
 {
@@ -80,29 +35,6 @@ int	init_doors(t_data *data)
 	return (1);
 }
 
-// void	handle_door(t_data *data)
-// {
-// 	int	player_x;
-// 	int	player_y;
-// 	int	i;
-
-// 	player_x = (int)data->player.pos_x;
-// 	player_y = (int)data->player.pos_y;
-// 	i = 0;
-// 	while (i < data->num_doors)
-// 	{
-// 		if (abs(player_x - data->doors[i].x) <= 1 && abs(player_y
-// 				- data->doors[i].y) <= 1)
-// 		{
-// 			if (data->keys.e)
-// 			{
-// 				data->doors[i].is_open = !data->doors[i].is_open;
-// 			}
-// 		}
-// 		i++;
-// 	}
-// }
-
 void	handle_door(t_data *data)
 {
 	int			player_x;
@@ -110,6 +42,10 @@ void	handle_door(t_data *data)
 	int			i;
 	static int	last_e_state = 0;
 
+	if (!data)
+		return ;
+	if (!data->doors || data->num_doors <= 0)
+		return ;
 	player_x = (int)data->player.pos_x;
 	player_y = (int)data->player.pos_y;
 	i = 0;
@@ -119,76 +55,66 @@ void	handle_door(t_data *data)
 				- data->doors[i].y) <= 1)
 		{
 			if (data->keys.e && !last_e_state)
-			{
 				data->doors[i].is_open = !data->doors[i].is_open;
-			}
 		}
 		i++;
 	}
 	last_e_state = data->keys.e;
 }
 
-// void	update_doors(t_data *data)
-// {
-// 	int	i;
+void	update_doors_2(t_data *data)
+{
+	int		i;
+	double	animation_speed;
 
-// 	i = 0;
-// 	while (i < data->num_doors)
-// 	{
-// 		if (data->doors[i].is_open && data->doors[i].animation < 1.0)
-// 			data->doors[i].animation += 0.05;
-// 		else if (!data->doors[i].is_open && data->doors[i].animation > 0.0)
-// 			data->doors[i].animation -= 0.05;
-// 		i++;
-// 	}
-// }
+	animation_speed = 0.05;
+	i = 0;
+	if (data->doors[i].animation > 0.0)
+	{
+		data->doors[i].animation -= animation_speed;
+		if (data->doors[i].animation < 0.0)
+			data->doors[i].animation = 0.0;
+	}
+}
 
 void	update_doors(t_data *data)
 {
 	int		i;
 	double	animation_speed;
 
-	animation_speed = 0.05;  // Vous pouvez ajuster cette valeur
+	animation_speed = 0.05;
 	i = 0;
 	while (i < data->num_doors)
 	{
-		if (data->doors[i].is_open)  // Si la porte est ouverte
+		if (data->doors[i].is_open)
 		{
-			if (data->doors[i].animation < 1.0)  // Si l'animation n'est pas terminée
+			if (data->doors[i].animation < 1.0)
 			{
 				data->doors[i].animation += animation_speed;
 				if (data->doors[i].animation > 1.0)
 					data->doors[i].animation = 1.0;
 			}
 		}
-		else  // Si la porte est fermée
-		{
-			if (data->doors[i].animation > 0.0)  // Si l'animation n'est pas terminée
-			{
-				data->doors[i].animation -= animation_speed;
-				if (data->doors[i].animation < 0.0)
-					data->doors[i].animation = 0.0;
-			}
-		}
+		else
+			update_doors_2(data);
 		i++;
 	}
 }
 
 int	load_door_textures(t_data *data)
 {
-	int	i;
+	int		i;
+	char	*paths[8];
 
 	i = 0;
-	char *paths[] = {
-		"textures/door_0.xpm",
-		"textures/door_1.xpm",
-		"textures/door_2.xpm",
-		"textures/door_3.xpm",
-		"textures/door_4.xpm",
-		"textures/door_5.xpm",
-		"textures/door_6.xpm",
-		"textures/door_7.xpm",
-	};
+	paths[0] = "textures/door_0.xpm";
+	paths[1] = "textures/door_1.xpm";
+	paths[2] = "textures/door_2.xpm";
+	paths[3] = "textures/door_3.xpm";
+	paths[4] = "textures/door_4.xpm";
+	paths[5] = "textures/door_5.xpm";
+	paths[6] = "textures/door_6.xpm";
+	paths[7] = "textures/door_7.xpm";
 	data->door_tex.num_frames = 8;
 	while (i < data->door_tex.num_frames)
 	{

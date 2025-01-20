@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 12:17:53 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/16 12:10:05 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/18 20:32:36 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	cleanup_mlx(t_data *data)
 	destroy_texture(data->mlx.mlx, &data->mlx.ea_tex);
 	destroy_texture(data->mlx.mlx, &data->mlx.do_tex);
 	destroy_texture(data->mlx.mlx, &data->sky_tex);
+	destroy_texture(data->mlx.mlx, &data->floor);
 	if (data->mlx.win)
 	{
 		mlx_destroy_window(data->mlx.mlx, data->mlx.win);

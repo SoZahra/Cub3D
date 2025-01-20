@@ -6,7 +6,7 @@
 #    By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/01 15:05:07 by fzayani           #+#    #+#              #
-#    Updated: 2025/01/14 14:02:15 by fzayani          ###   ########.fr        #
+#    Updated: 2025/01/20 17:32:43 by fzayani          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,14 +20,15 @@ MAP_DIR             =   $(SRC_PATH)map
 SRCS_FILES  =   main.c \
                 parsing/parsing.c parsing/utils_parsing.c \
                 check_extension/cub_extension.c \
-				check_file/parse_file.c check_file/utils_file.c check_file/check_path.c check_file/textures.c check_file/texture_color.c \
+				check_file/parse_file.c check_file/utils_file.c check_file/check_path.c check_file/textures.c check_file/texture_color.c check_file/check_textures.c check_file/check_texture_2.c\
                 map/check_map.c map/floodfill.c  map/utils_map.c  map/map_closed.c map/player.c map/map_start.c map/store_map.c map/utils_store.c\
-				mlx/init_mlx.c mlx/draw_map.c mlx/init_hooks.c \
-				utils/errors.c utils/free.c utils/clean_mlx.c \
-				doors/init_doors.c \
+				mlx/init_mlx.c mlx/draw_map.c mlx/init_hooks.c mlx/init_image.c\
+				utils/errors.c utils/free.c utils/free_2.c utils/clean_mlx.c \
+				doors/init_doors.c doors/utils.c\
+				data/init.c \
 				minimap/check_minimap.c minimap/minimap_player.c minimap/minimap_utils.c minimap/minimap.c \
-				raycasting/raycasting.c raycasting/init_ray.c raycasting/perform_dda.c raycasting/vectors.c \
-				controls/key_events.c controls/player_movement.c controls/player_rotation.c
+				raycasting/raycasting.c raycasting/init_ray.c raycasting/perform_dda.c raycasting/vectors.c raycasting/position.c raycasting/perform_dda_2.c raycasting/floor.c raycasting/get.c raycasting/draw.c\
+				controls/key_events.c controls/player_movement.c controls/player_rotation.c controls/utils.c controls/player_ro_utils.c
 
 SRCS        =   $(addprefix $(SRC_PATH), $(SRCS_FILES))
 # OBJS		=	$(addprefix $(OBJS_PATH), $(SRCS:.c=.o))

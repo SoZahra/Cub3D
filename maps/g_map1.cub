@@ -4,7 +4,7 @@ EA ./textures/ea_text.xpm
 WE ./textures/we_text.xpm
 DO ./textures/do_text.xpm
 
-F 220,100,0
+F ./textures/floor.xpm
 C ./textures/sky.xpm
 
         1111111111111111111111111

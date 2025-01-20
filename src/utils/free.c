@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 18:10:16 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/17 11:52:01 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/20 15:47:03 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,44 +64,6 @@ void	free_lines(char **lines)
 		i++;
 	}
 	free(lines);
-}
-
-void	free_textures_2(t_data *data)
-{
-	if (data->no_texture)
-	{
-		free(data->no_texture);
-		data->no_texture = NULL;
-	}
-	if (data->so_texture)
-	{
-		free(data->so_texture);
-		data->so_texture = NULL;
-	}
-	if (data->we_texture)
-	{
-		free(data->we_texture);
-		data->we_texture = NULL;
-	}
-}
-
-void	free_textures_3(t_data *data)
-{
-	if (data->ea_texture)
-	{
-		free(data->ea_texture);
-		data->ea_texture = NULL;
-	}
-	if (data->do_texture)
-	{
-		free(data->do_texture);
-		data->do_texture = NULL;
-	}
-	if (data->c_texture)
-	{
-		free(data->c_texture);
-		data->c_texture = NULL;
-	}
 }
 
 void	free_textures(t_data *data)

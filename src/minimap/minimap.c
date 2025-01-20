@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lanani-f <lanani-f@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 10:00:00 by lanani-f          #+#    #+#             */
-/*   Updated: 2025/01/15 16:42:02 by lanani-f         ###   ########.fr       */
+/*   Updated: 2025/01/20 15:28:27 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ void	draw_minimap(t_data *data)
 {
 	if (!data || !data->map)
 		return ;
-	init_minimap(data);
 	draw_map_content(data);
 	draw_player_on_map(data);
 }

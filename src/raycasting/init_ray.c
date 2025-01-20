@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_ray.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lanani-f <lanani-f@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 19:49:58 by lizzieanani       #+#    #+#             */
-/*   Updated: 2025/01/15 16:47:16 by lanani-f         ###   ########.fr       */
+/*   Updated: 2025/01/20 17:18:25 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,14 @@ void	init_ray_dir(t_ray *ray, t_data *data, int x)
 	ray->ray_dir_y = data->player.dir_y + ray->plane_y * ray->camera_x;
 	ray->map_x = (int)ray->pos_x;
 	ray->map_y = (int)ray->pos_y;
+}
+
+void	init_ray_position(t_ray *ray, t_data *data)
+{
+	if (!ray || !data)
+		return ;
+	ray->pos_x = (double)data->player.pos_x + 0.5;
+	ray->pos_y = (double)data->player.pos_y + 0.5;
 }
 
 void	init_ray_dist(t_ray *ray)
@@ -55,4 +63,16 @@ void	init_ray_step(t_ray *ray)
 		ray->step_y = 1;
 		ray->side_dist_y = (ray->map_y + 1.0 - ray->pos_y) * ray->delta_dist_y;
 	}
+}
+
+void	init_movement_values(t_data *data)
+{
+	data->movement.move_speed = 0.1;
+	data->movement.rot_speed = 0.05;
+	data->movement.forward = 0;
+	data->movement.backward = 0;
+	data->movement.left = 0;
+	data->movement.right = 0;
+	data->movement.rot_left = 0;
+	data->movement.rot_right = 0;
 }

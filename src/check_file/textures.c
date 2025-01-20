@@ -6,124 +6,11 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 18:13:26 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/16 15:33:14 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/20 16:45:00 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3D.h"
-
-static int	no_texture(t_data *data, char *cleaned)
-{
-	if (!data || !cleaned)
-		return (0);
-	if (data->no_loaded)
-		return (free(cleaned), error_exit("Error: Duplicate NO texture"), 0);
-	if (!check_texture_format(cleaned + 3))
-		return (free(cleaned), error_exit("Error: Invalid NO texture format"),
-			0);
-	data->no_texture = ft_strdup(cleaned + 3);
-	if (!data->no_texture)
-		return (free(cleaned), 0);
-	free(cleaned);
-	data->no_loaded = 1;
-	return (1);
-}
-
-static int	do_texture(t_data *data, char *cleaned)
-{
-	if (!data || !cleaned)
-		return (0);
-	if (data->do_loaded)
-		return (free(cleaned), error_exit("Error: Duplicate DO texture"), 0);
-	if (!check_texture_format(cleaned + 3))
-		return (free(cleaned), error_exit("Error: Invalid DO texture format"),
-			0);
-	data->do_texture = ft_strdup(cleaned + 3);
-	if (!data->do_texture)
-		return (free(cleaned), 0);
-	free(cleaned);
-	data->do_loaded = 1;
-	return (1);
-}
-
-static int	so_texture(t_data *data, char *cleaned)
-{
-	if (!data || !cleaned)
-		return (0);
-	if (data->so_loaded)
-		return (free(cleaned), error_exit("Error: Duplicate SO texture"), 0);
-	if (!check_texture_format(cleaned + 3))
-		return (free(cleaned), error_exit("Error: Invalid SO texture format"),
-			0);
-	data->so_texture = ft_strdup(cleaned + 3);
-	if (!data->so_texture)
-		return (free(cleaned), 0);
-	free(cleaned);
-	data->so_loaded = 1;
-	return (1);
-}
-
-static int	check_ea_texture(t_data *data, char *cleaned)
-{
-	if (data->ea_loaded)
-		return (free(cleaned), error_exit("Error: Duplicate EA texture"), 0);
-	if (!check_texture_format(cleaned + 3))
-		return (free(cleaned), error_exit("Error: Invalid EA format"), 0);
-	data->ea_texture = ft_strdup(cleaned + 3);
-	if (!data->ea_texture)
-		return (free(cleaned), 0);
-	free(cleaned);
-	data->ea_loaded = 1;
-	return (1);
-}
-
-static int	check_we_texture(t_data *data, char *cleaned)
-{
-	if (data->we_loaded)
-		return (free(cleaned), error_exit("Error: Duplicate WE texture"), 0);
-	if (!check_texture_format(cleaned + 3))
-		return (free(cleaned), error_exit("Error: Invalid WE format"), 0);
-	data->we_texture = ft_strdup(cleaned + 3);
-	if (!data->we_texture)
-		return (free(cleaned), 0);
-	free(cleaned);
-	data->we_loaded = 1;
-	return (1);
-}
-
-static int	ea_we_tex(t_data *data, char *cleaned, int is_east)
-{
-	if (!data || !cleaned)
-		return (0);
-	if (is_east)
-		return (check_ea_texture(data, cleaned));
-	return (check_we_texture(data, cleaned));
-}
-
-static int	check_floor_color(t_data *data, char *cleaned)
-{
-	int	ret;
-
-	if (data->f_loaded)
-		return (free(cleaned), error_exit("Error: Duplicate F color"), 0);
-	ret = parse_color(cleaned + 2);
-	if (ret == -1)
-		return (free(cleaned), error_exit("Error: Invalid F color"), 0);
-	data->f_color = ret;
-	data->f_loaded = 1;
-	return (1);
-}
-
-static int	handle_ceiling_texture(t_data *data, char *cleaned)
-{
-	if (!check_texture_format(cleaned + 2))
-		return (free(cleaned), error_exit("Error: Invalid C format"), 0);
-	data->c_texture = ft_strdup(cleaned + 2);
-	if (!data->c_texture)
-		return (free(cleaned), 0);
-	data->c_is_texture = 1;
-	return (1);
-}
 
 static int	handle_ceiling_color(t_data *data, char *cleaned)
 {
@@ -159,10 +46,9 @@ static int	floor_ceil(t_data *data, char *cleaned, int is_floor)
 	if (!data || !cleaned)
 		return (0);
 	if (is_floor)
-		ret = check_floor_color(data, cleaned);
+		ret = check_floor_element(data, cleaned);
 	else
 		ret = check_ceiling_element(data, cleaned);
-	free(cleaned);
 	return (ret);
 }
 
