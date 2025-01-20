@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 15:41:59 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/20 19:27:54 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/20 20:02:03 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,10 @@ int	init_game(t_data *data)
 {
 	t_ray	initial_ray;
 
-	if(!validate_game_data(data))
-		return(0);
-	printf("DEBUG: Entering init_game\n");
-	if (!init_mlx(data))
-	{
-		printf("DEBUG: init_mlx failed\n");
+	if (!validate_game_data(data))
 		return (0);
-	}
-	printf("DEBUG: MLX initialized successfully\n");
+	if (!init_mlx(data))
+		return (0);
 	if (!check_player(data))
 		return (cleanup_mlx(data), 0);
 	if (!load_textures(data))

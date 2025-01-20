@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 15:49:50 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/20 19:36:41 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/20 20:03:45 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	no_texture(t_data *data, char *cleaned)
 {
-	char *clean_path;
+	char	*clean_path;
 
 	clean_path = clean_texture_path(cleaned + 3);
 	if (!data || !cleaned)
@@ -35,7 +35,7 @@ int	no_texture(t_data *data, char *cleaned)
 
 int	do_texture(t_data *data, char *cleaned)
 {
-	char *clean_path;
+	char	*clean_path;
 
 	clean_path = clean_texture_path(cleaned + 3);
 	if (!data || !cleaned)
@@ -56,7 +56,7 @@ int	do_texture(t_data *data, char *cleaned)
 
 int	so_texture(t_data *data, char *cleaned)
 {
-	char *clean_path;
+	char	*clean_path;
 
 	clean_path = clean_texture_path(cleaned + 3);
 	if (!data || !cleaned)
@@ -77,7 +77,7 @@ int	so_texture(t_data *data, char *cleaned)
 
 int	check_ea_texture(t_data *data, char *cleaned)
 {
-	char *clean_path;
+	char	*clean_path;
 
 	clean_path = clean_texture_path(cleaned + 3);
 	if (data->ea_loaded)
@@ -95,7 +95,7 @@ int	check_ea_texture(t_data *data, char *cleaned)
 
 int	check_we_texture(t_data *data, char *cleaned)
 {
-	char *clean_path;
+	char	*clean_path;
 
 	clean_path = clean_texture_path(cleaned + 3);
 	if (data->we_loaded)

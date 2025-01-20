@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 15:29:52 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/20 19:33:43 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/20 19:57:20 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ char	*clean_texture_path(const char *path)
 	while (path[i] && path[i] != '\n')
 		i++;
 	cleaned = ft_substr(path, start, i - start);
-	printf("DEBUG: Cleaned path: '%s' from original: '%s'\n", cleaned, path);
 	return (cleaned);
 }
 
