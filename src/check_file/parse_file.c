@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:11:44 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/16 15:10:32 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/20 19:32:05 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,15 +55,29 @@ int	parse_color(const char *str)
 	return ((r << 16) | (g << 8) | b);
 }
 
-int	check_texture_format(const char *path)
-{
-	char	**parts;
-	int		result;
+// int	check_texture_format(const char *path)
+// {
+// 	char	**parts;
+// 	int		result;
 
-	parts = ft_split(path, ' ');
-	result = (ft_arraylen(parts) == 1);
-	ft_free_split(parts);
-	return (result);
+// 	parts = ft_split(path, ' ');
+// 	result = (ft_arraylen(parts) == 1);
+// 	ft_free_split(parts);
+// 	return (result);
+// }
+
+int check_texture_format(const char *path)
+{
+    char **parts;
+    int result;
+
+    printf("DEBUG: Checking texture format for path: '%s'\n", path);
+    parts = ft_split(path, ' ');
+    result = (ft_arraylen(parts) == 1);
+    printf("DEBUG: Split result count: %d\n", ft_arraylen(parts));
+    ft_free_split(parts);
+    printf("DEBUG: Format check result: %d\n", result);
+    return (result);
 }
 
 int	parse_texture_colors(t_data *data, char **lines, const char *filename)

@@ -1,16 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_valid_data_6elements.c                       :+:      :+:    :+:   */
+/*   check_path.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 15:29:52 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/09 16:53:10 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/20 19:33:43 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3D.h"
+
+char	*clean_texture_path(const char *path)
+{
+	int		i;
+	int		start;
+	char	*cleaned;
+
+	i = 0;
+	while (path[i] && (path[i] == ' ' || path[i] == '\t'))
+		i++;
+	start = i;
+	while (path[i] && path[i] != '\n')
+		i++;
+	cleaned = ft_substr(path, start, i - start);
+	printf("DEBUG: Cleaned path: '%s' from original: '%s'\n", cleaned, path);
+	return (cleaned);
+}
 
 int	is_valid_texture_path(const char *path)
 {

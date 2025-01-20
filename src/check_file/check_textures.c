@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 15:49:50 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/20 16:45:39 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/20 19:36:41 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 
 int	no_texture(t_data *data, char *cleaned)
 {
+	char *clean_path;
+
+	clean_path = clean_texture_path(cleaned + 3);
 	if (!data || !cleaned)
 		return (0);
 	if (data->no_loaded)
@@ -24,6 +27,7 @@ int	no_texture(t_data *data, char *cleaned)
 	data->no_texture = ft_strdup(cleaned + 3);
 	if (!data->no_texture)
 		return (free(cleaned), 0);
+	data->no_texture = clean_path;
 	free(cleaned);
 	data->no_loaded = 1;
 	return (1);
@@ -31,6 +35,9 @@ int	no_texture(t_data *data, char *cleaned)
 
 int	do_texture(t_data *data, char *cleaned)
 {
+	char *clean_path;
+
+	clean_path = clean_texture_path(cleaned + 3);
 	if (!data || !cleaned)
 		return (0);
 	if (data->do_loaded)
@@ -41,6 +48,7 @@ int	do_texture(t_data *data, char *cleaned)
 	data->do_texture = ft_strdup(cleaned + 3);
 	if (!data->do_texture)
 		return (free(cleaned), 0);
+	data->do_texture = clean_path;
 	free(cleaned);
 	data->do_loaded = 1;
 	return (1);
@@ -48,6 +56,9 @@ int	do_texture(t_data *data, char *cleaned)
 
 int	so_texture(t_data *data, char *cleaned)
 {
+	char *clean_path;
+
+	clean_path = clean_texture_path(cleaned + 3);
 	if (!data || !cleaned)
 		return (0);
 	if (data->so_loaded)
@@ -58,6 +69,7 @@ int	so_texture(t_data *data, char *cleaned)
 	data->so_texture = ft_strdup(cleaned + 3);
 	if (!data->so_texture)
 		return (free(cleaned), 0);
+	data->so_texture = clean_path;
 	free(cleaned);
 	data->so_loaded = 1;
 	return (1);
@@ -65,6 +77,9 @@ int	so_texture(t_data *data, char *cleaned)
 
 int	check_ea_texture(t_data *data, char *cleaned)
 {
+	char *clean_path;
+
+	clean_path = clean_texture_path(cleaned + 3);
 	if (data->ea_loaded)
 		return (free(cleaned), error_exit("Error: Duplicate EA texture"), 0);
 	if (!check_texture_format(cleaned + 3))
@@ -72,6 +87,7 @@ int	check_ea_texture(t_data *data, char *cleaned)
 	data->ea_texture = ft_strdup(cleaned + 3);
 	if (!data->ea_texture)
 		return (free(cleaned), 0);
+	data->ea_texture = clean_path;
 	free(cleaned);
 	data->ea_loaded = 1;
 	return (1);
@@ -79,6 +95,9 @@ int	check_ea_texture(t_data *data, char *cleaned)
 
 int	check_we_texture(t_data *data, char *cleaned)
 {
+	char *clean_path;
+
+	clean_path = clean_texture_path(cleaned + 3);
 	if (data->we_loaded)
 		return (free(cleaned), error_exit("Error: Duplicate WE texture"), 0);
 	if (!check_texture_format(cleaned + 3))
@@ -86,6 +105,7 @@ int	check_we_texture(t_data *data, char *cleaned)
 	data->we_texture = ft_strdup(cleaned + 3);
 	if (!data->we_texture)
 		return (free(cleaned), 0);
+	data->we_texture = clean_path;
 	free(cleaned);
 	data->we_loaded = 1;
 	return (1);

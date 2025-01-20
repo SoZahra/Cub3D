@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 15:14:56 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/20 17:37:01 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/20 19:33:34 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ typedef struct s_door
 	int				x;
 	int				y;
 	int				is_open;
-	double			animation;// Pour l'animation (0.0 à 1.0)
+	double animation; // Pour l'animation (0.0 à 1.0)
 }					t_door;
 
 typedef struct s_keys
@@ -278,6 +278,10 @@ int					error_exit(const char *message);
 
 int					parse_color(const char *str);
 
+//check_file/check_path.c
+
+char *clean_texture_path(const char *path);
+
 // int parse_texture_colors(t_data *data, char **lines);
 int					parse_texture_colors(t_data *data, char **lines,
 						const char *filename);
@@ -323,6 +327,7 @@ int					init_mlx(t_data *data);
 int					load_texture(t_data *data, t_texture *tex, char *path);
 int					load_textures(t_data *data);
 int					init_game(t_data *data);
+int					validate_game_data(t_data *data);
 
 // mlx/init_image.c
 
