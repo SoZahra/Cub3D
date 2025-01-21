@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lanani-f <lanani-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 15:14:56 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/20 20:06:04 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/21 11:31:41 by lanani-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ typedef struct s_movement
 	int				rot_right;
 	double			move_speed;
 	double			rot_speed;
+	int				mouse_x;
+    int				prev_mouse_x;
 }					t_movement;
 
 typedef struct s_draw_section
@@ -336,6 +338,7 @@ int					init_mlx_window(t_data *data);
 
 // mlc/init_hooks.c
 
+int					handle_mouse(int x, int y, t_data *data);
 void				init_hooks(t_data *data);
 int					exit_game(t_data *data);
 int					key_press(int keycode, t_data *data);

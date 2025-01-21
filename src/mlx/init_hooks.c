@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_hooks.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lanani-f <lanani-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 16:20:05 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/20 14:28:57 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/21 11:35:45 by lanani-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,13 +88,31 @@ int	exit_game(t_data *data)
 	return (0);
 }
 
+int	handle_mouse(int x, int y, t_data *data)
+{
+	int		mouse_diff;
+	double	rotation_angle;
+
+	(void)y;
+	mouse_diff = x - data->movement.prev_mouse_x;
+	if (mouse_diff != 0)
+	{
+		rotation_angle = (mouse_diff * ROT_SPEED);
+		rotate_vectors(data, rotation_angle);
+	}
+	data->movement.prev_mouse_x = x;
+	return (0);
+}
+
 void	init_hooks(t_data *data)
 {
-	if (!data || !data->mlx.mlx || !data->mlx.win
-		|| !data->img.img || !data->img.addr)
+	if (!data || !data->mlx.mlx || !data->mlx.win || !data->img.img
+		|| !data->img.addr)
 		return ;
 	mlx_loop_hook(data->mlx.mlx, game_loop, data);
 	mlx_hook(data->mlx.win, 17, 0, exit_game, data);
 	mlx_hook(data->mlx.win, 2, 1L << 0, key_press, data);
 	mlx_hook(data->mlx.win, 3, 1L << 1, key_release, data);
+	mlx_hook(data->mlx.win, MotionNotify, PointerMotionMask, handle_mouse,
+		data);
 }

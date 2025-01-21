@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_ray.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lanani-f <lanani-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 19:49:58 by lizzieanani       #+#    #+#             */
-/*   Updated: 2025/01/20 17:18:25 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/21 11:37:50 by lanani-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,4 +75,6 @@ void	init_movement_values(t_data *data)
 	data->movement.right = 0;
 	data->movement.rot_left = 0;
 	data->movement.rot_right = 0;
+	data->movement.mouse_x = WIN_WIDTH / 2;
+	data->movement.prev_mouse_x = WIN_WIDTH / 2;
 }
