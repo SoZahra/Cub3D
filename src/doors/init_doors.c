@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 13:34:26 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/20 17:34:42 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/21 19:28:23 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	init_doors(t_data *data)
 	int	count;
 
 	if (!data || !data->map)
+		return (0);
+	if (!validate_doors(data))
 		return (0);
 	count = 0;
 	count_doors_recursive(data, 0, &count);

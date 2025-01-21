@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 18:13:26 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/20 18:49:20 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/21 17:04:42 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,20 @@ static int	handle_ceiling_color(t_data *data, char *cleaned)
 		return (free(cleaned), error_exit("Error: Invalid C color"), 0);
 	data->c_color = ret;
 	data->c_is_texture = 0;
+	free(cleaned);
 	return (1);
 }
 
 static int	check_ceiling_element(t_data *data, char *cleaned)
 {
+	int	i;
+
 	if (data->c_loaded)
 		return (free(cleaned), error_exit("Error: Duplicate C color"), 0);
-	if (cleaned[2] == '.' || (cleaned[2] == ' ' && cleaned[3] == '.'))
+	i = 1;
+	while (cleaned[i] && cleaned[i] == ' ')
+		i++;
+	if (cleaned[i] == '.' || (cleaned[i] == ' ' && cleaned[i + 1] == '.'))
 	{
 		if (!handle_ceiling_texture(data, cleaned))
 			return (0);

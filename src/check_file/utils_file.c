@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 18:52:12 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/15 17:43:59 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/21 17:04:14 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,12 @@ int	is_valid_identifier(char *line)
 		|| ft_strncmp(line, "EA ", 3) == 0 || ft_strncmp(line, "WE ", 3) == 0
 		|| ft_strncmp(line, "F ", 2) == 0 || ft_strncmp(line, "C ", 2) == 0
 		|| ft_strncmp(line, "DO ", 2) == 0);
+}
+
+int	is_valid_comma_sequence(const char *str, int i, int had_digit)
+{
+	if (!had_digit || str[i + 1] == ',' || str[i + 1] == '\0'
+		|| str[i + 1] == ' ')
+		return (0);
+	return (1);
 }

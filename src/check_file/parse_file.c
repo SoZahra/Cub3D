@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:11:44 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/20 20:05:04 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/21 17:03:06 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,26 @@
 static int	validate_str_chars(const char *str)
 {
 	int	i;
+	int	comma_count;
+	int	had_digit;
 
-	i = 0;
-	while (str[i] && (ft_isdigit(str[i]) || str[i] == ',' || str[i] == ' '))
+	i = ((comma_count = had_digit = 0));
+	while (str[i] == ' ')
 		i++;
-	if (str[i] != '\0' && str[i] != '\n')
-		return (0);
-	return (1);
+	while (str[i])
+	{
+		if (ft_isdigit(str[i]))
+			had_digit = 1;
+		else if (str[i] == ',' && is_valid_comma_sequence(str, i, had_digit))
+		{
+			comma_count++;
+			had_digit = 0;
+		}
+		else if (!is_valid_format(str, i, had_digit))
+			return (0);
+		i++;
+	}
+	return (comma_count == 2 && had_digit);
 }
 
 static int	extract_rgb_values(char **components, int *r, int *g, int *b)

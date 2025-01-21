@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 15:29:52 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/20 19:57:20 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/21 17:00:22 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,5 +59,20 @@ int	is_valid_color_format(const char *str)
 		}
 		str++;
 	}
+	return (1);
+}
+
+int	is_valid_format(const char *str, int i, int had_digit)
+{
+	if (str[i] != ' ' && !ft_isdigit(str[i]))
+		return (0);
+	if (str[i] == ' ' && had_digit)
+		return (0);
+	return (1);
+}
+
+int	process_flag(int *had_digit)
+{
+	*had_digit = 1;
 	return (1);
 }

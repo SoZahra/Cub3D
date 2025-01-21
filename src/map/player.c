@@ -3,14 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   player.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lanani-f <lanani-f@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 14:22:42 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/15 16:40:42 by lanani-f         ###   ########.fr       */
+/*   Updated: 2025/01/21 19:35:49 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3D.h"
+
+int	check_player_surroundings(t_data *data, int y, int x)
+{
+	if (y == 0 || x == 0 || y == data->map_height - 1
+		|| x >= (int)ft_strlen(data->map[y]) - 1)
+		return (error_exit("Error: Position invalid (at border)"), 0);
+	if (data->map[y - 1][x] == ' ' || data->map[y + 1][x] == ' '
+		|| data->map[y][x - 1] == ' ' || data->map[y][x + 1] == ' ')
+		return (error_exit("Error: Not properly surrounded by walls"), 0);
+	return (1);
+}
 
 static int	check_line_for_player(char *line, int y, t_data *data, int *count)
 {
@@ -27,6 +38,8 @@ static int	check_line_for_player(char *line, int y, t_data *data, int *count)
 			data->player.pos_x = x;
 			data->player.pos_y = y;
 			data->player.player_dir = line[x];
+			if (!check_player_surroundings(data, y, x))
+				return (0);
 		}
 		x++;
 	}
@@ -43,7 +56,8 @@ int	check_player(t_data *data)
 	player_count = 0;
 	while (y < data->map_height)
 	{
-		check_line_for_player(data->map[y], y, data, &player_count);
+		if (!check_line_for_player(data->map[y], y, data, &player_count))
+			return (0);
 		y++;
 	}
 	if (player_count != 1)

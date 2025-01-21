@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lanani-f <lanani-f@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 15:14:56 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/21 11:31:41 by lanani-f         ###   ########.fr       */
+/*   Updated: 2025/01/21 19:34:38 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ typedef struct s_movement
 	double			move_speed;
 	double			rot_speed;
 	int				mouse_x;
-    int				prev_mouse_x;
+	int				prev_mouse_x;
 }					t_movement;
 
 typedef struct s_draw_section
@@ -81,7 +81,7 @@ typedef struct s_door
 	int				x;
 	int				y;
 	int				is_open;
-	double			animation; // Pour l'animation (0.0 à 1.0)
+	double			animation;
 }					t_door;
 
 typedef struct s_keys
@@ -235,6 +235,7 @@ int					handle_texture_line(char *trimmed, int *f_elements);
 
 int					check_player(t_data *data);
 int					is_valid_map_line(char *line);
+int					check_player_surroundings(t_data *data, int y, int x);
 
 // map/map_start.c
 
@@ -283,6 +284,8 @@ int					parse_color(const char *str);
 // check_file/check_path.c
 
 char				*clean_texture_path(const char *path);
+int					is_valid_format(const char *str, int i, int had_digit);
+int					process_flag(int *had_digit);
 
 // int parse_texture_colors(t_data *data, char **lines);
 int					parse_texture_colors(t_data *data, char **lines,
@@ -317,6 +320,8 @@ int					handle_ceiling_texture(t_data *data, char *cleaned);
 
 int					ft_arraylen(char **array);
 char				*ft_strtrim2(const char *str);
+int					is_valid_comma_sequence(const char *str, int i,
+						int had_digit);
 
 ////check_file/check_valid_data_6elements.c
 
@@ -370,6 +375,7 @@ void				init_movement_values(t_data *data);
 
 void				update_ray_position(t_ray *ray);
 int					check_wall_collision(t_ray *ray, t_data *data);
+int					validate_doors(t_data *data);
 
 // raycasting/position.c
 

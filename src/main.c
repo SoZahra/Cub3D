@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 15:13:28 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/20 20:05:20 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/21 17:02:45 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,7 @@ int	main(int ac, char **av)
 	if (!lines)
 		return (free_lines(lines), cleanup_mlx(&data),
 			printf("Failed to read the file\n"), 1);
-	if (parse_texture_colors(&data, lines, av[1]) == -1
-		|| !validate_game_data(&data))
+	if (parse_texture_colors(&data, lines, av[1]) == -1)
 		return (free_all(&data, NULL), free_lines(lines), 1);
 	free_lines(lines);
 	if (!init_game(&data))

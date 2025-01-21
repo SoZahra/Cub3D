@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 11:41:34 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/20 15:46:12 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/21 17:08:56 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,18 +83,15 @@ int	load_textures(t_data *data)
 		return (error_exit("Failed to load WE texture"), 0);
 	if (!load_texture(data, &data->mlx.ea_tex, data->ea_texture))
 		return (error_exit("Failed to load EA texture"), 0);
-	data->door_tex.num_frames = 0;
-	if (!load_door_textures(data))
+	if (data->c_is_texture)
 	{
-		printf("Using default door texture\n");
-		if (!load_texture(data, &data->mlx.do_tex, data->do_texture))
-			return (error_exit("Failed to load DO texture"), 0);
+		if (!load_texture(data, &data->sky_tex, data->c_texture))
+			return (error_exit("Failed to load SKY texture"), 0);
 	}
-	if (data->c_is_texture && !load_texture(data, &data->sky_tex,
-			data->c_texture))
-		return (error_exit("Failed to load SKY texture"), 0);
-	if (data->f_is_texture && !load_texture(data, &data->floor,
-			data->f_texture))
-		return (error_exit("Failed to load SKY texture"), 0);
+	if (data->f_is_texture)
+	{
+		if (!load_texture(data, &data->floor, data->f_texture))
+			return (error_exit("Failed to load FLOOR texture"), 0);
+	}
 	return (1);
 }

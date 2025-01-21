@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 15:49:50 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/20 20:03:45 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/21 17:06:57 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ int	no_texture(t_data *data, char *cleaned)
 {
 	char	*clean_path;
 
-	clean_path = clean_texture_path(cleaned + 3);
 	if (!data || !cleaned)
 		return (0);
 	if (data->no_loaded)
@@ -24,11 +23,11 @@ int	no_texture(t_data *data, char *cleaned)
 	if (!check_texture_format(cleaned + 3))
 		return (free(cleaned), error_exit("Error: Invalid NO texture format"),
 			0);
-	data->no_texture = ft_strdup(cleaned + 3);
-	if (!data->no_texture)
+	clean_path = clean_texture_path(cleaned + 3);
+	if (!clean_path)
 		return (free(cleaned), 0);
 	data->no_texture = clean_path;
-	free(cleaned);
+	free (cleaned);
 	data->no_loaded = 1;
 	return (1);
 }
@@ -37,7 +36,6 @@ int	do_texture(t_data *data, char *cleaned)
 {
 	char	*clean_path;
 
-	clean_path = clean_texture_path(cleaned + 3);
 	if (!data || !cleaned)
 		return (0);
 	if (data->do_loaded)
@@ -45,11 +43,11 @@ int	do_texture(t_data *data, char *cleaned)
 	if (!check_texture_format(cleaned + 3))
 		return (free(cleaned), error_exit("Error: Invalid DO texture format"),
 			0);
-	data->do_texture = ft_strdup(cleaned + 3);
-	if (!data->do_texture)
+	clean_path = clean_texture_path(cleaned + 3);
+	if (!clean_path)
 		return (free(cleaned), 0);
 	data->do_texture = clean_path;
-	free(cleaned);
+	free (cleaned);
 	data->do_loaded = 1;
 	return (1);
 }
@@ -58,7 +56,6 @@ int	so_texture(t_data *data, char *cleaned)
 {
 	char	*clean_path;
 
-	clean_path = clean_texture_path(cleaned + 3);
 	if (!data || !cleaned)
 		return (0);
 	if (data->so_loaded)
@@ -66,11 +63,11 @@ int	so_texture(t_data *data, char *cleaned)
 	if (!check_texture_format(cleaned + 3))
 		return (free(cleaned), error_exit("Error: Invalid SO texture format"),
 			0);
-	data->so_texture = ft_strdup(cleaned + 3);
-	if (!data->so_texture)
+	clean_path = clean_texture_path(cleaned + 3);
+	if (!clean_path)
 		return (free(cleaned), 0);
 	data->so_texture = clean_path;
-	free(cleaned);
+	free (cleaned);
 	data->so_loaded = 1;
 	return (1);
 }
@@ -79,16 +76,15 @@ int	check_ea_texture(t_data *data, char *cleaned)
 {
 	char	*clean_path;
 
-	clean_path = clean_texture_path(cleaned + 3);
 	if (data->ea_loaded)
 		return (free(cleaned), error_exit("Error: Duplicate EA texture"), 0);
 	if (!check_texture_format(cleaned + 3))
 		return (free(cleaned), error_exit("Error: Invalid EA format"), 0);
-	data->ea_texture = ft_strdup(cleaned + 3);
-	if (!data->ea_texture)
+	clean_path = clean_texture_path(cleaned + 3);
+	if (!clean_path)
 		return (free(cleaned), 0);
 	data->ea_texture = clean_path;
-	free(cleaned);
+	free (cleaned);
 	data->ea_loaded = 1;
 	return (1);
 }
@@ -97,16 +93,15 @@ int	check_we_texture(t_data *data, char *cleaned)
 {
 	char	*clean_path;
 
-	clean_path = clean_texture_path(cleaned + 3);
 	if (data->we_loaded)
 		return (free(cleaned), error_exit("Error: Duplicate WE texture"), 0);
 	if (!check_texture_format(cleaned + 3))
 		return (free(cleaned), error_exit("Error: Invalid WE format"), 0);
-	data->we_texture = ft_strdup(cleaned + 3);
-	if (!data->we_texture)
+clean_path = clean_texture_path(cleaned + 3);
+	if (!clean_path)
 		return (free(cleaned), 0);
 	data->we_texture = clean_path;
-	free(cleaned);
+	free (cleaned);
 	data->we_loaded = 1;
 	return (1);
 }
