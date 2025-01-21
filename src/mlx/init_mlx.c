@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 11:41:34 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/21 19:49:45 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/21 20:41:01 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,8 @@ int	load_textures(t_data *data)
 		return (error_exit("Failed to load EA texture"), 0);
 	if (!load_texture(data, &data->mlx.do_tex, data->do_texture))
 		return (error_exit("Failed to load EA texture"), 0);
+	if (!load_wall_textures(data))
+		return (error_exit("Failed to load wall textures"), 0);
 	if (data->c_is_texture)
 	{
 		if (!load_texture(data, &data->sky_tex, data->c_texture))

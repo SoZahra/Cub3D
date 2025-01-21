@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 19:56:03 by lizzieanani       #+#    #+#             */
-/*   Updated: 2025/01/20 17:18:13 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/21 20:40:40 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,39 @@ int	game_loop(t_data *data)
 	handle_strafe_movement(data);
 	handle_door(data);
 	update_doors(data);
+	update_wall_animation(data);
 	raycasting(data);
 	draw_minimap(data);
 	mlx_put_image_to_window(data->mlx.mlx, data->mlx.win, data->img.img, 0, 0);
 	return (0);
 }
 
+// t_texture	*select_texture(t_data *data, t_ray *ray)
+// {
+// 	int	frame_index;
+
+// 	if (ray->hit == 1)
+// 	{
+// 		frame_index = (int)data->wall_tex.animation_time;
+// 		return (&data->wall_tex.frames[frame_index]);
+// 	}
+// 	if (ray->hit == 2)
+// 		return (&data->mlx.do_tex);
+// 	if (ray->side == 0)
+// 	{
+// 		if (ray->ray_dir_x > 0)
+// 			return (&data->mlx.ea_tex);
+// 		return (&data->mlx.we_tex);
+// 	}
+// 	if (ray->ray_dir_y > 0)
+// 		return (&data->mlx.so_tex);
+// 	return (&data->mlx.no_tex);
+// }
+
 t_texture	*select_texture(t_data *data, t_ray *ray)
 {
+	int	frame_index;
+
 	if (ray->hit == 2)
 		return (&data->mlx.do_tex);
 	if (ray->side == 0)
@@ -40,7 +65,10 @@ t_texture	*select_texture(t_data *data, t_ray *ray)
 		return (&data->mlx.we_tex);
 	}
 	if (ray->ray_dir_y > 0)
-		return (&data->mlx.so_tex);
+	{
+		frame_index = (int)data->wall_tex.animation_time;
+		return (&data->wall_tex.frames[frame_index]);
+	}
 	return (&data->mlx.no_tex);
 }
 

@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 13:34:26 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/21 19:28:23 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/21 20:39:35 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,24 +103,28 @@ void	update_doors(t_data *data)
 	}
 }
 
-int	load_door_textures(t_data *data)
+void	update_wall_animation(t_data *data)
+{
+	data->wall_tex.animation_time += 0.1;
+	if (data->wall_tex.animation_time >= data->wall_tex.num_frames)
+		data->wall_tex.animation_time = 0.0;
+}
+
+int	load_wall_textures(t_data *data)
 {
 	int		i;
-	char	*paths[8];
+	char	*paths[4];
 
 	i = 0;
-	paths[0] = "textures/door_0.xpm";
-	paths[1] = "textures/door_1.xpm";
-	paths[2] = "textures/door_2.xpm";
-	paths[3] = "textures/door_3.xpm";
-	paths[4] = "textures/door_4.xpm";
-	paths[5] = "textures/door_5.xpm";
-	paths[6] = "textures/door_6.xpm";
-	paths[7] = "textures/door_7.xpm";
-	data->door_tex.num_frames = 8;
-	while (i < data->door_tex.num_frames)
+	paths[0] = "textures/wall_0.xpm";
+	paths[1] = "textures/wall_1.xpm";
+	paths[2] = "textures/wall_2.xpm";
+	paths[3] = "textures/wall_3.xpm";
+	data->wall_tex.num_frames = 4;
+	data->wall_tex.animation_time = 0.0;
+	while (i < data->wall_tex.num_frames)
 	{
-		if (!load_texture(data, &data->door_tex.frames[i], paths[i]))
+		if (!load_texture(data, &data->wall_tex.frames[i], paths[i]))
 			return (0);
 		i++;
 	}
