@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lanani-f <lanani-f@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 15:14:56 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/22 11:26:32 by lanani-f         ###   ########.fr       */
+/*   Updated: 2025/01/22 11:56:07 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ typedef struct s_texture
 }					t_texture;
 typedef struct s_wall_texture
 {
-	t_texture		frames[8];
+	t_texture		frames[4];
 	int				num_frames;
 	double			animation_time;
 }					t_wall_texture;

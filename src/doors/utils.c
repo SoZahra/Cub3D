@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 17:30:48 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/21 19:58:32 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/22 11:43:00 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	init_door(t_door *door, int x, int y)
 	door->x = x;
 	door->y = y;
 	door->is_open = 0;
+	door->animation = 0.0;
 }
 
 void	fill_door_in_row(t_data *data, int i, int j, int *count)

@@ -6,7 +6,7 @@
 /*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 14:22:42 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/21 19:35:49 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/22 12:15:52 by fzayani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ static int	check_line_for_player(char *line, int y, t_data *data, int *count)
 		if (ft_strchr("NSEW", line[x]))
 		{
 			(*count)++;
-			data->player.pos_x = x;
-			data->player.pos_y = y;
+			data->player.pos_x = x + 0.5;
+			data->player.pos_y = y + 0.5;
 			data->player.player_dir = line[x];
 			if (!check_player_surroundings(data, y, x))
 				return (0);
