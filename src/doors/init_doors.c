@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_doors.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lanani-f <lanani-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 13:34:26 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/21 20:39:35 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/22 11:22:00 by lanani-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,10 +116,10 @@ int	load_wall_textures(t_data *data)
 	char	*paths[4];
 
 	i = 0;
-	paths[0] = "textures/wall_0.xpm";
-	paths[1] = "textures/wall_1.xpm";
-	paths[2] = "textures/wall_2.xpm";
-	paths[3] = "textures/wall_3.xpm";
+	paths[0] = "textures/1.xpm";
+	paths[1] = "textures/2.xpm";
+	paths[2] = "textures/3.xpm";
+	paths[3] = "textures/4.xpm";
 	data->wall_tex.num_frames = 4;
 	data->wall_tex.animation_time = 0.0;
 	while (i < data->wall_tex.num_frames)
