@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lanani-f <lanani-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 11:05:37 by fzayani           #+#    #+#             */
-/*   Updated: 2024/12/31 19:10:15 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/22 11:27:37 by lanani-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,6 @@ char	*ft_get_line(char *left_str, int *is_malloc_error)
 		str[i] = left_str[i];
 		i++;
 	}
-	//if (left_str[i] == '\n')
-	//	str[i++] = '\n';
 	str[i] = '\0';
 	return (str);
 }
@@ -108,7 +106,6 @@ char	*ft_new_left_str(char *left_str, int *is_malloc_error)
 		i++;
 	if (!left_str[i])
 		return (free(left_str), NULL);
-	//i++;
 	str = (char *)malloc(sizeof(char) * (ft_strlen_(left_str) - i + 1));
 	if (!str)
 		return (*is_malloc_error = 1, free(left_str), NULL);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fzayani <fzayani@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lanani-f <lanani-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 15:14:56 by fzayani           #+#    #+#             */
-/*   Updated: 2025/01/21 20:38:08 by fzayani          ###   ########.fr       */
+/*   Updated: 2025/01/22 11:26:32 by lanani-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -458,7 +458,7 @@ void				handle_door(t_data *data);
 void				update_doors(t_data *data);
 int					load_door_textures(t_data *data);
 void				update_wall_animation(t_data *data);
-int load_wall_textures(t_data *data);
+int					load_wall_textures(t_data *data);
 
 // doors/utils.c
 
