@@ -21,19 +21,19 @@ ________________________________________________________________________________
 ✨ **Fonctionnalités**
 🔧 **Partie obligatoire**
 
-Moteur 3D : Rendu temps réel d'un environnement 3D à partir d'une carte 2D
-Textures murales : Support de différentes textures selon l'orientation des murs
-Contrôles fluides : Déplacement avec WASD et rotation avec les flèches directionnelles
-Couleurs personnalisables : Sol et plafond configurables via RGB
-Gestion d'erreurs : Validation complète des fichiers de carte et textures
+- Moteur 3D : Rendu temps réel d'un environnement 3D à partir d'une carte 2D
+- Textures murales : Support de différentes textures selon l'orientation des murs
+- Contrôles fluides : Déplacement avec WASD et rotation avec les flèches directionnelles
+- Couleurs personnalisables : Sol et plafond configurables via RGB
+- Gestion d'erreurs : Validation complète des fichiers de carte et textures
 
 🌟 **Partie bonus (si implémentée)**
 
-Collisions : Détection et gestion des collisions avec les murs
-Minimap : Vue aérienne en temps réel de la position du joueur
-Contrôle souris : Rotation de la caméra avec la souris
-Portes : Mécanisme d'ouverture/fermeture des portes
-Sprites animés : Éléments animés dans l'environnement
+- Collisions : Détection et gestion des collisions avec les murs
+- Minimap : Vue aérienne en temps réel de la position du joueur
+- Contrôle souris : Rotation de la caméra avec la souris
+- Portes : Mécanisme d'ouverture/fermeture des portes
+- Sprites animés : Éléments animés dans l'environnement
 
 ________________________________________________________________________________________________________________________________________
 
@@ -66,17 +66,9 @@ make fclean
 # Recompiler
 make re
 
-________________________________________________________________________________________________________________________________________
-
-🎮 **Utilisation**
-Lancement du programme
-
-bash# Partie obligatoire
-./cub3D maps/map.cub
-
-# Partie bonus (si disponible)
-./cub3D_bonus maps/map_bonus.cub
+_______________________________________________________________________________________________________________________________________
 
 🎹 **Contrôles**
 
-![controles]
+![controle![Uploading Screenshot from 2025-06-18 11-15-40.png…]()
+s]
