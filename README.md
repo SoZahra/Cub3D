@@ -1,13 +1,19 @@
-🎮 **Cub3D**
-<div align="center">
-  
-Une réinterprétation moderne de Wolfenstein 3D utilisant le ray-casting
+<h1 align="center">
+ 🎮 Cub3D 🎮
+</h1>
 
-</div>
+<p align="center">
+Une réinterprétation moderne de Wolfenstein 3D utilisant le ray-casting
+</p>
+
+<p align="center">
+  <img src="./assets/Screenshot from 2025-10-02 20-52-11.png" alt="Cub3D Demo" width="1000"/>
+</p>
+
 
 ________________________________________________________________________________________________________________________________________
-📖 **À propos du projet**
-Cub3D est un projet de l'École 42 qui consiste à créer un moteur graphique 3D minimaliste inspiré du légendaire Wolfenstein 3D. En utilisant la technique du ray-casting, ce projet transforme une carte 2D en environnement 3D immersif depuis une perspective à la première personne.
+📖 **À propos du projet**<br></br>
+Cub3D est un projet qui consiste à créer un moteur graphique 3D minimaliste inspiré du légendaire Wolfenstein 3D. En utilisant la technique du ray-casting, ce projet transforme une carte 2D en environnement 3D immersif depuis une perspective à la première personne.<br></br>
 🎯 **Objectifs pédagogiques**
 
 Comprendre les principes fondamentaux du ray-casting
